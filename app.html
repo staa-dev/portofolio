@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAA DEV | Download Apps</title>
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            /* Custom color palette - sama dengan index.html */
+            --red: #DA1107;
+            --orange: #E37F06;
+            --green: #049C6E;
+            --red-light: #fde8e7;
+            --orange-light: #fef3e6;
+            --green-light: #e6f7f2;
+            --black: #1a1a2e;
+            --white: #ffffff;
+            --gray-light: #fafafa;
+            --gray: #f0f0f0;
+            --shadow-sm: 3px 3px 0 var(--black);
+            --shadow-md: 5px 5px 0 var(--black);
+            --shadow-lg: 7px 7px 0 var(--black);
+            --border: 3px solid var(--black);
+            --border-sm: 2px solid var(--black);
+            --radius: 10px;
+            --radius-sm: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Light mode (default) */
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f0f0f0;
+            --text-primary: #1a1a2e;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --text-muted-light: #aaa;
+            --border-light: rgba(0,0,0,0.08);
+            --card-bg: #ffffff;
+            --body-bg: linear-gradient(135deg, #fde8e7 0%, #fef3e6 50%, #e6f7f2 100%);
+        }
+
+        /* Dark mode */
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #252540;
+            --bg-tertiary: #2a2a45;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #888;
+            --text-muted-light: #777;
+            --border-light: rgba(255,255,255,0.1);
+            --card-bg: #252540;
+            --body-bg: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f1a15 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--body-bg);
+            background-attachment: fixed;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(218, 17, 7, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 90% 30%, rgba(227, 127, 6, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 50% 80%, rgba(4, 156, 110, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        [data-theme="dark"] body::before {
+            opacity: 0.5;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(116, 185, 255, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 90% 30%, rgba(0, 206, 201, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 50% 80%, rgba(4, 156, 110, 0.08) 0%, transparent 40%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--bg-primary);
+            border: var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 280px;
+            max-width: 400px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast.show { transform: translateX(0); }
+
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #ffffff;
+            flex-shrink: 0;
+            border: var(--border-sm);
+        }
+
+        .toast-icon.success { background: var(--green); }
+        .toast-icon.info { background: #0984e3; }
+        .toast-icon.error { background: var(--red); }
+
+        .toast-content { flex: 1; min-width: 0; }
+        .toast-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); }
+        .toast-desc { font-size: 0.7rem; color: var(--text-secondary); }
+        .toast-close { cursor: pointer; color: var(--text-muted); font-size: 0.8rem; transition: var(--transition); }
+        .toast-close:hover { color: var(--red); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 9998; display: none;
+            align-items: center; justify-content: center; backdrop-filter: blur(4px);
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal-dialog {
+            background: var(--bg-primary); border: var(--border); border-radius: 16px;
+            padding: 2rem; box-shadow: var(--shadow-lg); max-width: 420px; width: 90%;
+            text-align: center; animation: modalPop 0.3s ease; position: relative; z-index: 9999;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute; top: 0.8rem; right: 0.8rem; width: 35px; height: 35px;
+            background: var(--red); border: var(--border-sm); border-radius: 8px;
+            color: #ffffff; cursor: pointer; font-size: 1rem; display: flex;
+            align-items: center; justify-content: center; transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--orange); transform: rotate(90deg); }
+
+        .modal-icon {
+            width: 70px; height: 70px; border-radius: 16px; margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+            color: #ffffff; border: var(--border-sm); box-shadow: var(--shadow-sm);
+            overflow: hidden; position: relative;
+        }
+        .modal-icon img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .modal-icon i { position: relative; z-index: 1; }
+
+        .modal-title { font-size: 1.3rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.3rem; }
+        .modal-version { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.8rem; }
+
+        .modal-info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+            margin-bottom: 1.2rem; text-align: left;
+        }
+        .modal-info-item {
+            background: var(--bg-secondary); border: 2px solid var(--border-light);
+            border-radius: 8px; padding: 0.6rem 0.8rem;
+        }
+        .modal-info-label { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .modal-info-value { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
+
+        .btn-download-modal {
+            background: var(--green); color: #ffffff; border: var(--border-sm);
+            padding: 0.7rem 2rem; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 0.9rem; transition: var(--transition); display: inline-flex;
+            align-items: center; gap: 0.4rem; box-shadow: var(--shadow-sm); margin-top: 0.5rem; text-decoration: none;
+        }
+        .btn-download-modal:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+        /* Header */
+        .header {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            padding: 1.2rem 1.5rem; background: var(--bg-primary); border: var(--border);
+            border-radius: 16px; box-shadow: var(--shadow-md); margin-bottom: 2rem; gap: 1rem; transition: background 0.3s ease;
+        }
+        .brand { display: flex; align-items: center; gap: 0.8rem; }
+        .brand-logo {
+            width: 45px; height: 45px; background: var(--red); border: var(--border-sm);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            color: #ffffff; font-size: 1.3rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition);
+        }
+        .brand-logo:hover { transform: rotate(-6deg) scale(1.08); box-shadow: var(--shadow-md); background: var(--orange); }
+        .brand-name { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); }
+        .brand-name span { color: var(--red); }
+
+        .header-actions { display: flex; align-items: center; gap: 0.6rem; }
+        .back-btn {
+            background: var(--bg-secondary); border: var(--border-sm); padding: 0.5rem 1.2rem;
+            border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary);
+            font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem;
+            box-shadow: var(--shadow-sm); transition: var(--transition);
+        }
+        .back-btn:hover { background: var(--orange-light); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        [data-theme="dark"] .back-btn:hover { background: rgba(227, 127, 6, 0.3); color: #f0f0f0; }
+
+        .theme-toggle-btn {
+            width: 42px; height: 42px; background: var(--card-bg); border: var(--border-sm);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition);
+            font-size: 1.1rem; color: var(--text-primary);
+        }
+        .theme-toggle-btn:hover { transform: rotate(15deg) scale(1.08); box-shadow: var(--shadow-md); }
+        .theme-toggle-btn .fa-sun { display: none; }
+        .theme-toggle-btn .fa-moon { display: inline-block; }
+        [data-theme="dark"] .theme-toggle-btn .fa-sun { display: inline-block; color: #fdcb6e; }
+        [data-theme="dark"] .theme-toggle-btn .fa-moon { display: none; }
+
+        /* Hero */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--red) 0%, var(--orange) 100%);
+            border: var(--border); border-radius: 16px; padding: 2.5rem;
+            box-shadow: var(--shadow-lg); margin-bottom: 2rem; text-align: center;
+            color: #ffffff; position: relative; overflow: hidden;
+        }
+        .hero-banner::before {
+            content: ''; position: absolute; top: -30%; right: -10%;
+            width: 250px; height: 250px; background: rgba(255,255,255,0.1); border-radius: 50%;
+        }
+        .hero-banner::after {
+            content: ''; position: absolute; bottom: -20%; left: -5%;
+            width: 180px; height: 180px; background: rgba(255,255,255,0.07); border-radius: 50%;
+        }
+        .hero-banner h1 { font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 3px 3px 0 rgba(0,0,0,0.2); position: relative; }
+        .hero-banner p { font-size: 1rem; opacity: 0.9; position: relative; }
+
+        /* Search */
+        .search-bar { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .search-input {
+            flex: 1; min-width: 200px; padding: 0.8rem 1.2rem; background: var(--bg-primary);
+            border: var(--border); border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+            color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit;
+        }
+        .search-input:focus { box-shadow: var(--shadow-md); border-color: var(--orange); }
+        .search-input::placeholder { color: var(--text-muted); }
+
+        .search-btn {
+            background: var(--orange); color: #ffffff; border: var(--border); padding: 0.8rem 1.5rem;
+            border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem;
+            box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; gap: 0.4rem;
+        }
+        .search-btn:hover { background: var(--red); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+        /* Categories */
+        .category-tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+            overflow-x: auto; padding-bottom: 0.5rem;
+        }
+        .category-tab {
+            background: var(--bg-primary); border: var(--border-sm); padding: 0.5rem 1.2rem;
+            border-radius: 50px; font-weight: 700; font-size: 0.82rem; cursor: pointer;
+            white-space: nowrap; box-shadow: var(--shadow-sm); transition: var(--transition); color: var(--text-primary);
+        }
+        .category-tab:hover { background: var(--orange-light); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .category-tab.active { background: var(--red); color: #ffffff; box-shadow: 2px 2px 0 var(--black); }
+
+        /* Apps Grid */
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; color: var(--text-primary); }
+        .section-title i { color: var(--orange); }
+
+        .apps-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.2rem; margin-bottom: 2.5rem;
+        }
+
+        .app-card {
+            background: var(--card-bg); border: var(--border-sm); border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); transition: var(--transition); overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        .app-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        [data-theme="dark"] .app-card { border-color: #444; }
+
+        .app-card-header {
+            padding: 1.2rem; display: flex; align-items: center; gap: 1rem;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .app-icon {
+            width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.8rem; color: #ffffff; flex-shrink: 0;
+            border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); overflow: hidden; position: relative;
+        }
+        .app-icon img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .app-icon i { position: relative; z-index: 1; }
+        .app-icon.game { background: linear-gradient(135deg, #DA1107, #c01006); }
+        .app-icon.tools { background: linear-gradient(135deg, #E37F06, #c56d05); }
+        .app-icon.social { background: linear-gradient(135deg, #049C6E, #037a56); }
+        .app-icon.media { background: linear-gradient(135deg, #6c5ce7, #5a4bd1); }
+        .app-icon.productivity { background: linear-gradient(135deg, #00b894, #00997a); }
+        .app-icon.finance { background: linear-gradient(135deg, #0984e3, #0768b5); }
+        .app-icon.custom { background: linear-gradient(135deg, #1a1a2e, #252540); }
+
+        .app-info { flex: 1; min-width: 0; }
+        .app-name { font-weight: 900; font-size: 1rem; color: var(--text-primary); line-height: 1.2; }
+        .app-category { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+        .app-rating { display: flex; align-items: center; gap: 0.2rem; margin-top: 0.2rem; font-size: 0.75rem; color: var(--orange); font-weight: 700; }
+        .app-rating i { font-size: 0.65rem; }
+
+        .app-card-body { padding: 1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.8rem; }
+        .app-desc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; flex: 1; }
+        .app-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+
+        .app-card-footer { padding: 1rem 1.2rem; border-top: 2px solid var(--border-light); display: flex; gap: 0.5rem; }
+
+        .btn-download {
+            flex: 1; background: var(--green); color: #ffffff; border: var(--border-sm);
+            padding: 0.6rem 1rem; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 0.8rem; transition: var(--transition); text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 0.3rem;
+            box-shadow: var(--shadow-sm); font-family: inherit;
+        }
+        .btn-download:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .btn-download.downloading { background: var(--orange); pointer-events: none; }
+        .btn-download.downloading i { animation: spin 1s linear infinite; }
+        .btn-download.completed { background: var(--green); }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-detail {
+            width: 40px; height: 40px; background: var(--bg-secondary); border: var(--border-sm);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 0.9rem; color: var(--text-primary); transition: var(--transition);
+            flex-shrink: 0; box-shadow: var(--shadow-sm);
+        }
+        .btn-detail:hover { background: var(--orange-light); box-shadow: var(--shadow-md); }
+
+        /* Featured */
+        .featured-banner {
+            background: var(--bg-primary); border: var(--border); border-radius: 16px;
+            padding: 2rem; box-shadow: var(--shadow-md); margin-bottom: 2.5rem;
+            display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; transition: background 0.3s ease;
+        }
+        [data-theme="dark"] .featured-banner { border-color: #74b9ff; }
+        .featured-icon {
+            width: 80px; height: 80px; background: linear-gradient(135deg, var(--orange), var(--red));
+            border: var(--border-sm); border-radius: 18px; display: flex; align-items: center;
+            justify-content: center; font-size: 2.5rem; color: #ffffff; box-shadow: var(--shadow-md);
+            flex-shrink: 0; overflow: hidden; position: relative;
+        }
+        .featured-icon img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .featured-icon i { position: relative; z-index: 1; }
+        .featured-info { flex: 1; min-width: 200px; }
+        .featured-badge {
+            display: inline-block; background: var(--red); color: #ffffff; padding: 0.2rem 0.8rem;
+            border-radius: 50px; font-size: 0.7rem; font-weight: 700; margin-bottom: 0.5rem; border: var(--border-sm);
+        }
+        .featured-info h2 { font-size: 1.5rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.3rem; }
+        .featured-info p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem; }
+        .btn-featured {
+            background: var(--red); color: #ffffff; border: var(--border-sm); padding: 0.7rem 2rem;
+            border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem;
+            transition: var(--transition); text-decoration: none; display: inline-flex;
+            align-items: center; gap: 0.4rem; box-shadow: var(--shadow-sm);
+        }
+        .btn-featured:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-primary); border: var(--border); border-radius: 16px;
+            padding: 1.5rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease;
+        }
+        .footer p { font-weight: 700; font-size: 0.85rem; color: var(--text-primary); }
+        .footer p:last-child { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .footer p:last-child i { color: var(--red); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header { padding: 1rem; }
+            .hero-banner { padding: 1.5rem; }
+            .hero-banner h1 { font-size: 1.8rem; }
+            .apps-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; }
+            .featured-banner { padding: 1.2rem; flex-direction: column; text-align: center; }
+            .search-bar { flex-direction: column; }
+            .modal-dialog { padding: 1.5rem; }
+            .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
+        }
+        @media (max-width: 480px) {
+            .apps-grid { grid-template-columns: 1fr; }
+            .category-tabs { gap: 0.3rem; }
+            .category-tab { font-size: 0.7rem; padding: 0.4rem 0.8rem; }
+            .modal-info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="brand">
+                <div class="brand-logo"><i class="fas fa-bolt"></i></div>
+                <span class="brand-name">STAA<span>.</span>DEV</span>
+            </div>
+            <div class="header-actions">
+                <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <div class="hero-banner">
+            <h1>📱 Download Apps & Games</h1>
+            <p>Tempat download aplikasi & game terbaik, aman, dan gratis!</p>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="🔍 Cari aplikasi atau game...">
+            <button class="search-btn"><i class="fas fa-search"></i> Cari</button>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="category-tabs">
+            <span class="category-tab active">Semua</span>
+            <span class="category-tab"><i class="fas fa-gamepad"></i> Games</span>
+            <span class="category-tab"><i class="fas fa-tools"></i> Tools</span>
+            <span class="category-tab"><i class="fas fa-users"></i> Social</span>
+            <span class="category-tab"><i class="fas fa-play"></i> Media</span>
+            <span class="category-tab"><i class="fas fa-chart-line"></i> Productivity</span>
+            <span class="category-tab"><i class="fas fa-wallet"></i> Finance</span>
+        </div>
+
+        <!-- FEATURED (dibuat otomatis dari appList[0]) -->
+        <div class="featured-banner" id="featuredBanner"></div>
+
+        <!-- APPS GRID (dibuat otomatis) -->
+        <h2 class="section-title"><i class="fas fa-fire"></i> Popular Apps</h2>
+        <div class="apps-grid" id="appsGrid"></div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>© 2026 STAA.DEV — All rights reserved</p>
+            <p>Built with <i class="fas fa-heart"></i> <i class="fa-brands fa-html5"><i class="fa-brands fa-css"></i></i> <i class="fa-brands fa-square-js"></i> <i class="fa-solid fa-file-code"></i> <i class="fa-brands fa-react"></i></p>
+        </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <div class="toast-icon success" id="toastIcon"><i class="fas fa-check"></i></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Download dimulai!</div>
+            <div class="toast-desc" id="toastDesc">File sedang didownload...</div>
+        </div>
+        <span class="toast-close" onclick="hideToast()">✕</span>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="downloadModal">
+        <div class="modal-dialog">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-icon" id="modalIcon">
+                <img src="" alt="" id="modalIconImg" style="display:none;">
+                <i class="fas fa-download" id="modalIconFallback"></i>
+            </div>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-version" id="modalVersion"></div>
+            <div class="modal-info-grid">
+                <div class="modal-info-item"><div class="modal-info-label">Developer</div><div class="modal-info-value" id="modalDev"></div></div>
+                <div class="modal-info-item"><div class="modal-info-label">Rating</div><div class="modal-info-value" id="modalRating"></div></div>
+                <div class="modal-info-item"><div class="modal-info-label">Update</div><div class="modal-info-value" id="modalUpdate"></div></div>
+                <div class="modal-info-item"><div class="modal-info-label">Downloads</div><div class="modal-info-value" id="modalDownloads"></div></div>
+            </div>
+            <a href="#" class="btn-download-modal" id="btnModalDownload" download onclick="handleModalDownloadClick()">
+                <i class="fas fa-download"></i> <span id="btnModalText">Download Sekarang</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ==================== ⚡ APP LIST - TINGGAL TAMBAH/KURANGI DI SINI ⚡ ====================
+        const appList = [
+            {
+                id: 'gbwa',
+                name: 'GB WHATSAPP',
+                iconImg: 'https://i.ibb.co.com/BHMwS5hp/android.webp',
+                iconClass: 'custom',
+                category: 'social',
+                categoryLabel: 'Social • Chat',
+                rating: 4.9,
+                desc: 'GB WhatsApp adalah versi modifikasi dari WhatsApp yang menghadirkan berbagai fitur tambahan yang tidak tersedia di aplikasi resmi. Beberapa fitur populer meliputi kustomisasi tema, pengaturan privasi lebih lengkap, pengiriman file batas besar, anti-hapus pesan, hingga pengunduhan status.',
+                downloads: '10K+',
+                size: '143MB',
+                version: '26.77',
+                developer: 'STAA DEV',
+                update: '2 hari lalu',
+                downloadUrl: 'https://www.mediafire.com/file/4nq85k6svgot4uh/gbwa.apk/',
+                featured: true,
+                badge: '🔥 Popular',
+                badgeIcon: 'fa-fire'
+            }
+        ];
+
+        let currentAppId = null;
+
+        // ==================== RENDER FUNCTIONS ====================
+        function renderAllApps() {
+            const grid = document.getElementById('appsGrid');
+            const featuredEl = document.getElementById('featuredBanner');
+            grid.innerHTML = '';
+            
+            const featuredApp = appList.find(a => a.featured) || appList[0];
+            
+            // Render featured banner
+            if (featuredApp) {
+                featuredEl.innerHTML = `
+                    <div class="featured-icon">
+                        ${featuredApp.iconImg 
+                            ? `<img src="${featuredApp.iconImg}" alt="${featuredApp.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`
+                            : ''}
+                        <i class="fas ${featuredApp.iconFa || 'fa-crown'}" style="${featuredApp.iconImg ? 'display:none;' : ''}"></i>
+                    </div>
+                    <div class="featured-info">
+                        <span class="featured-badge">🔥 Editor's Choice</span>
+                        <h2>${featuredApp.name}</h2>
+                        <p>${featuredApp.desc.substring(0, 100)}...</p>
+                        <a href="${featuredApp.downloadUrl}" class="btn-featured" download onclick="animateDownloadButton(this, '${featuredApp.name}')">
+                            <i class="fas fa-download"></i> Download Sekarang
+                        </a>
+                    </div>
+                `;
+            }
+            
+            // Render app cards
+            appList.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.id = `app-${app.id}`;
+                card.setAttribute('data-category', app.category);
+                card.innerHTML = `
+                    <div class="app-card-header">
+                        <div class="app-icon ${app.iconClass || 'custom'}">
+                            ${app.iconImg 
+                                ? `<img src="${app.iconImg}" alt="${app.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`
+                                : ''}
+                            <i class="fas ${app.iconFa || 'fa-box'}" style="${app.iconImg ? 'display:none;' : ''}"></i>
+                        </div>
+                        <div class="app-info">
+                            <div class="app-name">${app.name}</div>
+                            <div class="app-category">${app.categoryLabel}</div>
+                            <div class="app-rating"><i class="fas fa-star"></i> ${app.rating}</div>
+                        </div>
+                    </div>
+                    <div class="app-card-body">
+                        <p class="app-desc">${app.desc}</p>
+                        <div class="app-meta">
+                            <span>📥 ${app.downloads}</span>
+                            <span>📦 ${app.size}</span>
+                        </div>
+                    </div>
+                    <div class="app-card-footer">
+                        <a href="${app.downloadUrl}" class="btn-download" id="btn-download-${app.id}" download onclick="animateDownloadButton(this, '${app.name}')">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                        <button class="btn-detail" onclick="openDetailModal('${app.id}')" title="Detail">
+                            <i class="fas fa-info"></i>
+                        </button>
+                    </div>
+                `;
+                // Add badge if exists
+                if (app.badge) {
+                    const header = card.querySelector('.app-card-header');
+                    const badge = document.createElement('span');
+                    badge.className = 'card-badge';
+                    badge.style.cssText = 'position:absolute;top:0.8rem;right:0.8rem;background:var(--black);color:#fff;padding:0.3rem 0.8rem;border-radius:50px;font-size:0.7rem;font-weight:700;box-shadow:2px 2px 0 rgba(0,0,0,0.2);display:flex;align-items:center;gap:0.3rem;';
+                    badge.innerHTML = `<i class="fas ${app.badgeIcon || 'fa-star'}"></i> ${app.badge}`;
+                    header.style.position = 'relative';
+                    header.appendChild(badge);
+                }
+                grid.appendChild(card);
+            });
+        }
+
+        // ==================== DOWNLOAD ANIMATION ====================
+        function animateDownloadButton(btn, appName) {
+            btn.classList.add('downloading');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner"></i> Downloading...';
+            showToast('📥 Download dimulai!', appName + ' sedang didownload...', 'success');
+            
+            setTimeout(() => {
+                btn.classList.remove('downloading');
+                btn.classList.add('completed');
+                btn.innerHTML = '<i class="fas fa-check"></i> Terdownload';
+                setTimeout(() => {
+                    btn.classList.remove('completed');
+                    btn.innerHTML = originalHTML;
+                }, 3000);
+            }, 2000);
+        }
+
+        function handleModalDownloadClick() {
+            const app = appList.find(a => a.id === currentAppId);
+            if (!app) return;
+            
+            const btnModal = document.getElementById('btnModalDownload');
+            btnModal.querySelector('#btnModalText').textContent = 'Mendownload...';
+            btnModal.querySelector('i').className = 'fas fa-spinner';
+            btnModal.style.pointerEvents = 'none';
+            btnModal.style.opacity = '0.7';
+            
+            const cardBtn = document.getElementById(`btn-download-${app.id}`);
+            if (cardBtn) {
+                cardBtn.classList.add('downloading');
+                cardBtn.innerHTML = '<i class="fas fa-spinner"></i> Downloading...';
+                setTimeout(() => {
+                    cardBtn.classList.remove('downloading');
+                    cardBtn.classList.add('completed');
+                    cardBtn.innerHTML = '<i class="fas fa-check"></i> Terdownload';
+                    setTimeout(() => {
+                        cardBtn.classList.remove('completed');
+                        cardBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+                    }, 3000);
+                }, 2000);
+            }
+            
+            setTimeout(() => {
+                btnModal.querySelector('#btnModalText').textContent = 'Download Sekarang';
+                btnModal.querySelector('i').className = 'fas fa-download';
+                btnModal.style.pointerEvents = 'auto';
+                btnModal.style.opacity = '1';
+            }, 3000);
+            
+            showToast('📥 Download dimulai!', app.name + ' sedang didownload...', 'success');
+        }
+
+        // ==================== MODAL ====================
+        function openDetailModal(appId) {
+            const app = appList.find(a => a.id === appId);
+            if (!app) return;
+            currentAppId = appId;
+            
+            document.getElementById('modalTitle').textContent = app.name;
+            document.getElementById('modalVersion').textContent = `Versi ${app.version} • ${app.size}`;
+            document.getElementById('modalDev').textContent = app.developer;
+            document.getElementById('modalRating').textContent = `⭐ ${app.rating}/5`;
+            document.getElementById('modalUpdate').textContent = app.update;
+            document.getElementById('modalDownloads').textContent = app.downloads;
+            
+            const iconImg = document.getElementById('modalIconImg');
+            const iconFallback = document.getElementById('modalIconFallback');
+            const modalIcon = document.getElementById('modalIcon');
+            
+            if (app.iconImg) {
+                iconImg.src = app.iconImg;
+                iconImg.style.display = 'block';
+                iconFallback.style.display = 'none';
+            } else {
+                iconImg.style.display = 'none';
+                iconFallback.style.display = 'block';
+                iconFallback.className = `fas ${app.iconFa || 'fa-box'}`;
+            }
+            modalIcon.style.background = app.iconImg ? 'transparent' : `linear-gradient(135deg, var(--red), var(--orange))`;
+            
+            const btnModal = document.getElementById('btnModalDownload');
+            btnModal.href = app.downloadUrl;
+            btnModal.setAttribute('download', '');
+            btnModal.querySelector('#btnModalText').textContent = 'Download Sekarang';
+            btnModal.querySelector('i').className = 'fas fa-download';
+            btnModal.style.pointerEvents = 'auto';
+            btnModal.style.opacity = '1';
+            
+            document.getElementById('downloadModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('downloadModal').classList.remove('show');
+        }
+
+        // ==================== TOAST ====================
+        function showToast(title, desc, type) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastDesc').textContent = desc;
+            const icon = document.getElementById('toastIcon');
+            icon.className = 'toast-icon ' + type;
+            icon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-info"></i>';
+            toast.classList.add('show');
+            setTimeout(hideToast, 3000);
+        }
+
+        function hideToast() {
+            document.getElementById('toast').classList.remove('show');
+        }
+
+        // ==================== THEME ====================
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.getAttribute('data-theme') === 'dark' ? html.removeAttribute('data-theme') : html.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', html.getAttribute('data-theme') || 'light');
+        }
+
+        (function loadTheme() {
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        })();
+
+        // ==================== CATEGORY FILTER ====================
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const category = this.textContent.trim().toLowerCase();
+                document.querySelectorAll('.app-card').forEach(card => {
+                    if (category === 'semua') {
+                        card.style.display = '';
+                    } else {
+                        const cardCat = card.getAttribute('data-category');
+                        const match = cardCat && (
+                            cardCat.includes(category) || 
+                            (category === 'games' && cardCat === 'game') ||
+                            (category === 'social' && cardCat === 'social')
+                        );
+                        card.style.display = match ? '' : 'none';
+                    }
+                });
+            });
+        });
+
+        // ==================== SEARCH ====================
+        document.querySelector('.search-btn').addEventListener('click', function() {
+            const query = document.querySelector('.search-input').value.trim().toLowerCase();
+            if (query) {
+                document.querySelectorAll('.app-card').forEach(card => {
+                    const name = card.querySelector('.app-name')?.textContent.toLowerCase() || '';
+                    const desc = card.querySelector('.app-desc')?.textContent.toLowerCase() || '';
+                    card.style.display = (name.includes(query) || desc.includes(query)) ? '' : 'none';
+                });
+                showToast('🔍 Hasil pencarian', `Mencari: "${query}"`, 'info');
+            }
+        });
+
+        // ==================== MODAL EVENTS ====================
+        document.getElementById('downloadModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ==================== INIT ====================
+        renderAllApps();
+    </script>
+</body>
+</html>
