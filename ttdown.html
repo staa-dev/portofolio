@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAA DEV | TikTok Downloader</title>
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --red: #DA1107;
+            --orange: #E37F06;
+            --green: #049C6E;
+            --red-light: #fde8e7;
+            --orange-light: #fef3e6;
+            --green-light: #e6f7f2;
+            --black: #1a1a2e;
+            --white: #ffffff;
+            --gray-light: #fafafa;
+            --gray: #f0f0f0;
+            --shadow-sm: 3px 3px 0 var(--black);
+            --shadow-md: 5px 5px 0 var(--black);
+            --shadow-lg: 7px 7px 0 var(--black);
+            --border: 3px solid var(--black);
+            --border-sm: 2px solid var(--black);
+            --radius: 10px;
+            --radius-sm: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f0f0f0;
+            --text-primary: #1a1a2e;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --text-muted-light: #aaa;
+            --border-light: rgba(0,0,0,0.08);
+            --card-bg: #ffffff;
+            --body-bg: linear-gradient(135deg, #fde8e7 0%, #fef3e6 50%, #e6f7f2 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #252540;
+            --bg-tertiary: #2a2a45;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #888;
+            --text-muted-light: #777;
+            --border-light: rgba(255,255,255,0.1);
+            --card-bg: #252540;
+            --body-bg: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f1a15 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--body-bg);
+            background-attachment: fixed;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(218, 17, 7, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 90% 30%, rgba(227, 127, 6, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 50% 80%, rgba(4, 156, 110, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        [data-theme="dark"] body::before {
+            opacity: 0.5;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(116, 185, 255, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 90% 30%, rgba(0, 206, 201, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 50% 80%, rgba(4, 156, 110, 0.08) 0%, transparent 40%);
+        }
+
+        [data-theme="dark"] body {
+            background: #111118;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--bg-primary);
+            border: var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 280px;
+            max-width: 400px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-icon {
+            width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.2rem; color: #ffffff; flex-shrink: 0; border: var(--border-sm);
+        }
+        .toast-icon.success { background: var(--green); }
+        .toast-icon.info { background: #0984e3; }
+        .toast-icon.error { background: var(--red); }
+        .toast-content { flex: 1; min-width: 0; }
+        .toast-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); }
+        .toast-desc { font-size: 0.7rem; color: var(--text-secondary); }
+        .toast-close { cursor: pointer; color: var(--text-muted); font-size: 0.8rem; transition: var(--transition); }
+        .toast-close:hover { color: var(--red); }
+
+        /* Download Progress Modal */
+        .download-progress-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 9998; display: none;
+            align-items: center; justify-content: center; backdrop-filter: blur(4px);
+        }
+        .download-progress-overlay.show { display: flex; }
+        .download-progress-card {
+            background: var(--bg-primary); border: var(--border); border-radius: 16px;
+            padding: 2rem; box-shadow: var(--shadow-lg); max-width: 400px; width: 90%;
+            text-align: center; animation: modalPop 0.3s ease;
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .download-progress-icon {
+            font-size: 3rem; color: var(--green); margin-bottom: 0.5rem;
+        }
+        .download-progress-title {
+            font-weight: 900; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.3rem;
+        }
+        .download-progress-filename {
+            font-size: 0.7rem; color: var(--text-muted); margin-bottom: 1rem;
+            word-break: break-all;
+        }
+        .progress-bar-container {
+            width: 100%; height: 10px; background: var(--bg-tertiary);
+            border: var(--border-sm); border-radius: 50px; overflow: hidden; margin-bottom: 0.5rem;
+        }
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, var(--green), var(--orange));
+            border-radius: 50px; width: 0%; transition: width 0.3s ease;
+        }
+        .progress-bar-fill::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(255,255,255,0.2) 8px, rgba(255,255,255,0.2) 16px);
+            animation: progressStripe 0.5s linear infinite;
+        }
+        @keyframes progressStripe {
+            from { background-position: 0 0; }
+            to { background-position: 30px 0; }
+        }
+        .progress-text {
+            display: flex; justify-content: space-between; font-size: 0.7rem;
+            font-weight: 700; color: var(--text-secondary);
+        }
+        .download-complete-icon {
+            font-size: 4rem; color: var(--green); animation: bounceIn 0.5s ease;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Header */
+        .header {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            padding: 1.2rem 1.5rem; background: var(--bg-primary); border: var(--border);
+            border-radius: 16px; box-shadow: var(--shadow-md); margin-bottom: 2rem; gap: 1rem; transition: background 0.3s ease;
+        }
+        .brand { display: flex; align-items: center; gap: 0.8rem; }
+        .brand-logo {
+            width: 45px; height: 45px; background: var(--red); border: var(--border-sm);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            color: #ffffff; font-size: 1.3rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition);
+        }
+        .brand-logo i { font-size: 1.4rem; }
+        .brand-logo:hover { transform: rotate(-6deg) scale(1.08); box-shadow: var(--shadow-md); background: var(--orange); }
+        .brand-name { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); }
+        .brand-name span { color: var(--red); }
+        .header-actions { display: flex; align-items: center; gap: 0.6rem; }
+        .back-btn {
+            background: var(--bg-secondary); border: var(--border-sm); padding: 0.5rem 1.2rem;
+            border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary);
+            font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem;
+            box-shadow: var(--shadow-sm); transition: var(--transition);
+        }
+        .back-btn i { font-size: 0.8rem; }
+        .back-btn:hover { background: var(--orange-light); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        [data-theme="dark"] .back-btn:hover { background: rgba(227, 127, 6, 0.3); color: #f0f0f0; }
+        .theme-toggle-btn {
+            width: 42px; height: 42px; background: var(--card-bg); border: var(--border-sm);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition);
+            font-size: 1.1rem; color: var(--text-primary);
+        }
+        .theme-toggle-btn i { font-size: 1.1rem; }
+        .theme-toggle-btn:hover { transform: rotate(15deg) scale(1.08); box-shadow: var(--shadow-md); }
+        .theme-toggle-btn .fa-sun { display: none; }
+        .theme-toggle-btn .fa-moon { display: inline-block; }
+        [data-theme="dark"] .theme-toggle-btn .fa-sun { display: inline-block; color: #fdcb6e; }
+        [data-theme="dark"] .theme-toggle-btn .fa-moon { display: none; }
+
+        /* Hero */
+        .hero-banner {
+            background: linear-gradient(135deg, #000000 0%, #333333 50%, #111111 100%);
+            border: var(--border); border-radius: 16px; padding: 2.5rem;
+            box-shadow: var(--shadow-lg); margin-bottom: 2rem; text-align: center;
+            color: #ffffff; position: relative; overflow: hidden;
+        }
+        .hero-banner::before {
+            content: ''; position: absolute; top: -30%; right: -10%;
+            width: 200px; height: 200px; background: rgba(254, 44, 85, 0.2); border-radius: 50%;
+        }
+        .hero-banner::after {
+            content: ''; position: absolute; bottom: -20%; left: -5%;
+            width: 150px; height: 150px; background: rgba(0, 242, 234, 0.15); border-radius: 50%;
+        }
+        .hero-banner .tiktok-icon {
+            font-size: 3rem; margin-bottom: 0.5rem; position: relative;
+            text-shadow: 3px 3px 0 rgba(254, 44, 85, 0.5); animation: float 3s ease-in-out infinite;
+        }
+        .hero-banner .tiktok-icon i { font-size: 3rem; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .hero-banner h1 { font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; position: relative; }
+        .hero-banner p { font-size: 1rem; opacity: 0.8; position: relative; }
+
+        /* Main Card */
+        .main-card {
+            background: var(--bg-primary); border: var(--border); border-radius: 16px;
+            padding: 2rem; box-shadow: var(--shadow-lg); margin-bottom: 2rem; transition: background 0.3s ease;
+        }
+
+        /* Input Area */
+        .input-group { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .url-input {
+            flex: 1; min-width: 200px; padding: 0.9rem 1.2rem; background: var(--bg-secondary);
+            border: var(--border); border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+            color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit;
+        }
+        .url-input:focus { box-shadow: var(--shadow-md); border-color: #fe2c55; }
+        .url-input::placeholder { color: var(--text-muted); font-size: 0.8rem; }
+        .paste-btn {
+            background: var(--bg-secondary); color: var(--text-primary); border: var(--border-sm);
+            padding: 0.9rem 1.2rem; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 0.85rem; box-shadow: var(--shadow-sm); transition: var(--transition);
+            display: flex; align-items: center; gap: 0.4rem; white-space: nowrap;
+        }
+        .paste-btn i { font-size: 0.9rem; }
+        .paste-btn:hover { background: var(--orange-light); box-shadow: var(--shadow-md); }
+        .download-btn {
+            background: #fe2c55; color: #ffffff; border: var(--border); padding: 0.9rem 2rem;
+            border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem;
+            box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; gap: 0.4rem;
+        }
+        .download-btn i { font-size: 0.9rem; }
+        .download-btn:hover { background: #e0264a; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .download-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        .download-btn.loading i { animation: spin 1s linear infinite; }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* API Status */
+        .api-status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.8rem; flex-wrap: wrap; }
+        .api-status-dot { width: 8px; height: 8px; border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
+        .api-status-dot.checking { background: #fdcb6e; }
+        .api-status-dot.success { background: var(--green); }
+        .api-status-dot.error { background: var(--red); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .quality-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem; background: var(--green);
+            color: #ffffff; padding: 0.2rem 0.7rem; border-radius: 50px; font-size: 0.65rem;
+            font-weight: 700; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black);
+        }
+        .quality-badge i { font-size: 0.6rem; }
+
+        /* Divider */
+        .divider { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .divider-line { flex: 1; height: 3px; background: var(--border-light); border-radius: 10px; }
+        .divider-text { font-weight: 700; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+
+        /* Info Box */
+        .info-box {
+            background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius);
+            padding: 1.2rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.8rem;
+        }
+        .info-box i { color: #fe2c55; font-size: 1.2rem; margin-top: 0.1rem; }
+        .info-box-content h4 { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 0.3rem; }
+        .info-box-content p { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* Steps */
+        .steps-title { font-weight: 900; font-size: 1rem; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .steps-title i { font-size: 1rem; }
+        .steps-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .step-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0; }
+        .step-number {
+            width: 30px; height: 30px; background: #fe2c55; color: #ffffff; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem;
+            flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black);
+        }
+        .step-text { font-size: 0.82rem; color: var(--text-secondary); font-weight: 600; }
+
+        /* Result Area */
+        .result-area { display: none; margin-top: 1.5rem; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-area.show { display: block; }
+        .result-card {
+            background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius);
+            overflow: hidden; box-shadow: var(--shadow-sm);
+        }
+        .result-preview { width: 100%; position: relative; border-bottom: var(--border-sm); background: #000; }
+        .result-preview img { width: 100%; display: block; max-height: 400px; object-fit: contain; }
+        .result-preview video { width: 100%; max-height: 400px; display: block; }
+        .result-play-overlay {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60px; height: 60px; background: rgba(254, 44, 85, 0.8); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: #ffffff;
+            font-size: 1.5rem; cursor: pointer; border: 3px solid #ffffff; transition: all 0.2s ease;
+        }
+        .result-play-overlay i { font-size: 1.5rem; }
+        .result-play-overlay:hover { background: #fe2c55; transform: translate(-50%, -50%) scale(1.1); }
+        .result-info {
+            padding: 1.2rem; display: flex; flex-wrap: wrap; gap: 0.8rem;
+            align-items: center; justify-content: space-between;
+        }
+        .result-meta { flex: 1; min-width: 150px; }
+        .result-title {
+            font-weight: 900; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.2rem;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .result-author { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .result-stats {
+            display: flex; gap: 1rem; font-size: 0.7rem; color: var(--text-muted);
+            font-weight: 600; margin-top: 0.3rem; flex-wrap: wrap; align-items: center;
+        }
+        .result-stats i { color: #fe2c55; margin-right: 0.2rem; font-size: 0.65rem; }
+        .result-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .btn-download-result {
+            background: var(--green); color: #ffffff; border: var(--border-sm);
+            padding: 0.6rem 1.5rem; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center;
+            gap: 0.4rem; box-shadow: var(--shadow-sm); transition: var(--transition); white-space: nowrap;
+        }
+        .btn-download-result i { font-size: 0.85rem; }
+        .btn-download-result:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .btn-download-audio {
+            background: #fe2c55; color: #ffffff; border: var(--border-sm);
+            padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center;
+            gap: 0.4rem; box-shadow: var(--shadow-sm); transition: var(--transition); white-space: nowrap;
+        }
+        .btn-download-audio i { font-size: 0.85rem; }
+        .btn-download-audio:hover { background: #e0264a; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+        /* Loading Spinner */
+        .loading-spinner { display: none; text-align: center; padding: 2rem; }
+        .loading-spinner.show { display: block; }
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid var(--border-light);
+            border-top-color: #fe2c55; border-radius: 50%; animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        .loading-text { font-weight: 700; font-size: 0.85rem; color: var(--text-secondary); }
+        .loading-detail { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-primary); border: var(--border); border-radius: 16px;
+            padding: 1.5rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease;
+        }
+        .footer p { font-weight: 700; font-size: 0.85rem; color: var(--text-primary); }
+        .footer p:last-child { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .footer p:last-child i { color: var(--red); font-size: 0.7rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header { padding: 1rem; }
+            .hero-banner { padding: 1.5rem; }
+            .hero-banner h1 { font-size: 1.8rem; }
+            .hero-banner .tiktok-icon { font-size: 2.2rem; }
+            .main-card { padding: 1.2rem; }
+            .input-group { flex-direction: column; }
+            .download-btn { justify-content: center; }
+            .paste-btn { justify-content: center; }
+            .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
+            .result-buttons { flex-direction: column; width: 100%; }
+            .result-buttons button { width: 100%; justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .hero-banner h1 { font-size: 1.5rem; }
+            .result-info { flex-direction: column; text-align: center; }
+            .result-stats { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="brand">
+                <div class="brand-logo"><i class="fas fa-bolt"></i></div>
+                <span class="brand-name">STAA<span>.</span>DEV</span>
+            </div>
+            <div class="header-actions">
+                <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <div class="hero-banner">
+            <div class="tiktok-icon"><i class="fab fa-tiktok"></i></div>
+            <h1><i class="fas fa-cloud-download-alt"></i> TikTok Downloader</h1>
+            <p>Download video TikTok HD tanpa watermark • tanpa iklan</p>
+        </div>
+
+        <!-- MAIN CARD -->
+        <div class="main-card">
+            <div class="input-group">
+                <input type="text" class="url-input" id="urlInput" placeholder="🔗 Paste link TikTok di sini...">
+                <button class="paste-btn" onclick="pasteURL()"><i class="fas fa-paste"></i> Paste</button>
+                <button class="download-btn" id="downloadBtn" onclick="fetchVideo()"><i class="fas fa-search"></i> Cari Video</button>
+            </div>
+
+            <div class="api-status" id="apiStatus">
+                <span class="api-status-dot" id="apiDot"></span>
+                <span id="apiStatusText"><i class="fas fa-check-circle"></i> Siap digunakan • Kualitas HD</span>
+            </div>
+
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p class="loading-text" id="loadingText"><i class="fas fa-sync-alt fa-spin"></i> Mencoba API...</p>
+                <p class="loading-detail" id="loadingDetail"></p>
+            </div>
+
+            <div class="result-area" id="resultArea">
+                <div class="result-card">
+                    <div class="result-preview" id="previewContainer">
+                        <img id="thumbnailImg" src="" alt="Thumbnail" style="display:none;">
+                        <video id="videoPreview" controls style="display:none;"></video>
+                        <div class="result-play-overlay" id="playOverlay" onclick="playVideo()" style="display:none;">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="result-info">
+                        <div class="result-meta">
+                            <div class="result-title" id="resultTitle">-</div>
+                            <div class="result-author" id="resultAuthor">-</div>
+                            <div class="result-stats">
+                                <span class="quality-badge"><i class="fas fa-hd"></i> HD</span>
+                                <span><i class="fas fa-heart"></i> <span id="resultLikes">0</span></span>
+                                <span><i class="fas fa-comment"></i> <span id="resultComments">0</span></span>
+                                <span><i class="fas fa-share"></i> <span id="resultShares">0</span></span>
+                                <span><i class="fas fa-eye"></i> <span id="resultViews">0</span></span>
+                            </div>
+                        </div>
+                        <div class="result-buttons">
+                            <button class="btn-download-result" id="btnDownloadVideo" onclick="downloadVideo()">
+                                <i class="fas fa-download"></i> Download Video HD
+                            </button>
+                            <button class="btn-download-audio" id="btnDownloadAudio" onclick="downloadAudio()">
+                                <i class="fas fa-music"></i> Audio MP3
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider">
+                <span class="divider-line"></span>
+                <span class="divider-text"><i class="fas fa-list-ol"></i> Cara Download</span>
+                <span class="divider-line"></span>
+            </div>
+
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <div class="info-box-content">
+                    <h4><i class="fas fa-star"></i> Kualitas HD & Tanpa Iklan</h4>
+                    <p>🚀 TikTok Downloader HD
+
+Download video TikTok dengan kualitas HD, tanpa watermark, tanpa iklan, dan 100% gratis. Proses cepat, tampilan ringan, serta mudah digunakan di semua perangkat. Cukup tempel link TikTok dan unduh videomu dalam hitungan detik!</p>
+                </div>
+            </div>
+
+            <div class="steps-title"><i class="fas fa-tasks"></i> Langkah-langkah:</div>
+            <div class="steps-list">
+                <div class="step-item"><span class="step-number">1</span><span class="step-text">Buka TikTok, cari video yang ingin diunduh</span></div>
+                <div class="step-item"><span class="step-number">2</span><span class="step-text">Klik <strong>Share</strong> lalu pilih <strong>Copy Link</strong></span></div>
+                <div class="step-item"><span class="step-number">3</span><span class="step-text">Paste link di kolom atas, klik <strong>Cari Video</strong></span></div>
+                <div class="step-item"><span class="step-number">4</span><span class="step-text">Klik <strong>Download Video HD</strong>, file langsung tersimpan!</span></div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>© 2026 STAA.DEV — All rights reserved</p>
+                    <p>Built with <i class="fas fa-heart"></i> <i class="fa-brands fa-html5"></i> <i class="fa-brands fa-css"></i> <i class="fa-brands fa-square-js"></i> <i class="fa-brands fa-react"></i></p>
+        </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <div class="toast-icon success" id="toastIcon"><i class="fas fa-check"></i></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Sukses!</div>
+            <div class="toast-desc" id="toastDesc">Video berhasil diambil.</div>
+        </div>
+        <span class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></span>
+    </div>
+
+    <!-- DOWNLOAD PROGRESS MODAL -->
+    <div class="download-progress-overlay" id="downloadProgressOverlay">
+        <div class="download-progress-card">
+            <div class="download-progress-icon" id="progressIcon"><i class="fas fa-cloud-download-alt"></i></div>
+            <div class="download-progress-title" id="progressTitle">Mendownload...</div>
+            <div class="download-progress-filename" id="progressFilename">-</div>
+            <div class="progress-bar-container" id="progressBarContainer">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressPercent">0%</span>
+                <span id="progressSize">0 MB / 0 MB</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== KONFIGURASI DOWNLOAD ====================
+        const DOWNLOAD_PREFIX = 'STAADEV-TIKDOWN';
+
+        // ==================== API LIST ====================
+        const API_LIST = [
+            {
+                name: 'TikWM',
+                url: 'https://www.tikwm.com/api/',
+                method: 'GET',
+                params: (url) => `?url=${encodeURIComponent(url)}&hd=1`,
+                parser: (data) => {
+                    if (data.code === 0 && data.data) {
+                        const d = data.data;
+                        return {
+                            video: d.hdplay || d.play || d.download || d.video,
+                            audio: d.music || d.audio,
+                            thumbnail: d.cover || d.thumbnail,
+                            title: d.title || 'Video TikTok',
+                            author: d.author?.nickname || d.author || 'Unknown',
+                            likes: d.digg_count || d.likes || 0,
+                            comments: d.comment_count || d.comments || 0,
+                            shares: d.share_count || d.shares || 0,
+                            views: d.play_count || d.views || 0
+                        };
+                    }
+                    return null;
+                }
+            },
+            {
+                name: 'Siputzx V2',
+                url: 'https://api.siputzx.my.id/api/d/tiktok/v2',
+                method: 'GET',
+                params: (url) => `?url=${encodeURIComponent(url)}`,
+                parser: (data) => {
+                    if (data.status === true && data.data) {
+                        const d = data.data;
+                        return {
+                            video: d.hdplay || d.play || d.video || d.video_url || d.download_url || d.url,
+                            audio: d.music || d.audio || d.audio_url || d.music_url,
+                            thumbnail: d.cover || d.thumbnail || d.thumb || d.preview,
+                            title: d.title || d.desc || 'Video TikTok',
+                            author: d.author || d.nickname || d.username || 'Unknown',
+                            likes: d.likes || d.like_count || d.digg_count || 0,
+                            comments: d.comments || d.comment_count || 0,
+                            shares: d.shares || d.share_count || 0,
+                            views: d.views || d.play_count || d.view_count || 0
+                        };
+                    }
+                    return null;
+                }
+            },
+            {
+                name: 'Siputzx V1',
+                url: 'https://api.siputzx.my.id/api/d/tiktok',
+                method: 'GET',
+                params: (url) => `?url=${encodeURIComponent(url)}`,
+                parser: (data) => {
+                    if (data.status === true && data.data) {
+                        const d = data.data;
+                        return {
+                            video: d.hdplay || d.play || d.video || d.video_url || d.url,
+                            audio: d.music || d.audio || d.audio_url,
+                            thumbnail: d.cover || d.thumbnail || d.thumb,
+                            title: d.title || d.desc || 'Video TikTok',
+                            author: d.author || d.nickname || d.username || 'Unknown',
+                            likes: d.likes || d.like_count || 0,
+                            comments: d.comments || d.comment_count || 0,
+                            shares: d.shares || d.share_count || 0,
+                            views: d.views || d.play_count || 0
+                        };
+                    }
+                    return null;
+                }
+            },
+            {
+                name: 'TikMate',
+                url: 'https://api.tikmate.app/api/download',
+                method: 'GET',
+                params: (url) => `?url=${encodeURIComponent(url)}`,
+                parser: (data) => {
+                    if (data.success) {
+                        return {
+                            video: data.video?.url || data.download_url || data.url,
+                            audio: data.music?.url || data.audio_url,
+                            thumbnail: data.thumbnail || data.cover || data.thumb,
+                            title: data.title || data.desc || 'Video TikTok',
+                            author: data.author || data.creator || 'Unknown',
+                            likes: data.likes || 0,
+                            comments: data.comments || 0,
+                            shares: data.shares || 0,
+                            views: data.views || 0
+                        };
+                    }
+                    return null;
+                }
+            },
+            {
+                name: 'TikCDN',
+                url: 'https://tikcdn.io/api/download',
+                method: 'GET',
+                params: (url) => `?url=${encodeURIComponent(url)}`,
+                parser: (data) => {
+                    if (data.video_url || data.url || data.download_url) {
+                        return {
+                            video: data.video_url || data.url || data.download_url,
+                            audio: data.audio_url || data.music_url || data.music,
+                            thumbnail: data.thumbnail || data.cover || data.thumb,
+                            title: data.title || data.desc || 'Video TikTok',
+                            author: data.author || data.creator || 'Unknown',
+                            likes: data.likes || 0,
+                            comments: data.comments || 0,
+                            shares: data.shares || 0,
+                            views: data.views || 0
+                        };
+                    }
+                    return null;
+                }
+            },
+            {
+                name: 'SaveTik',
+                url: 'https://savetik.co/api/download',
+                method: 'GET',
+                params: (url) => `?url=${encodeURIComponent(url)}`,
+                parser: (data) => {
+                    if (data.video_url || data.url || data.download) {
+                        return {
+                            video: data.video_url || data.url || data.download,
+                            audio: data.audio_url || data.music_url,
+                            thumbnail: data.thumbnail || data.cover || data.thumb,
+                            title: data.title || data.desc || 'Video TikTok',
+                            author: data.author || data.creator || 'Unknown',
+                            likes: data.likes || 0,
+                            comments: data.comments || 0,
+                            shares: data.shares || 0,
+                            views: data.views || 0
+                        };
+                    }
+                    return null;
+                }
+            }
+        ];
+
+        let currentApiIndex = 0;
+        window._currentVideoData = null;
+
+        // ==================== FUNGSI NAMA FILE ====================
+        function generateFileName(title, author, type) {
+            const now = new Date();
+            const dateStr = now.getFullYear() + 
+                           String(now.getMonth() + 1).padStart(2, '0') + 
+                           String(now.getDate()).padStart(2, '0');
+            
+            const sanitize = (str) => {
+                return (str || 'video')
+                    .replace(/[^a-zA-Z0-9\s\-_]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '')
+                    .substring(0, 40);
+            };
+            
+            const cleanAuthor = sanitize(author || 'tiktok');
+            const cleanTitle = sanitize(title || 'video');
+            const extension = type === 'audio' ? 'mp3' : 'mp4';
+            
+            return `${DOWNLOAD_PREFIX}-${dateStr}-${cleanAuthor}-${cleanTitle}.${extension}`;
+        }
+
+        // ==================== FORCE DOWNLOAD (TANPA REDIRECT) ====================
+        async function forceDownload(url, filename, type) {
+            const overlay = document.getElementById('downloadProgressOverlay');
+            const progressIcon = document.getElementById('progressIcon');
+            const progressTitle = document.getElementById('progressTitle');
+            const progressFilename = document.getElementById('progressFilename');
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressSize = document.getElementById('progressSize');
+            const progressBarContainer = document.getElementById('progressBarContainer');
+
+            // Show progress modal
+            overlay.classList.add('show');
+            progressIcon.innerHTML = '<i class="fas fa-cloud-download-alt"></i>';
+            progressTitle.textContent = type === 'audio' ? 'Mendownload Audio...' : 'Mendownload Video HD...';
+            progressFilename.textContent = filename;
+            progressFill.style.width = '0%';
+            progressPercent.textContent = '0%';
+            progressSize.textContent = 'Menghubungi server...';
+            progressBarContainer.style.display = 'block';
+
+            try {
+                // Fetch file sebagai blob (force download)
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const contentLength = response.headers.get('content-length');
+                const totalSize = contentLength ? parseInt(contentLength) : 0;
+                
+                // Baca sebagai stream untuk progress
+                const reader = response.body.getReader();
+                const chunks = [];
+                let receivedSize = 0;
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    
+                    if (done) break;
+                    
+                    chunks.push(value);
+                    receivedSize += value.length;
+                    
+                    // Update progress
+                    if (totalSize > 0) {
+                        const percent = Math.round((receivedSize / totalSize) * 100);
+                        progressFill.style.width = percent + '%';
+                        progressPercent.textContent = percent + '%';
+                        progressSize.textContent = formatBytes(receivedSize) + ' / ' + formatBytes(totalSize);
+                    } else {
+                        progressFill.style.width = '50%';
+                        progressPercent.textContent = '...';
+                        progressSize.textContent = formatBytes(receivedSize) + ' didownload';
+                    }
+                }
+
+                // Gabungkan chunks jadi blob
+                const blob = new Blob(chunks, { 
+                    type: type === 'audio' ? 'audio/mpeg' : 'video/mp4' 
+                });
+                
+                // Buat URL blob & trigger download
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Cleanup
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+
+                // Show complete
+                progressFill.style.width = '100%';
+                progressPercent.textContent = '100%';
+                progressIcon.innerHTML = '<div class="download-complete-icon">✅</div>';
+                progressTitle.textContent = 'Download Selesai!';
+                progressBarContainer.style.display = 'none';
+                progressSize.textContent = filename + ' tersimpan!';
+
+                showToast('✅ Download berhasil!', filename + ' telah tersimpan.', 'success');
+
+                // Auto close after 2 seconds
+                setTimeout(() => {
+                    overlay.classList.remove('show');
+                }, 2000);
+
+            } catch (error) {
+                console.error('Download error:', error);
+                overlay.classList.remove('show');
+                
+                // Fallback: buka di tab baru
+                showToast('⚠️ Download langsung gagal', 'Membuka di tab baru...', 'info');
+                window.open(url, '_blank');
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        // ==================== DOWNLOAD HANDLERS ====================
+        function downloadVideo() {
+            const data = window._currentVideoData;
+            if (!data || !data.video) {
+                showToast('❌ Tidak ada video', 'Cari video terlebih dahulu.', 'error');
+                return;
+            }
+            const fileName = generateFileName(data.title, data.author, 'video');
+            forceDownload(data.video, fileName, 'video');
+        }
+
+        function downloadAudio() {
+            const data = window._currentVideoData;
+            if (!data || !data.audio) {
+                showToast('❌ Tidak ada audio', 'Audio tidak tersedia untuk video ini.', 'error');
+                return;
+            }
+            const fileName = generateFileName(data.title, data.author, 'audio');
+            forceDownload(data.audio, fileName, 'audio');
+        }
+
+        // ==================== TOAST ====================
+        function showToast(title, desc, type) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastDesc').textContent = desc;
+            const icon = document.getElementById('toastIcon');
+            icon.className = 'toast-icon ' + type;
+            if (type === 'success') icon.innerHTML = '<i class="fas fa-check"></i>';
+            else if (type === 'error') icon.innerHTML = '<i class="fas fa-times"></i>';
+            else icon.innerHTML = '<i class="fas fa-info"></i>';
+            toast.classList.add('show');
+            setTimeout(hideToast, 5000);
+        }
+
+        function hideToast() {
+            document.getElementById('toast').classList.remove('show');
+        }
+
+        // ==================== API STATUS ====================
+        function setApiStatus(status, text) {
+            const dot = document.getElementById('apiDot');
+            const statusText = document.getElementById('apiStatusText');
+            dot.className = 'api-status-dot ' + status;
+            statusText.innerHTML = text;
+        }
+
+        // ==================== PASTE URL ====================
+        async function pasteURL() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('urlInput').value = text;
+                if (text.includes('tiktok.com') || text.includes('vm.tiktok')) {
+                    showToast('📋 Link dipaste!', 'Link TikTok berhasil ditempel.', 'info');
+                } else {
+                    showToast('⚠️ Link tidak dikenal', 'Pastikan link yang dipaste adalah link TikTok.', 'info');
+                }
+            } catch (err) {
+                showToast('❌ Gagal paste', 'Silakan paste manual dengan Ctrl+V', 'error');
+            }
+        }
+
+        // ==================== FETCH VIDEO ====================
+        async function fetchVideo() {
+            const url = document.getElementById('urlInput').value.trim();
+            const downloadBtn = document.getElementById('downloadBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const resultArea = document.getElementById('resultArea');
+            const loadingText = document.getElementById('loadingText');
+            const loadingDetail = document.getElementById('loadingDetail');
+
+            if (!url) {
+                showToast('❌ Link kosong!', 'Masukkan link TikTok terlebih dahulu.', 'error');
+                return;
+            }
+
+            if (!url.includes('tiktok.com') && !url.includes('vm.tiktok')) {
+                showToast('❌ Link tidak valid', 'Pastikan link yang dimasukkan adalah link TikTok.', 'error');
+                return;
+            }
+
+            downloadBtn.disabled = true;
+            downloadBtn.classList.add('loading');
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mencari...';
+            loadingSpinner.classList.add('show');
+            resultArea.classList.remove('show');
+            setApiStatus('checking', '<i class="fas fa-search"></i> Mencari server HD...');
+
+            let videoData = null;
+            let successApi = '';
+
+            for (let i = 0; i < API_LIST.length; i++) {
+                const api = API_LIST[i];
+                currentApiIndex = i;
+                
+                loadingText.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> Mencoba API ${i + 1}/${API_LIST.length}: ${api.name} (HD)...`;
+                loadingDetail.textContent = 'Menghubungi server...';
+                setApiStatus('checking', `<i class="fas fa-spinner fa-spin"></i> Mencoba: ${api.name} (HD)...`);
+
+                try {
+                    const apiUrl = api.url + api.params(url);
+                    const fetchOptions = { method: api.method, headers: api.headers || {} };
+                    const response = await fetch(apiUrl, fetchOptions);
+                    
+                    if (!response.ok) {
+                        loadingDetail.textContent = `${api.name} gagal (HTTP ${response.status})`;
+                        continue;
+                    }
+                    
+                    const data = await response.json();
+                    const parsed = api.parser(data);
+                    
+                    if (parsed && parsed.video) {
+                        videoData = parsed;
+                        successApi = api.name;
+                        break;
+                    } else {
+                        loadingDetail.textContent = `${api.name}: data tidak valid`;
+                    }
+                } catch (error) {
+                    loadingDetail.textContent = `${api.name} gagal, mencoba server lain...`;
+                    continue;
+                }
+            }
+
+            downloadBtn.disabled = false;
+            downloadBtn.classList.remove('loading');
+            downloadBtn.innerHTML = '<i class="fas fa-search"></i> Cari Video';
+            loadingSpinner.classList.remove('show');
+
+            if (videoData && videoData.video) {
+                window._currentVideoData = videoData;
+                displayResult(videoData);
+                setApiStatus('success', `<i class="fas fa-check-circle"></i> ✅ HD via ${successApi}`);
+                showToast('✅ Video HD ditemukan!', `Server: ${successApi} • Klik Download Video HD`, 'success');
+            } else {
+                setApiStatus('error', '<i class="fas fa-times-circle"></i> Semua server gagal');
+                showToast('❌ Gagal mengambil video', 'Semua server API sedang tidak tersedia. Coba lagi nanti.', 'error');
+            }
+        }
+
+        // ==================== DISPLAY RESULT ====================
+        function displayResult(data) {
+            const resultArea = document.getElementById('resultArea');
+            const thumbnailImg = document.getElementById('thumbnailImg');
+            const videoPreview = document.getElementById('videoPreview');
+            const playOverlay = document.getElementById('playOverlay');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultAuthor = document.getElementById('resultAuthor');
+            const resultLikes = document.getElementById('resultLikes');
+            const resultComments = document.getElementById('resultComments');
+            const resultShares = document.getElementById('resultShares');
+            const resultViews = document.getElementById('resultViews');
+
+            thumbnailImg.style.display = 'none';
+            videoPreview.style.display = 'none';
+            playOverlay.style.display = 'none';
+
+            if (data.thumbnail) {
+                thumbnailImg.src = data.thumbnail;
+                thumbnailImg.style.display = 'block';
+                playOverlay.style.display = 'flex';
+            }
+
+            if (data.video) {
+                videoPreview.src = data.video;
+            }
+
+            resultTitle.textContent = data.title || 'Video TikTok';
+            resultAuthor.textContent = '@' + (data.author || 'unknown');
+            resultLikes.textContent = formatNumber(data.likes);
+            resultComments.textContent = formatNumber(data.comments);
+            resultShares.textContent = formatNumber(data.shares);
+            resultViews.textContent = formatNumber(data.views);
+
+            resultArea.classList.add('show');
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function playVideo() {
+            const thumbnailImg = document.getElementById('thumbnailImg');
+            const videoPreview = document.getElementById('videoPreview');
+            const playOverlay = document.getElementById('playOverlay');
+            thumbnailImg.style.display = 'none';
+            playOverlay.style.display = 'none';
+            videoPreview.style.display = 'block';
+            videoPreview.play();
+        }
+
+        function formatNumber(num) {
+            if (!num) return '0';
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        // ==================== ENTER KEY ====================
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') fetchVideo();
+        });
+
+        // ==================== CLOSE PROGRESS OVERLAY ====================
+        document.getElementById('downloadProgressOverlay').addEventListener('click', function(e) {
+            if (e.target === this && document.getElementById('progressTitle').textContent === 'Download Selesai!') {
+                this.classList.remove('show');
+            }
+        });
+
+        // ==================== THEME ====================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        (function loadTheme() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+</body>
+</html>
