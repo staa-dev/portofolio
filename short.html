@@ -10,13 +10,8 @@
             --red: #DA1107;
             --orange: #E37F06;
             --green: #049C6E;
-            --red-light: #fde8e7;
-            --orange-light: #fef3e6;
-            --green-light: #e6f7f2;
             --black: #1a1a2e;
             --white: #ffffff;
-            --gray-light: #fafafa;
-            --gray: #f0f0f0;
             --shadow-sm: 3px 3px 0 var(--black);
             --shadow-md: 5px 5px 0 var(--black);
             --shadow-lg: 7px 7px 0 var(--black);
@@ -66,10 +61,7 @@
 
         [data-theme="dark"] body { background: #111118; }
 
-        .container { 
-            width: 100%; max-width: 750px; margin: 0 auto; position: relative; z-index: 1;
-            display: flex; flex-direction: column; gap: 1.5rem;
-        }
+        .container { width: 100%; max-width: 750px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.5rem; }
 
         /* Toast */
         .toast {
@@ -123,60 +115,29 @@
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
         .hero-banner h1 { font-size: 2rem; font-weight: 900; margin-bottom: 0.3rem; position: relative; }
         .hero-banner p { font-size: 0.9rem; opacity: 0.85; position: relative; }
-        .hero-domain { 
-            display: inline-block; background: rgba(255,255,255,0.2); padding: 0.3rem 1rem; 
-            border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-top: 0.5rem;
-            border: 1px solid rgba(255,255,255,0.3); position: relative;
-        }
+        .hero-domain { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-top: 0.5rem; border: 1px solid rgba(255,255,255,0.3); position: relative; }
 
         /* Main Card */
-        .main-card { 
-            background: var(--bg-primary); border: var(--border); border-radius: 16px; 
-            padding: 1.5rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; 
-        }
+        .main-card { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; }
         .section-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; }
 
         /* Input */
         .input-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
-        .url-input { 
-            flex: 1; padding: 0.8rem 1rem; background: var(--bg-secondary); 
-            border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.85rem; 
-            color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); 
-            transition: var(--transition); font-family: inherit; min-width: 0;
-        }
+        .url-input { flex: 1; padding: 0.8rem 1rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.85rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; min-width: 0; }
         .url-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
         .url-input::placeholder { color: var(--text-muted); font-size: 0.78rem; }
-        .btn-paste { 
-            width: 42px; height: 42px; flex-shrink: 0; background: var(--bg-secondary); 
-            border: var(--border-sm); border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; cursor: pointer; font-size: 1rem; color: var(--text-primary); 
-            box-shadow: var(--shadow-sm); transition: var(--transition); 
-        }
+        .btn-paste { width: 42px; height: 42px; flex-shrink: 0; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: var(--transition); }
         .btn-paste:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); }
 
         /* Alias */
         .alias-row { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 1rem; }
-        .alias-prefix { 
-            font-weight: 700; font-size: 0.75rem; color: var(--text-muted); 
-            background: var(--bg-secondary); padding: 0.6rem 0.8rem; border-radius: 50px;
-            border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm);
-        }
-        .alias-input { 
-            flex: 1; padding: 0.6rem 0.8rem; background: var(--bg-secondary); 
-            border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.8rem; 
-            color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); 
-            transition: var(--transition); font-family: inherit;
-        }
+        .alias-prefix { font-weight: 700; font-size: 0.75rem; color: var(--text-muted); background: var(--bg-secondary); padding: 0.6rem 0.8rem; border-radius: 50px; border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm); }
+        .alias-input { flex: 1; padding: 0.6rem 0.8rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.8rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; }
         .alias-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
         .alias-input::placeholder { color: var(--text-muted); font-size: 0.7rem; }
 
         /* Buttons */
-        .btn-shorten { 
-            width: 100%; padding: 0.8rem; background: var(--green); color: #ffffff; 
-            border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; 
-            font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: var(--transition); 
-            display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: inherit;
-        }
+        .btn-shorten { width: 100%; padding: 0.8rem; background: var(--green); color: #ffffff; border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: inherit; }
         .btn-shorten:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
         .btn-shorten:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
         .btn-shorten.loading i { animation: spin 1s linear infinite; }
@@ -186,68 +147,58 @@
         .result-area { display: none; margin-top: 1rem; animation: fadeInUp 0.3s ease; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .result-area.show { display: block; }
-        .result-card { 
-            background: var(--green-light); border: var(--border-sm); border-radius: var(--radius); 
-            padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; box-shadow: var(--shadow-sm);
-        }
+        .result-card { background: var(--green-light); border: var(--border-sm); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; box-shadow: var(--shadow-sm); }
         [data-theme="dark"] .result-card { background: rgba(4, 156, 110, 0.15); border-color: var(--green); }
-        .result-icon { 
-            width: 40px; height: 40px; background: var(--green); border-radius: 10px; 
-            display: flex; align-items: center; justify-content: center; color: #fff; 
-            font-size: 1rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black);
-        }
+        .result-icon { width: 40px; height: 40px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); }
         .result-info { flex: 1; min-width: 0; }
         .result-short { font-weight: 900; font-size: 0.9rem; color: var(--green); word-break: break-all; }
         .result-original { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .result-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
-        .btn-copy-sm { 
-            width: 36px; height: 36px; background: var(--green); border: var(--border-sm); 
-            border-radius: 8px; display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; color: #fff; font-size: 0.85rem; transition: var(--transition); 
-            box-shadow: 2px 2px 0 var(--black);
-        }
+        .btn-copy-sm { width: 36px; height: 36px; background: var(--green); border: var(--border-sm); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 0.85rem; transition: var(--transition); box-shadow: 2px 2px 0 var(--black); }
         .btn-copy-sm:hover { background: var(--orange); transform: translateY(-2px); }
         .btn-copy-sm.copied { background: #1a1a2e; }
 
         /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
-        .stat-item { 
-            background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); 
-            padding: 0.8rem; text-align: center; box-shadow: var(--shadow-sm);
-        }
+        .stat-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.8rem; text-align: center; box-shadow: var(--shadow-sm); }
         .stat-value { font-weight: 900; font-size: 1.5rem; color: var(--green); }
         .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* History */
         .history-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 400px; overflow-y: auto; }
-        .history-item { 
-            background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); 
-            padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; 
-            transition: var(--transition); box-shadow: var(--shadow-sm);
-        }
+        .history-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; transition: var(--transition); box-shadow: var(--shadow-sm); }
         .history-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .history-icon { 
-            width: 36px; height: 36px; background: var(--bg-tertiary); border-radius: 8px; 
-            display: flex; align-items: center; justify-content: center; font-size: 0.9rem; 
-            color: var(--green); flex-shrink: 0; border: 1.5px solid var(--text-primary);
-        }
+        .history-icon { width: 36px; height: 36px; background: var(--bg-tertiary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--green); flex-shrink: 0; border: 1.5px solid var(--text-primary); }
         .history-info { flex: 1; min-width: 0; }
         .history-short { font-weight: 700; font-size: 0.8rem; color: var(--green); cursor: pointer; word-break: break-all; }
         .history-short:hover { text-decoration: underline; }
         .history-original { font-size: 0.65rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .history-time { font-size: 0.6rem; color: var(--text-muted); }
         .history-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
-        .btn-icon-xs { 
-            width: 30px; height: 30px; background: var(--bg-tertiary); border: 1.5px solid var(--text-primary); 
-            border-radius: 6px; display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; font-size: 0.7rem; color: var(--text-primary); transition: var(--transition); 
-        }
+        .btn-icon-xs { width: 30px; height: 30px; background: var(--bg-tertiary); border: 1.5px solid var(--text-primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; color: var(--text-primary); transition: var(--transition); }
         .btn-icon-xs:hover { background: var(--green); color: #fff; border-color: var(--green); }
         .btn-icon-xs.delete:hover { background: var(--red); border-color: var(--red); color: #fff; }
 
         .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); }
         .empty-state i { font-size: 3rem; color: var(--border-light); margin-bottom: 0.5rem; }
         .empty-state p { font-size: 0.8rem; }
+
+        /* Redirect Page */
+        .redirect-page {
+            display: none;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: var(--bg-primary);
+            border: var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+        .redirect-page.show { display: block; }
+        .redirect-icon { font-size: 4rem; color: var(--green); animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .redirect-title { font-weight: 900; font-size: 1.3rem; margin: 1rem 0 0.5rem; color: var(--text-primary); }
+        .redirect-url { font-size: 0.85rem; color: var(--text-muted); word-break: break-all; }
+        .redirect-countdown { font-weight: 900; font-size: 2rem; color: var(--green); margin: 1rem 0; }
 
         /* Footer */
         .footer { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease; }
@@ -259,7 +210,6 @@
             .container { gap: 1rem; }
             .hero-banner { padding: 1.5rem; }
             .hero-banner h1 { font-size: 1.6rem; }
-            .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
         }
     </style>
@@ -282,81 +232,93 @@
             </div>
         </header>
 
-        <!-- HERO -->
-        <div class="hero-banner">
-            <div class="hero-icon"><i class="fas fa-link"></i></div>
-            <h1>Short URL</h1>
-            <p>Pendekin link panjang jadi lebih simpel & mudah diingat</p>
-            <div class="hero-domain"><i class="fas fa-globe"></i> <span id="domainDisplay">-</span></div>
-        </div>
-
-        <!-- MAIN CARD -->
-        <div class="main-card">
-            <div class="section-title"><i class="fas fa-magic"></i> Buat Short URL</div>
-
-            <div class="input-row">
-                <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang di sini...">
-                <button class="btn-paste" onclick="pasteURL()" title="Paste"><i class="fas fa-paste"></i></button>
-            </div>
-
-            <div class="alias-row">
-                <span class="alias-prefix" id="aliasPrefix">-/</span>
-                <input type="text" class="alias-input" id="customAlias" placeholder="custom-alias (opsional)">
-            </div>
-
-            <button class="btn-shorten" id="shortenBtn" onclick="shortenURL()">
-                <i class="fas fa-scissors"></i> Pendekin Sekarang
+        <!-- REDIRECT PAGE (Muncul saat ada short code di URL) -->
+        <div class="redirect-page" id="redirectPage">
+            <div class="redirect-icon"><i class="fas fa-rocket"></i></div>
+            <div class="redirect-title">Mengalihkan...</div>
+            <div class="redirect-url" id="redirectUrl">-</div>
+            <div class="redirect-countdown" id="countdown">3</div>
+            <p style="color:var(--text-muted);font-size:0.8rem;">detik lagi...</p>
+            <button class="btn-shorten" onclick="cancelRedirect()" style="margin-top:1rem;background:var(--orange);">
+                <i class="fas fa-times"></i> Batal & Buat Short URL
             </button>
+        </div>
 
-            <div class="result-area" id="resultArea">
-                <div class="result-card">
-                    <div class="result-icon"><i class="fas fa-check"></i></div>
-                    <div class="result-info">
-                        <div class="result-short" id="resultShort">-</div>
-                        <div class="result-original" id="resultOriginal">-</div>
-                    </div>
-                    <div class="result-actions">
-                        <button class="btn-copy-sm" onclick="copyShortURL()" title="Copy"><i class="fas fa-copy"></i></button>
-                        <button class="btn-copy-sm" onclick="openShortURL()" title="Buka" style="background:#0984e3;"><i class="fas fa-external-link-alt"></i></button>
+        <!-- MAIN FORM (Disembunyikan saat redirect) -->
+        <div id="mainForm">
+            <!-- HERO -->
+            <div class="hero-banner">
+                <div class="hero-icon"><i class="fas fa-link"></i></div>
+                <h1>Short URL</h1>
+                <p>Pendekin link panjang jadi lebih simpel & mudah diingat</p>
+                <div class="hero-domain"><i class="fas fa-globe"></i> <span id="domainDisplay">-</span></div>
+            </div>
+
+            <!-- MAIN CARD -->
+            <div class="main-card">
+                <div class="section-title"><i class="fas fa-magic"></i> Buat Short URL</div>
+
+                <div class="input-row">
+                    <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang di sini...">
+                    <button class="btn-paste" onclick="pasteURL()" title="Paste"><i class="fas fa-paste"></i></button>
+                </div>
+
+                <div class="alias-row">
+                    <span class="alias-prefix" id="aliasPrefix">-/</span>
+                    <input type="text" class="alias-input" id="customAlias" placeholder="custom-alias (opsional)">
+                </div>
+
+                <button class="btn-shorten" id="shortenBtn" onclick="shortenURL()">
+                    <i class="fas fa-scissors"></i> Pendekin Sekarang
+                </button>
+
+                <div class="result-area" id="resultArea">
+                    <div class="result-card">
+                        <div class="result-icon"><i class="fas fa-check"></i></div>
+                        <div class="result-info">
+                            <div class="result-short" id="resultShort">-</div>
+                            <div class="result-original" id="resultOriginal">-</div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn-copy-sm" onclick="copyShortURL()" title="Copy"><i class="fas fa-copy"></i></button>
+                            <button class="btn-copy-sm" onclick="openShortURL()" title="Buka" style="background:#0984e3;"><i class="fas fa-external-link-alt"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- STATS -->
-        <div class="main-card">
-            <div class="section-title"><i class="fas fa-chart-bar"></i> Statistik</div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalLinks">0</div>
-                    <div class="stat-label">Total Link</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="todayLinks">0</div>
-                    <div class="stat-label">Hari Ini</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalClicks">0</div>
-                    <div class="stat-label">Total Klik</div>
+            <!-- STATS -->
+            <div class="main-card">
+                <div class="section-title"><i class="fas fa-chart-bar"></i> Statistik</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalLinks">0</div>
+                        <div class="stat-label">Total Link</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="todayLinks">0</div>
+                        <div class="stat-label">Hari Ini</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalClicks">0</div>
+                        <div class="stat-label">Total Klik</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- HISTORY -->
-        <div class="main-card">
-            <div class="section-title"><i class="fas fa-history"></i> Riwayat Short URL</div>
-            <div class="history-list" id="historyList">
-                <div class="empty-state">
-                    <i class="fas fa-inbox"></i>
-                    <p>Belum ada short URL yang dibuat</p>
+            <!-- HISTORY -->
+            <div class="main-card">
+                <div class="section-title"><i class="fas fa-history"></i> Riwayat Short URL</div>
+                <div class="history-list" id="historyList">
+                    <div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada short URL yang dibuat</p></div>
                 </div>
             </div>
         </div>
 
         <!-- FOOTER -->
-        <footer class="footer">
+        <footer class="footer" id="mainFooter">
             <p>© 2026 STAA.DEV — All rights reserved</p>
-            <p>Domain: <strong id="footerDomain">-</strong> • Built with <i class="fas fa-heart" style="color:var(--red);"></i></p>
+            <p>Domain: <strong id="footerDomain">-</strong></p>
         </footer>
     </div>
 
@@ -371,25 +333,21 @@
     </div>
 
     <script>
-        // ==================== KONFIGURASI DOMAIN ====================
-        // DOMAIN OTOMATIS: Deteksi dari URL halaman ini
-        const GITHUB_USER = window.location.pathname.split('/')[1] || 'username';
-        const GITHUB_REPO = window.location.pathname.split('/')[2] || 'repo';
-        const BASE_DOMAIN = window.location.origin;
-        const SHORT_DOMAIN = `${BASE_DOMAIN}/#/`; // Format: https://username.github.io/repo/#/kode
+        // ==================== KONFIGURASI ====================
+        const BASE_DOMAIN = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+        const SHORT_PAGE = BASE_DOMAIN + '/short.html?r=';
         
-        // Update semua tampilan domain
-        document.getElementById('domainDisplay').textContent = BASE_DOMAIN.replace('https://', '') + '/#/';
-        document.getElementById('aliasPrefix').textContent = BASE_DOMAIN.replace('https://', '') + '/#/';
+        document.getElementById('domainDisplay').textContent = BASE_DOMAIN.replace('https://', '') + '/short.html?r=';
+        document.getElementById('aliasPrefix').textContent = BASE_DOMAIN.replace('https://', '') + '/short.html?r=';
         document.getElementById('footerDomain').textContent = BASE_DOMAIN.replace('https://', '');
 
-        // ==================== STORAGE ====================
         const STORAGE_KEY = 'staa_short_links';
         const CLICKS_KEY = 'staa_short_clicks';
         
         let linkData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
         let clickCounts = JSON.parse(localStorage.getItem(CLICKS_KEY) || '{}');
         let currentShortURL = '';
+        let redirectTimer = null;
 
         // ==================== TOAST ====================
         function showToast(title, desc, type) {
@@ -419,9 +377,7 @@
         function generateShortCode(length = 5) {
             const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
+            for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
             return result;
         }
 
@@ -429,7 +385,6 @@
         function shortenURL() {
             const longUrl = document.getElementById('longUrl').value.trim();
             const customAlias = document.getElementById('customAlias').value.trim();
-            const btn = document.getElementById('shortenBtn');
             const resultArea = document.getElementById('resultArea');
 
             if (!longUrl) { showToast('❌ URL kosong!', 'Masukkan URL yang ingin dipendekkan.', 'error'); return; }
@@ -450,23 +405,13 @@
                 }
                 shortCode = customAlias;
             } else {
-                do {
-                    shortCode = generateShortCode();
-                } while (linkData[shortCode]);
+                do { shortCode = generateShortCode(); } while (linkData[shortCode]);
             }
 
-            // Simpan mapping
-            linkData[shortCode] = {
-                url: longUrl,
-                createdAt: new Date().toISOString(),
-                clicks: 0
-            };
+            linkData[shortCode] = { url: longUrl, createdAt: new Date().toISOString(), clicks: 0 };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
 
-            // Buat short URL
-            currentShortURL = SHORT_DOMAIN + shortCode;
-
-            // Tampilkan hasil
+            currentShortURL = SHORT_PAGE + shortCode;
             document.getElementById('resultShort').textContent = currentShortURL;
             document.getElementById('resultOriginal').textContent = longUrl;
             resultArea.classList.add('show');
@@ -493,27 +438,65 @@
         // ==================== OPEN ====================
         function openShortURL() {
             if (!currentShortURL) return;
-            // Track click
-            const shortCode = currentShortURL.split('/#/')[1];
+            const shortCode = currentShortURL.split('?r=')[1];
             if (linkData[shortCode]) {
                 linkData[shortCode].clicks = (linkData[shortCode].clicks || 0) + 1;
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
             }
             clickCounts.total = (clickCounts.total || 0) + 1;
             localStorage.setItem(CLICKS_KEY, JSON.stringify(clickCounts));
-            
             window.open(currentShortURL, '_blank');
             updateStats();
             renderHistory();
         }
 
-        // ==================== COPY HISTORY ====================
+        // ==================== HANDLE REDIRECT ====================
+        function handleRedirect() {
+            const params = new URLSearchParams(window.location.search);
+            const shortCode = params.get('r');
+            
+            if (shortCode && linkData[shortCode]) {
+                // Track click
+                linkData[shortCode].clicks = (linkData[shortCode].clicks || 0) + 1;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
+                clickCounts.total = (clickCounts.total || 0) + 1;
+                localStorage.setItem(CLICKS_KEY, JSON.stringify(clickCounts));
+                
+                // Show redirect page
+                document.getElementById('mainForm').style.display = 'none';
+                document.getElementById('mainFooter').style.display = 'none';
+                document.getElementById('redirectPage').classList.add('show');
+                document.getElementById('redirectUrl').textContent = linkData[shortCode].url;
+                
+                // Countdown
+                let count = 3;
+                document.getElementById('countdown').textContent = count;
+                redirectTimer = setInterval(() => {
+                    count--;
+                    document.getElementById('countdown').textContent = count;
+                    if (count <= 0) {
+                        clearInterval(redirectTimer);
+                        window.location.href = linkData[shortCode].url;
+                    }
+                }, 1000);
+            }
+        }
+
+        function cancelRedirect() {
+            if (redirectTimer) clearInterval(redirectTimer);
+            document.getElementById('mainForm').style.display = '';
+            document.getElementById('mainFooter').style.display = '';
+            document.getElementById('redirectPage').classList.remove('show');
+            // Clear URL params
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // ==================== HISTORY ====================
         function copyHistoryURL(code) {
-            const url = SHORT_DOMAIN + code;
+            const url = SHORT_PAGE + code;
             navigator.clipboard.writeText(url).then(() => showToast('📋 Tersalin!', url, 'success'));
         }
 
-        // ==================== DELETE ====================
         function deleteHistory(code) {
             delete linkData[code];
             localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
@@ -522,7 +505,6 @@
             showToast('🗑️ Dihapus', 'Short URL dihapus dari riwayat.', 'info');
         }
 
-        // ==================== RENDER HISTORY ====================
         function renderHistory() {
             const historyList = document.getElementById('historyList');
             const entries = Object.entries(linkData).sort((a, b) => new Date(b[1].createdAt) - new Date(a[1].createdAt));
@@ -535,51 +517,30 @@
             historyList.innerHTML = entries.map(([code, data]) => {
                 const date = new Date(data.createdAt);
                 const timeStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-                const shortURL = SHORT_DOMAIN + code;
-                
+                const shortURL = SHORT_PAGE + code;
                 return `
                     <div class="history-item">
                         <div class="history-icon"><i class="fas fa-link"></i></div>
                         <div class="history-info">
-                            <div class="history-short" onclick="window.open('${shortURL}', '_blank')" title="Buka link">${shortURL}</div>
+                            <div class="history-short" onclick="window.open('${shortURL}', '_blank')">${shortURL}</div>
                             <div class="history-original" title="${data.url}">${data.url}</div>
                             <div class="history-time">🕐 ${timeStr} • 👁 ${data.clicks || 0} klik</div>
                         </div>
                         <div class="history-actions">
-                            <button class="btn-icon-xs" onclick="copyHistoryURL('${code}')" title="Copy"><i class="fas fa-copy"></i></button>
-                            <button class="btn-icon-xs delete" onclick="deleteHistory('${code}')" title="Hapus"><i class="fas fa-trash"></i></button>
+                            <button class="btn-icon-xs" onclick="copyHistoryURL('${code}')"><i class="fas fa-copy"></i></button>
+                            <button class="btn-icon-xs delete" onclick="deleteHistory('${code}')"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // ==================== UPDATE STATS ====================
         function updateStats() {
             const entries = Object.entries(linkData);
             document.getElementById('totalLinks').textContent = entries.length;
-            
             const today = new Date().toDateString();
-            const todayLinks = entries.filter(([_, data]) => new Date(data.createdAt).toDateString() === today).length;
-            document.getElementById('todayLinks').textContent = todayLinks;
-            
+            document.getElementById('todayLinks').textContent = entries.filter(([_, d]) => new Date(d.createdAt).toDateString() === today).length;
             document.getElementById('totalClicks').textContent = clickCounts.total || 0;
-        }
-
-        // ==================== HANDLE REDIRECT (untuk 404.html) ====================
-        // Cek apakah ada hash redirect
-        if (window.location.hash && window.location.hash.startsWith('#/')) {
-            const shortCode = window.location.hash.replace('#/', '');
-            if (linkData[shortCode]) {
-                // Track click
-                linkData[shortCode].clicks = (linkData[shortCode].clicks || 0) + 1;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
-                clickCounts.total = (clickCounts.total || 0) + 1;
-                localStorage.setItem(CLICKS_KEY, JSON.stringify(clickCounts));
-                
-                // Redirect ke URL asli
-                window.location.href = linkData[shortCode].url;
-            }
         }
 
         // ==================== ENTER KEY ====================
@@ -597,6 +558,7 @@
         // ==================== INIT ====================
         updateStats();
         renderHistory();
+        handleRedirect();
     </script>
 </body>
 </html>
