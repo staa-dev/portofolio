@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        // Ambil path dari URL yang tidak ditemukan
+        const path = window.location.pathname;
+        const repoName = path.split('/')[1] || '';
+        
+        // Ambil short code dari URL
+        // Format: https://username.github.io/repo/kode123
+        const parts = path.split('/').filter(p => p);
+        
+        // Cari short code (setelah nama repo)
+        let shortCode = '';
+        if (parts.length >= 2) {
+            shortCode = parts[parts.length - 1];
+        }
+        
+        if (shortCode && shortCode !== '404.html' && shortCode !== 'index.html') {
+            // Redirect ke halaman utama dengan hash
+            window.location.href = '/' + repoName + '/short.html#/' + shortCode;
+        } else {
+            // Tidak ada short code, redirect ke halaman utama
+            window.location.href = '/' + repoName + '/short.html';
+        }
+    </script>
+</head>
+<body>
+    <p>Redirecting...</p>
+</body>
+</html>

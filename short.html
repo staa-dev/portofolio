@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAA.DEV | Short URL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --red: #DA1107;
+            --orange: #E37F06;
+            --green: #049C6E;
+            --red-light: #fde8e7;
+            --orange-light: #fef3e6;
+            --green-light: #e6f7f2;
+            --black: #1a1a2e;
+            --white: #ffffff;
+            --gray-light: #fafafa;
+            --gray: #f0f0f0;
+            --shadow-sm: 3px 3px 0 var(--black);
+            --shadow-md: 5px 5px 0 var(--black);
+            --shadow-lg: 7px 7px 0 var(--black);
+            --border: 3px solid var(--black);
+            --border-sm: 2px solid var(--black);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f0f0f0;
+            --text-primary: #1a1a2e;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --border-light: rgba(0,0,0,0.08);
+            --card-bg: #ffffff;
+            --body-bg: linear-gradient(135deg, #fde8e7 0%, #fef3e6 50%, #e6f7f2 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #252540;
+            --bg-tertiary: #2a2a45;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #888;
+            --border-light: rgba(255,255,255,0.1);
+            --card-bg: #252540;
+            --body-bg: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f1a15 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--body-bg);
+            background-attachment: fixed;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        [data-theme="dark"] body { background: #111118; }
+
+        .container { 
+            width: 100%; max-width: 750px; margin: 0 auto; position: relative; z-index: 1;
+            display: flex; flex-direction: column; gap: 1.5rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed; top: 1.5rem; right: 1.5rem; background: var(--bg-primary);
+            border: var(--border); border-radius: 12px; padding: 1rem 1.2rem;
+            box-shadow: var(--shadow-lg); z-index: 10000; display: flex; align-items: center;
+            gap: 0.8rem; min-width: 280px; max-width: 400px; transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #ffffff; flex-shrink: 0; border: var(--border-sm); }
+        .toast-icon.success { background: var(--green); }
+        .toast-icon.info { background: #0984e3; }
+        .toast-icon.error { background: var(--red); }
+        .toast-content { flex: 1; min-width: 0; }
+        .toast-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); }
+        .toast-desc { font-size: 0.7rem; color: var(--text-secondary); }
+        .toast-close { cursor: pointer; color: var(--text-muted); font-size: 0.8rem; transition: var(--transition); }
+        .toast-close:hover { color: var(--red); }
+
+        /* Header */
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.5rem; background: var(--bg-primary); border: var(--border);
+            border-radius: 16px; box-shadow: var(--shadow-md); gap: 1rem; transition: background 0.3s ease;
+        }
+        .brand { display: flex; align-items: center; gap: 0.8rem; }
+        .brand-logo { width: 42px; height: 42px; background: var(--green); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.2rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .brand-logo:hover { transform: rotate(-6deg) scale(1.08); box-shadow: var(--shadow-md); background: var(--orange); }
+        .brand-name { font-size: 1.4rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); }
+        .brand-name span { color: var(--green); }
+        .header-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .back-btn { background: var(--bg-secondary); border: var(--border-sm); padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary); font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .back-btn:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .theme-toggle-btn { width: 40px; height: 40px; background: var(--card-bg); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition); font-size: 1.1rem; color: var(--text-primary); }
+        .theme-toggle-btn:hover { transform: rotate(15deg) scale(1.08); box-shadow: var(--shadow-md); }
+        .theme-toggle-btn .fa-sun { display: none; }
+        .theme-toggle-btn .fa-moon { display: inline-block; }
+        [data-theme="dark"] .theme-toggle-btn .fa-sun { display: inline-block; color: #fdcb6e; }
+        [data-theme="dark"] .theme-toggle-btn .fa-moon { display: none; }
+
+        /* Hero */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--green) 0%, #037a56 50%, #025a40 100%);
+            border: var(--border); border-radius: 16px; padding: 2rem;
+            box-shadow: var(--shadow-lg); text-align: center; color: #ffffff;
+            position: relative; overflow: hidden;
+        }
+        .hero-banner::before { content: ''; position: absolute; top: -30%; right: -10%; width: 180px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .hero-banner .hero-icon { font-size: 2.5rem; margin-bottom: 0.3rem; position: relative; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        .hero-banner h1 { font-size: 2rem; font-weight: 900; margin-bottom: 0.3rem; position: relative; }
+        .hero-banner p { font-size: 0.9rem; opacity: 0.85; position: relative; }
+        .hero-domain { 
+            display: inline-block; background: rgba(255,255,255,0.2); padding: 0.3rem 1rem; 
+            border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-top: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.3); position: relative;
+        }
+
+        /* Main Card */
+        .main-card { 
+            background: var(--bg-primary); border: var(--border); border-radius: 16px; 
+            padding: 1.5rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; 
+        }
+        .section-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; }
+
+        /* Input */
+        .input-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+        .url-input { 
+            flex: 1; padding: 0.8rem 1rem; background: var(--bg-secondary); 
+            border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.85rem; 
+            color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); 
+            transition: var(--transition); font-family: inherit; min-width: 0;
+        }
+        .url-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
+        .url-input::placeholder { color: var(--text-muted); font-size: 0.78rem; }
+        .btn-paste { 
+            width: 42px; height: 42px; flex-shrink: 0; background: var(--bg-secondary); 
+            border: var(--border-sm); border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; cursor: pointer; font-size: 1rem; color: var(--text-primary); 
+            box-shadow: var(--shadow-sm); transition: var(--transition); 
+        }
+        .btn-paste:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); }
+
+        /* Alias */
+        .alias-row { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 1rem; }
+        .alias-prefix { 
+            font-weight: 700; font-size: 0.75rem; color: var(--text-muted); 
+            background: var(--bg-secondary); padding: 0.6rem 0.8rem; border-radius: 50px;
+            border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm);
+        }
+        .alias-input { 
+            flex: 1; padding: 0.6rem 0.8rem; background: var(--bg-secondary); 
+            border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.8rem; 
+            color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); 
+            transition: var(--transition); font-family: inherit;
+        }
+        .alias-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
+        .alias-input::placeholder { color: var(--text-muted); font-size: 0.7rem; }
+
+        /* Buttons */
+        .btn-shorten { 
+            width: 100%; padding: 0.8rem; background: var(--green); color: #ffffff; 
+            border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; 
+            font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: var(--transition); 
+            display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: inherit;
+        }
+        .btn-shorten:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .btn-shorten:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-shorten.loading i { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Result */
+        .result-area { display: none; margin-top: 1rem; animation: fadeInUp 0.3s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .result-area.show { display: block; }
+        .result-card { 
+            background: var(--green-light); border: var(--border-sm); border-radius: var(--radius); 
+            padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; box-shadow: var(--shadow-sm);
+        }
+        [data-theme="dark"] .result-card { background: rgba(4, 156, 110, 0.15); border-color: var(--green); }
+        .result-icon { 
+            width: 40px; height: 40px; background: var(--green); border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; color: #fff; 
+            font-size: 1rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black);
+        }
+        .result-info { flex: 1; min-width: 0; }
+        .result-short { font-weight: 900; font-size: 0.9rem; color: var(--green); word-break: break-all; }
+        .result-original { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .result-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+        .btn-copy-sm { 
+            width: 36px; height: 36px; background: var(--green); border: var(--border-sm); 
+            border-radius: 8px; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; color: #fff; font-size: 0.85rem; transition: var(--transition); 
+            box-shadow: 2px 2px 0 var(--black);
+        }
+        .btn-copy-sm:hover { background: var(--orange); transform: translateY(-2px); }
+        .btn-copy-sm.copied { background: #1a1a2e; }
+
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+        .stat-item { 
+            background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); 
+            padding: 0.8rem; text-align: center; box-shadow: var(--shadow-sm);
+        }
+        .stat-value { font-weight: 900; font-size: 1.5rem; color: var(--green); }
+        .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* History */
+        .history-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 400px; overflow-y: auto; }
+        .history-item { 
+            background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); 
+            padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; 
+            transition: var(--transition); box-shadow: var(--shadow-sm);
+        }
+        .history-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .history-icon { 
+            width: 36px; height: 36px; background: var(--bg-tertiary); border-radius: 8px; 
+            display: flex; align-items: center; justify-content: center; font-size: 0.9rem; 
+            color: var(--green); flex-shrink: 0; border: 1.5px solid var(--text-primary);
+        }
+        .history-info { flex: 1; min-width: 0; }
+        .history-short { font-weight: 700; font-size: 0.8rem; color: var(--green); cursor: pointer; word-break: break-all; }
+        .history-short:hover { text-decoration: underline; }
+        .history-original { font-size: 0.65rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .history-time { font-size: 0.6rem; color: var(--text-muted); }
+        .history-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
+        .btn-icon-xs { 
+            width: 30px; height: 30px; background: var(--bg-tertiary); border: 1.5px solid var(--text-primary); 
+            border-radius: 6px; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; font-size: 0.7rem; color: var(--text-primary); transition: var(--transition); 
+        }
+        .btn-icon-xs:hover { background: var(--green); color: #fff; border-color: var(--green); }
+        .btn-icon-xs.delete:hover { background: var(--red); border-color: var(--red); color: #fff; }
+
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); }
+        .empty-state i { font-size: 3rem; color: var(--border-light); margin-bottom: 0.5rem; }
+        .empty-state p { font-size: 0.8rem; }
+
+        /* Footer */
+        .footer { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease; }
+        .footer p { font-weight: 700; font-size: 0.8rem; color: var(--text-primary); }
+        .footer p:last-child { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .container { gap: 1rem; }
+            .hero-banner { padding: 1.5rem; }
+            .hero-banner h1 { font-size: 1.6rem; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="brand">
+                <div class="brand-logo"><i class="fas fa-link"></i></div>
+                <span class="brand-name">STAA<span>.</span>URL</span>
+            </div>
+            <div class="header-actions">
+                <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <div class="hero-banner">
+            <div class="hero-icon"><i class="fas fa-link"></i></div>
+            <h1>Short URL</h1>
+            <p>Pendekin link panjang jadi lebih simpel & mudah diingat</p>
+            <div class="hero-domain"><i class="fas fa-globe"></i> <span id="domainDisplay">-</span></div>
+        </div>
+
+        <!-- MAIN CARD -->
+        <div class="main-card">
+            <div class="section-title"><i class="fas fa-magic"></i> Buat Short URL</div>
+
+            <div class="input-row">
+                <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang di sini...">
+                <button class="btn-paste" onclick="pasteURL()" title="Paste"><i class="fas fa-paste"></i></button>
+            </div>
+
+            <div class="alias-row">
+                <span class="alias-prefix" id="aliasPrefix">-/</span>
+                <input type="text" class="alias-input" id="customAlias" placeholder="custom-alias (opsional)">
+            </div>
+
+            <button class="btn-shorten" id="shortenBtn" onclick="shortenURL()">
+                <i class="fas fa-scissors"></i> Pendekin Sekarang
+            </button>
+
+            <div class="result-area" id="resultArea">
+                <div class="result-card">
+                    <div class="result-icon"><i class="fas fa-check"></i></div>
+                    <div class="result-info">
+                        <div class="result-short" id="resultShort">-</div>
+                        <div class="result-original" id="resultOriginal">-</div>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn-copy-sm" onclick="copyShortURL()" title="Copy"><i class="fas fa-copy"></i></button>
+                        <button class="btn-copy-sm" onclick="openShortURL()" title="Buka" style="background:#0984e3;"><i class="fas fa-external-link-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="main-card">
+            <div class="section-title"><i class="fas fa-chart-bar"></i> Statistik</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalLinks">0</div>
+                    <div class="stat-label">Total Link</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="todayLinks">0</div>
+                    <div class="stat-label">Hari Ini</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalClicks">0</div>
+                    <div class="stat-label">Total Klik</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="main-card">
+            <div class="section-title"><i class="fas fa-history"></i> Riwayat Short URL</div>
+            <div class="history-list" id="historyList">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Belum ada short URL yang dibuat</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>© 2026 STAA.DEV — All rights reserved</p>
+            <p>Domain: <strong id="footerDomain">-</strong> • Built with <i class="fas fa-heart" style="color:var(--red);"></i></p>
+        </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <div class="toast-icon success" id="toastIcon"><i class="fas fa-check"></i></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Sukses!</div>
+            <div class="toast-desc" id="toastDesc">Short URL berhasil dibuat.</div>
+        </div>
+        <span class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></span>
+    </div>
+
+    <script>
+        // ==================== KONFIGURASI DOMAIN ====================
+        // DOMAIN OTOMATIS: Deteksi dari URL halaman ini
+        const GITHUB_USER = window.location.pathname.split('/')[1] || 'username';
+        const GITHUB_REPO = window.location.pathname.split('/')[2] || 'repo';
+        const BASE_DOMAIN = window.location.origin;
+        const SHORT_DOMAIN = `${BASE_DOMAIN}/#/`; // Format: https://username.github.io/repo/#/kode
+        
+        // Update semua tampilan domain
+        document.getElementById('domainDisplay').textContent = BASE_DOMAIN.replace('https://', '') + '/#/';
+        document.getElementById('aliasPrefix').textContent = BASE_DOMAIN.replace('https://', '') + '/#/';
+        document.getElementById('footerDomain').textContent = BASE_DOMAIN.replace('https://', '');
+
+        // ==================== STORAGE ====================
+        const STORAGE_KEY = 'staa_short_links';
+        const CLICKS_KEY = 'staa_short_clicks';
+        
+        let linkData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        let clickCounts = JSON.parse(localStorage.getItem(CLICKS_KEY) || '{}');
+        let currentShortURL = '';
+
+        // ==================== TOAST ====================
+        function showToast(title, desc, type) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastDesc').textContent = desc;
+            const icon = document.getElementById('toastIcon');
+            icon.className = 'toast-icon ' + type;
+            icon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : type === 'error' ? '<i class="fas fa-times"></i>' : '<i class="fas fa-info"></i>';
+            toast.classList.add('show');
+            setTimeout(hideToast, 4000);
+        }
+        function hideToast() { document.getElementById('toast').classList.remove('show'); }
+
+        // ==================== PASTE ====================
+        async function pasteURL() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('longUrl').value = text;
+                showToast('📋 Link dipaste!', 'URL berhasil ditempel.', 'info');
+            } catch (err) {
+                showToast('❌ Gagal paste', 'Silakan paste manual dengan Ctrl+V', 'error');
+            }
+        }
+
+        // ==================== GENERATE SHORT CODE ====================
+        function generateShortCode(length = 5) {
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // ==================== SHORTEN URL ====================
+        function shortenURL() {
+            const longUrl = document.getElementById('longUrl').value.trim();
+            const customAlias = document.getElementById('customAlias').value.trim();
+            const btn = document.getElementById('shortenBtn');
+            const resultArea = document.getElementById('resultArea');
+
+            if (!longUrl) { showToast('❌ URL kosong!', 'Masukkan URL yang ingin dipendekkan.', 'error'); return; }
+            if (!longUrl.startsWith('http://') && !longUrl.startsWith('https://')) {
+                showToast('❌ URL tidak valid', 'URL harus diawali http:// atau https://', 'error');
+                return;
+            }
+
+            let shortCode;
+            if (customAlias && customAlias.length >= 3) {
+                if (!/^[a-zA-Z0-9\-_]+$/.test(customAlias)) {
+                    showToast('❌ Alias tidak valid', 'Hanya huruf, angka, dash (-) dan underscore (_)', 'error');
+                    return;
+                }
+                if (linkData[customAlias]) {
+                    showToast('⚠️ Alias sudah dipakai', 'Silakan gunakan alias lain.', 'error');
+                    return;
+                }
+                shortCode = customAlias;
+            } else {
+                do {
+                    shortCode = generateShortCode();
+                } while (linkData[shortCode]);
+            }
+
+            // Simpan mapping
+            linkData[shortCode] = {
+                url: longUrl,
+                createdAt: new Date().toISOString(),
+                clicks: 0
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
+
+            // Buat short URL
+            currentShortURL = SHORT_DOMAIN + shortCode;
+
+            // Tampilkan hasil
+            document.getElementById('resultShort').textContent = currentShortURL;
+            document.getElementById('resultOriginal').textContent = longUrl;
+            resultArea.classList.add('show');
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            updateStats();
+            renderHistory();
+            showToast('✅ Short URL berhasil!', currentShortURL, 'success');
+            document.getElementById('customAlias').value = '';
+        }
+
+        // ==================== COPY ====================
+        function copyShortURL() {
+            if (!currentShortURL) return;
+            navigator.clipboard.writeText(currentShortURL).then(() => {
+                const btn = document.querySelector('.btn-copy-sm');
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                showToast('📋 Tersalin!', currentShortURL, 'success');
+                setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000);
+            });
+        }
+
+        // ==================== OPEN ====================
+        function openShortURL() {
+            if (!currentShortURL) return;
+            // Track click
+            const shortCode = currentShortURL.split('/#/')[1];
+            if (linkData[shortCode]) {
+                linkData[shortCode].clicks = (linkData[shortCode].clicks || 0) + 1;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
+            }
+            clickCounts.total = (clickCounts.total || 0) + 1;
+            localStorage.setItem(CLICKS_KEY, JSON.stringify(clickCounts));
+            
+            window.open(currentShortURL, '_blank');
+            updateStats();
+            renderHistory();
+        }
+
+        // ==================== COPY HISTORY ====================
+        function copyHistoryURL(code) {
+            const url = SHORT_DOMAIN + code;
+            navigator.clipboard.writeText(url).then(() => showToast('📋 Tersalin!', url, 'success'));
+        }
+
+        // ==================== DELETE ====================
+        function deleteHistory(code) {
+            delete linkData[code];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
+            renderHistory();
+            updateStats();
+            showToast('🗑️ Dihapus', 'Short URL dihapus dari riwayat.', 'info');
+        }
+
+        // ==================== RENDER HISTORY ====================
+        function renderHistory() {
+            const historyList = document.getElementById('historyList');
+            const entries = Object.entries(linkData).sort((a, b) => new Date(b[1].createdAt) - new Date(a[1].createdAt));
+            
+            if (entries.length === 0) {
+                historyList.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada short URL yang dibuat</p></div>';
+                return;
+            }
+
+            historyList.innerHTML = entries.map(([code, data]) => {
+                const date = new Date(data.createdAt);
+                const timeStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const shortURL = SHORT_DOMAIN + code;
+                
+                return `
+                    <div class="history-item">
+                        <div class="history-icon"><i class="fas fa-link"></i></div>
+                        <div class="history-info">
+                            <div class="history-short" onclick="window.open('${shortURL}', '_blank')" title="Buka link">${shortURL}</div>
+                            <div class="history-original" title="${data.url}">${data.url}</div>
+                            <div class="history-time">🕐 ${timeStr} • 👁 ${data.clicks || 0} klik</div>
+                        </div>
+                        <div class="history-actions">
+                            <button class="btn-icon-xs" onclick="copyHistoryURL('${code}')" title="Copy"><i class="fas fa-copy"></i></button>
+                            <button class="btn-icon-xs delete" onclick="deleteHistory('${code}')" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==================== UPDATE STATS ====================
+        function updateStats() {
+            const entries = Object.entries(linkData);
+            document.getElementById('totalLinks').textContent = entries.length;
+            
+            const today = new Date().toDateString();
+            const todayLinks = entries.filter(([_, data]) => new Date(data.createdAt).toDateString() === today).length;
+            document.getElementById('todayLinks').textContent = todayLinks;
+            
+            document.getElementById('totalClicks').textContent = clickCounts.total || 0;
+        }
+
+        // ==================== HANDLE REDIRECT (untuk 404.html) ====================
+        // Cek apakah ada hash redirect
+        if (window.location.hash && window.location.hash.startsWith('#/')) {
+            const shortCode = window.location.hash.replace('#/', '');
+            if (linkData[shortCode]) {
+                // Track click
+                linkData[shortCode].clicks = (linkData[shortCode].clicks || 0) + 1;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
+                clickCounts.total = (clickCounts.total || 0) + 1;
+                localStorage.setItem(CLICKS_KEY, JSON.stringify(clickCounts));
+                
+                // Redirect ke URL asli
+                window.location.href = linkData[shortCode].url;
+            }
+        }
+
+        // ==================== ENTER KEY ====================
+        document.getElementById('longUrl').addEventListener('keypress', function(e) { if (e.key === 'Enter') shortenURL(); });
+
+        // ==================== THEME ====================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
+            else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+        }
+        (function() { if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); })();
+
+        // ==================== INIT ====================
+        updateStats();
+        renderHistory();
+    </script>
+</body>
+</html>
