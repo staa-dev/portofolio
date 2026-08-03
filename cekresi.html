@@ -95,7 +95,6 @@
         .courier-option i { font-size: 0.9rem; flex-shrink: 0; }
         .courier-option:hover { background: var(--bg-tertiary); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
         .courier-option.active { background: var(--blue); color: #ffffff; box-shadow: 2px 2px 0 var(--black); border-color: var(--blue); }
-        .courier-option.active i { color: #fff; }
 
         .fetch-btn { width: 100%; padding: 0.85rem; background: var(--blue); color: #fff; border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: inherit; }
         .fetch-btn:hover { background: #0652DD; box-shadow: var(--shadow-md); transform: translateY(-2px); }
@@ -122,8 +121,6 @@
         .summary-status.delivered { background: var(--green); color: #fff; }
         .summary-status.in-transit { background: var(--orange); color: #fff; }
         .summary-status.pending { background: #fdcb6e; color: #1a1a2e; }
-        .summary-service { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; word-break: break-word; }
-        .summary-date { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.1rem; word-break: break-word; }
 
         .timeline-card { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1.2rem; box-shadow: var(--shadow-sm); overflow: hidden; }
         .timeline-title { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; }
@@ -136,12 +133,6 @@
         .timeline-date { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; word-break: break-word; }
         .timeline-desc { font-weight: 700; font-size: 0.8rem; color: var(--text-primary); word-break: break-word; }
         .timeline-location { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.1rem; display: flex; align-items: center; gap: 0.3rem; word-break: break-word; }
-
-        .info-card { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); overflow: hidden; }
-        .info-title { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-        .info-item { font-size: 0.75rem; word-break: break-word; }
-        .info-item strong { color: var(--text-primary); }
 
         .error-card { background: var(--red-light); border: var(--border-sm); border-radius: var(--radius); padding: 1.5rem; text-align: center; box-shadow: var(--shadow-sm); overflow: hidden; }
         [data-theme="dark"] .error-card { background: rgba(218, 17, 7, 0.15); border-color: var(--red); }
@@ -180,7 +171,7 @@
         <div class="hero-banner">
             <div class="hero-icon"><i class="fas fa-truck-fast"></i></div>
             <h1>Cek Resi</h1>
-            <p>Lacak paketmu dengan mudah & cepat • 25+ Jasa Pengiriman</p>
+            <p>Lacak paketmu dengan mudah & cepat • 24 Jasa Pengiriman</p>
         </div>
 
         <div class="main-card">
@@ -237,7 +228,7 @@
             <i class="fas fa-info-circle"></i>
             <div class="info-box-content">
                 <h4>24 Jasa Pengiriman Aktif</h4>
-                <p>Data real-time dari Binderbyte API. Jika error, coba refresh atau gunakan mode Private Window.</p>
+                <p>Data real-time dari Binderbyte API. Pastikan nomor resi & kurir sesuai.</p>
             </div>
         </div>
 
@@ -254,9 +245,11 @@
     </div>
 
     <script>
+        // ==================== KONFIGURASI ====================
         const BINDERBYTE_API_KEY = 'sk_xqqa7xoalxmzgge3pedqcafgtlnige88pawbkhtwdlxpl69yfdegolywjgrmu76m';
         let selectedCourier = 'jne';
 
+        // ==================== COURIER SELECTOR ====================
         document.querySelectorAll('#courierGrid .courier-option').forEach(opt => {
             opt.addEventListener('click', function() {
                 document.querySelectorAll('#courierGrid .courier-option').forEach(o => o.classList.remove('active'));
@@ -265,6 +258,7 @@
             });
         });
 
+        // ==================== TOAST ====================
         function showToast(title, desc, type) {
             const t = document.getElementById('toast'); 
             document.getElementById('toastTitle').textContent = title; 
@@ -276,52 +270,49 @@
         }
         function hideToast() { document.getElementById('toast').classList.remove('show'); }
 
-        // ==================== FETCH DENGAN MULTI PROXY ====================
-        async function fetchWithProxy(url, proxyIndex = 0) {
-            const proxies = [
-                // CORS Proxy yang masih aktif 2024
-                { url: 'https://corsproxy.io/?', prefix: true },
-                { url: 'https://api.allorigins.win/raw?url=', prefix: true },
-                { url: 'https://cors-anywhere.herokuapp.com/', prefix: true },
-                // Cloudflare Worker Proxy (paling stabil)
-                { url: 'https://cors.yussxy.workers.dev/?', prefix: true },
-                { url: 'https://cors-proxy.htmldriven.com/?url=', prefix: true },
-                // Backup - coba langsung
-                { url: '', prefix: false }
-            ];
-
-            if (proxyIndex >= proxies.length) return null;
-
-            const proxy = proxies[proxyIndex];
-            const fetchUrl = proxy.prefix ? proxy.url + encodeURIComponent(url) : url;
-            
+        // ==================== MAIN FETCH - DIRECT DENGAN RETRY ====================
+        async function fetchWithRetry(url, retries = 3) {
             const loadingDetail = document.getElementById('loadingDetail');
-            if (loadingDetail) loadingDetail.textContent = `Mencoba proxy ${proxyIndex + 1}/${proxies.length}...`;
-
-            try {
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 15000);
-                
-                const res = await fetch(fetchUrl, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' },
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeout);
-
-                if (res.ok) {
-                    const data = await res.json();
-                    return data;
+            
+            for (let i = 0; i < retries; i++) {
+                try {
+                    if (loadingDetail) loadingDetail.textContent = `Mencoba... (${i + 1}/${retries})`;
+                    
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 20000);
+                    
+                    // DIRECT FETCH - Binderbyte support CORS
+                    const res = await fetch(url, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' },
+                        signal: controller.signal,
+                        mode: 'cors'
+                    });
+                    
+                    clearTimeout(timeout);
+                    
+                    if (res.ok) {
+                        const data = await res.json();
+                        return data;
+                    }
+                    
+                    console.log(`Attempt ${i + 1}: HTTP ${res.status}`);
+                    
+                } catch (e) {
+                    console.log(`Attempt ${i + 1} error:`, e.message);
+                    if (i === retries - 1) throw e;
                 }
-            } catch (e) {
-                console.log(`Proxy ${proxyIndex + 1} gagal:`, e.message);
+                
+                // Tunggu sebentar sebelum retry
+                if (i < retries - 1) {
+                    await new Promise(r => setTimeout(r, 1000));
+                }
             }
-
-            // Coba proxy berikutnya
-            return await fetchWithProxy(url, proxyIndex + 1);
+            
+            throw new Error('Semua percobaan gagal');
         }
 
+        // ==================== CEK RESI ====================
         async function cekResi() {
             const resi = document.getElementById('resiInput').value.trim();
             const btn = document.getElementById('cekBtn');
@@ -333,14 +324,14 @@
             
             btn.disabled = true; btn.classList.add('loading'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
             loading.classList.add('show'); result.classList.remove('show'); result.innerHTML = '';
-            if (loadingDetail) loadingDetail.textContent = 'Menghubungi server...';
+            if (loadingDetail) loadingDetail.textContent = 'Menghubungi Binderbyte API...';
 
             try {
                 const apiUrl = `https://api.binderbyte.com/v1/track?api_key=${BINDERBYTE_API_KEY}&courier=${selectedCourier}&awb=${encodeURIComponent(resi)}`;
+                console.log('Fetching:', apiUrl);
                 
-                const data = await fetchWithProxy(apiUrl);
-                
-                if (!data) throw new Error('Semua proxy gagal');
+                const data = await fetchWithRetry(apiUrl, 3);
+                console.log('Response:', data);
                 
                 if (data.status === 200 && data.data) {
                     const d = data.data;
@@ -365,39 +356,49 @@
                     
                     if (history.length > 0) {
                         html += `<div class="timeline-card">
-                            <div class="timeline-title"><i class="fas fa-history"></i> Riwayat (${history.length})</div>
+                            <div class="timeline-title"><i class="fas fa-history"></i> Riwayat Perjalanan (${history.length})</div>
                             <div class="timeline">`;
+                        
                         history.forEach(item => {
-                            html += `<div class="timeline-item"><div class="timeline-dot"></div>
-                                <div class="timeline-date">${item.date || '-'}</div>
-                                <div class="timeline-desc">${item.desc || '-'}</div>
-                                ${item.location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${item.location}</div>` : ''}
-                            </div>`;
+                            html += `
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-date">${item.date || '-'}</div>
+                                    <div class="timeline-desc">${item.desc || '-'}</div>
+                                    ${item.location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${item.location}</div>` : ''}
+                                </div>`;
                         });
+                        
                         html += `</div></div>`;
+                    } else {
+                        html += `<div class="timeline-card"><div class="timeline-title"><i class="fas fa-info-circle"></i> Belum ada riwayat perjalanan</div></div>`;
                     }
                     
                     result.innerHTML = html;
                     result.classList.add('show');
                     result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     showToast('✅ Resi ditemukan!', `${history.length} riwayat.`, 'success');
+                    
                 } else {
-                    result.innerHTML = `<div class="error-card"><i class="fas fa-times-circle"></i><p>${data.message || 'Resi tidak ditemukan'}</p></div>`;
+                    result.innerHTML = `<div class="error-card"><i class="fas fa-times-circle"></i><p>${data.message || 'Resi tidak ditemukan. Cek nomor resi & kurir.'}</p></div>`;
                     result.classList.add('show');
-                    showToast('❌ Gagal', data.message || 'Cek nomor resi', 'error');
+                    showToast('❌ Gagal', data.message || 'Resi tidak ditemukan', 'error');
                 }
             } catch (e) {
-                result.innerHTML = `<div class="error-card"><i class="fas fa-exclamation-triangle"></i><p>Gagal menghubungi server</p></div>`;
+                console.error('Error:', e);
+                result.innerHTML = `<div class="error-card"><i class="fas fa-exclamation-triangle"></i><p>Gagal terhubung ke server.</p><p style="font-size:0.7rem;margin-top:0.5rem;">${e.message}</p></div>`;
                 result.classList.add('show');
-                showToast('❌ Error', 'Coba lagi nanti atau ganti koneksi', 'error');
+                showToast('❌ Koneksi Gagal', 'Coba lagi nanti', 'error');
             } finally {
                 btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-search"></i> Cek Resi Sekarang';
                 loading.classList.remove('show');
             }
         }
 
+        // ==================== ENTER KEY ====================
         document.getElementById('resiInput').addEventListener('keypress', function(e) { if (e.key === 'Enter') cekResi(); });
 
+        // ==================== THEME ====================
         function toggleTheme() { const h = document.documentElement; h.getAttribute('data-theme') === 'dark' ? (h.removeAttribute('data-theme'), localStorage.setItem('theme', 'light')) : (h.setAttribute('data-theme', 'dark'), localStorage.setItem('theme', 'dark')); }
         (function() { if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); })();
     </script>
