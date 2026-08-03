@@ -1,33 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Redirecting...</title>
-    <script>
-        // Ambil path dari URL yang tidak ditemukan
-        const path = window.location.pathname;
-        const repoName = path.split('/')[1] || '';
-        
-        // Ambil short code dari URL
-        // Format: https://username.github.io/repo/kode123
-        const parts = path.split('/').filter(p => p);
-        
-        // Cari short code (setelah nama repo)
-        let shortCode = '';
-        if (parts.length >= 2) {
-            shortCode = parts[parts.length - 1];
-        }
-        
-        if (shortCode && shortCode !== '404.html' && shortCode !== 'index.html') {
-            // Redirect ke halaman utama dengan hash
-            window.location.href = '/' + repoName + '/short.html#/' + shortCode;
-        } else {
-            // Tidak ada short code, redirect ke halaman utama
-            window.location.href = '/' + repoName + '/short.html';
-        }
-    </script>
-</head>
+<head><meta charset="UTF-8"><title>Redirect...</title></head>
 <body>
-    <p>Redirecting...</p>
+<script>
+// Ambil path dari URL: staaporto.my.id/kode123
+const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+// Redirect ke short.html dengan parameter
+if (path && path !== 'index.html' && path !== 'short.html' && path !== '404.html') {
+    window.location.href = '/short.html?r=' + encodeURIComponent(path);
+} else {
+    window.location.href = '/index.html';
+}
+</script>
 </body>
 </html>

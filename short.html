@@ -15,8 +15,6 @@
             --green-light: #e6f7f2;
             --black: #1a1a2e;
             --white: #ffffff;
-            --gray-light: #fafafa;
-            --gray: #f0f0f0;
             --shadow-sm: 3px 3px 0 var(--black);
             --shadow-md: 5px 5px 0 var(--black);
             --shadow-lg: 7px 7px 0 var(--black);
@@ -25,7 +23,6 @@
             --radius: 12px;
             --radius-sm: 8px;
             --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            
             --bg-primary: #ffffff;
             --bg-secondary: #fafafa;
             --bg-tertiary: #f0f0f0;
@@ -36,7 +33,6 @@
             --card-bg: #ffffff;
             --body-bg: linear-gradient(135deg, #fde8e7 0%, #fef3e6 50%, #e6f7f2 100%);
         }
-
         [data-theme="dark"] {
             --bg-primary: #1a1a2e;
             --bg-secondary: #252540;
@@ -48,39 +44,26 @@
             --card-bg: #252540;
             --body-bg: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f1a15 100%);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            background: var(--body-bg);
-            background-attachment: fixed;
+            background: var(--body-bg); background-attachment: fixed;
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: var(--text-primary);
-            line-height: 1.5;
-            min-height: 100vh;
-            padding: 1.5rem;
-            position: relative;
-            overflow-x: hidden;
-            transition: background 0.3s ease;
+            color: var(--text-primary); line-height: 1.5; min-height: 100vh;
+            padding: 1.5rem; position: relative; overflow-x: hidden; transition: background 0.3s ease;
         }
-
         [data-theme="dark"] body { background: #111118; }
-
-        .container { width: 100%; max-width: 720px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.2rem; }
+        .container { width: 100%; max-width: 850px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.5rem; }
 
         /* Toast */
         .toast {
             position: fixed; top: 1.5rem; right: 1.5rem; background: var(--bg-primary);
-            border: var(--border); border-radius: 12px; padding: 1rem 1.2rem;
-            box-shadow: var(--shadow-lg); z-index: 10000; display: flex; align-items: center;
-            gap: 0.8rem; min-width: 280px; max-width: 400px; transform: translateX(120%);
-            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: var(--border); border-radius: 12px; padding: 1rem 1.2rem; box-shadow: var(--shadow-lg);
+            z-index: 10000; display: flex; align-items: center; gap: 0.8rem; min-width: 280px;
+            max-width: 400px; transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         .toast.show { transform: translateX(0); }
-        .toast-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #ffffff; flex-shrink: 0; border: var(--border-sm); }
-        .toast-icon.success { background: var(--green); }
-        .toast-icon.info { background: #0984e3; }
-        .toast-icon.error { background: var(--red); }
+        .toast-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; flex-shrink: 0; border: var(--border-sm); }
+        .toast-icon.success { background: var(--green); } .toast-icon.info { background: #0984e3; } .toast-icon.error { background: var(--red); }
         .toast-content { flex: 1; min-width: 0; }
         .toast-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); }
         .toast-desc { font-size: 0.7rem; color: var(--text-secondary); }
@@ -90,123 +73,167 @@
         /* Header */
         .header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.9rem 1.2rem; background: var(--bg-primary); border: var(--border);
+            padding: 1rem 1.5rem; background: var(--bg-primary); border: var(--border);
             border-radius: 16px; box-shadow: var(--shadow-md); gap: 1rem; transition: background 0.3s ease;
         }
-        .brand { display: flex; align-items: center; gap: 0.7rem; }
-        .brand-logo { width: 40px; height: 40px; background: var(--green); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.1rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .brand { display: flex; align-items: center; gap: 0.8rem; }
+        .brand-logo { width: 42px; height: 42px; background: var(--green); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition); }
         .brand-logo:hover { transform: rotate(-6deg) scale(1.08); box-shadow: var(--shadow-md); background: var(--orange); }
-        .brand-name { font-size: 1.3rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); }
+        .brand-name { font-size: 1.4rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); }
         .brand-name span { color: var(--green); }
-        .header-actions { display: flex; align-items: center; gap: 0.4rem; }
-        .back-btn { background: var(--bg-secondary); border: var(--border-sm); padding: 0.45rem 0.9rem; border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary); font-size: 0.78rem; display: flex; align-items: center; gap: 0.3rem; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .header-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .back-btn { background: var(--bg-secondary); border: var(--border-sm); padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary); font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; box-shadow: var(--shadow-sm); transition: var(--transition); }
         .back-btn:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .theme-toggle-btn { width: 38px; height: 38px; background: var(--card-bg); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition); font-size: 1rem; color: var(--text-primary); }
+        .theme-toggle-btn { width: 40px; height: 40px; background: var(--card-bg); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition); font-size: 1.1rem; color: var(--text-primary); }
         .theme-toggle-btn:hover { transform: rotate(15deg) scale(1.08); box-shadow: var(--shadow-md); }
-        .theme-toggle-btn .fa-sun { display: none; }
-        .theme-toggle-btn .fa-moon { display: inline-block; }
-        [data-theme="dark"] .theme-toggle-btn .fa-sun { display: inline-block; color: #fdcb6e; }
-        [data-theme="dark"] .theme-toggle-btn .fa-moon { display: none; }
+        .theme-toggle-btn .fa-sun { display: none; } .theme-toggle-btn .fa-moon { display: inline-block; }
+        [data-theme="dark"] .theme-toggle-btn .fa-sun { display: inline-block; color: #fdcb6e; } [data-theme="dark"] .theme-toggle-btn .fa-moon { display: none; }
 
         /* Hero */
         .hero-banner {
             background: linear-gradient(135deg, var(--green) 0%, #037a56 50%, #025a40 100%);
-            border: var(--border); border-radius: 16px; padding: 1.8rem;
-            box-shadow: var(--shadow-lg); text-align: center; color: #ffffff;
-            position: relative; overflow: hidden;
+            border: var(--border); border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-lg);
+            text-align: center; color: #fff; position: relative; overflow: hidden;
         }
-        .hero-banner::before { content: ''; position: absolute; top: -30%; right: -10%; width: 160px; height: 160px; background: rgba(255,255,255,0.1); border-radius: 50%; }
-        .hero-banner .hero-icon { font-size: 2.2rem; margin-bottom: 0.3rem; position: relative; animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        .hero-banner h1 { font-size: 1.8rem; font-weight: 900; margin-bottom: 0.2rem; position: relative; }
-        .hero-banner p { font-size: 0.85rem; opacity: 0.85; position: relative; }
+        .hero-banner::before { content: ''; position: absolute; top: -30%; right: -10%; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+        .hero-banner::after { content: ''; position: absolute; bottom: -20%; left: -8%; width: 140px; height: 140px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+        .hero-banner .hero-icon { font-size: 2.8rem; margin-bottom: 0.4rem; position: relative; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .hero-banner h1 { font-size: 2.2rem; font-weight: 900; margin-bottom: 0.3rem; position: relative; }
+        .hero-banner p { font-size: 0.9rem; opacity: 0.85; position: relative; }
+        .hero-domain { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.35rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-top: 0.6rem; border: 1px solid rgba(255,255,255,0.3); position: relative; }
 
         /* Connection Status */
-        .connection-status {
-            display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;
-            background: var(--bg-primary); border: var(--border-sm); border-radius: 50px;
-            font-size: 0.7rem; font-weight: 700; box-shadow: var(--shadow-sm);
-        }
-        .status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .connection-status { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.1rem; background: var(--bg-primary); border: var(--border-sm); border-radius: 50px; font-size: 0.72rem; font-weight: 700; box-shadow: var(--shadow-sm); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
         .status-dot.online { background: var(--green); animation: pulse 2s infinite; }
         .status-dot.offline { background: var(--red); }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
+        /* Tab Bar */
+        .tab-bar { display: flex; gap: 0; background: var(--bg-primary); border: var(--border-sm); border-radius: 50px; padding: 0.3rem; box-shadow: var(--shadow-sm); margin-bottom: 0; }
+        .tab { flex: 1; text-align: center; padding: 0.65rem 1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: var(--transition); background: transparent; color: var(--text-muted); border: none; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+        .tab.active { background: var(--green); color: #ffffff; box-shadow: 2px 2px 0 var(--black); }
+        .tab:hover:not(.active) { color: var(--text-primary); background: var(--bg-secondary); }
+
         /* Main Card */
-        .main-card { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1.3rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; }
-        .section-title { font-weight: 900; font-size: 0.8rem; color: var(--text-primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.35rem; }
+        .main-card { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; }
+        .section-title { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.4rem; }
 
-        /* Input */
-        .input-row { display: flex; gap: 0.4rem; margin-bottom: 0.7rem; }
-        .url-input { flex: 1; padding: 0.7rem 0.9rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.82rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; min-width: 0; }
+        /* Input Row */
+        .input-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center; }
+        .url-input { flex: 1; padding: 0.85rem 1rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.85rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; min-width: 0; }
         .url-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
-        .url-input::placeholder { color: var(--text-muted); font-size: 0.75rem; }
-        .btn-paste { width: 40px; height: 40px; flex-shrink: 0; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: var(--transition); }
-        .btn-paste:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); }
+        .url-input::placeholder { color: var(--text-muted); font-size: 0.78rem; }
+        .btn-icon-sm { width: 42px; height: 42px; flex-shrink: 0; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .btn-icon-sm:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); transform: translateY(-2px); }
 
-        /* Alias */
-        .alias-row { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.8rem; }
-        .alias-prefix { font-weight: 700; font-size: 0.65rem; color: var(--text-muted); background: var(--bg-secondary); padding: 0.55rem 0.7rem; border-radius: 50px; border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm); }
-        .alias-input { flex: 1; padding: 0.55rem 0.7rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.78rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; }
+/* Alias Row */
+.alias-row { display: flex; align-items: center; gap: 0; margin-bottom: 1rem; }
+.alias-prefix { 
+    font-weight: 700; font-size: 0.75rem; color: var(--text-muted); 
+    background: var(--bg-secondary); padding: 0.85rem 1rem; 
+    border-radius: 50px 0 0 50px; border: var(--border-sm); 
+    border-right: none; white-space: nowrap; box-shadow: var(--shadow-sm); 
+    max-width: 160px;           /* ⬅️ TAMBAHKAN INI */
+    overflow: hidden;           /* ⬅️ TAMBAHKAN INI */
+    text-overflow: ellipsis;    /* ⬅️ TAMBAHKAN INI */
+}
+.alias-input { 
+    flex: 1; padding: 0.85rem 1rem; background: var(--bg-secondary); 
+    border: var(--border-sm); border-radius: 0 50px 50px 0; 
+    font-weight: 600; font-size: 0.85rem; color: var(--text-primary); 
+    outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); 
+    font-family: inherit; min-width: 0;     /* ⬅️ PASTIKAN INI ADA */
+}
         .alias-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
-        .alias-input::placeholder { color: var(--text-muted); font-size: 0.68rem; }
+        .alias-input::placeholder { color: var(--text-muted); font-size: 0.78rem; }
 
-        /* Buttons */
-        .btn-shorten { width: 100%; padding: 0.75rem; background: var(--green); color: #ffffff; border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.85rem; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.35rem; font-family: inherit; }
-        .btn-shorten:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .btn-shorten:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
-        .btn-shorten.loading i { animation: spin 1s linear infinite; }
+        /* Fetch Button */
+        .fetch-btn { width: 100%; padding: 0.85rem; background: var(--green); color: #fff; border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: inherit; }
+        .fetch-btn:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .fetch-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        .fetch-btn.loading i { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        /* Loading */
+        .loading-spinner { display: none; text-align: center; padding: 1.5rem; }
+        .loading-spinner.show { display: block; }
+        .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 0.8rem; }
+        .loading-text { font-weight: 700; font-size: 0.82rem; color: var(--text-secondary); }
+
         /* Result */
-        .result-area { display: none; margin-top: 0.8rem; animation: fadeInUp 0.3s ease; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .result-area { display: none; margin-top: 1rem; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .result-area.show { display: block; }
-        .result-card { background: var(--green-light); border: var(--border-sm); border-radius: var(--radius); padding: 0.9rem 1rem; display: flex; align-items: center; gap: 0.7rem; box-shadow: var(--shadow-sm); }
+        .result-card { background: var(--green-light); border: var(--border-sm); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; box-shadow: var(--shadow-sm); }
         [data-theme="dark"] .result-card { background: rgba(4, 156, 110, 0.15); border-color: var(--green); }
-        .result-icon { width: 36px; height: 36px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.9rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); }
+        .result-icon { width: 42px; height: 42px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); }
         .result-info { flex: 1; min-width: 0; }
-        .result-short { font-weight: 900; font-size: 0.85rem; color: var(--green); word-break: break-all; cursor: pointer; }
+        .result-short { font-weight: 900; font-size: 0.9rem; color: var(--green); word-break: break-all; cursor: pointer; }
         .result-short:hover { text-decoration: underline; }
-        .result-original { font-size: 0.62rem; color: var(--text-muted); margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .result-actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
-        .btn-copy-sm { width: 34px; height: 34px; background: var(--green); border: var(--border-sm); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 0.8rem; transition: var(--transition); box-shadow: 2px 2px 0 var(--black); }
+        .result-original { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .result-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+        .btn-copy-sm { width: 38px; height: 38px; background: var(--green); border: var(--border-sm); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 0.85rem; transition: var(--transition); box-shadow: 2px 2px 0 var(--black); }
         .btn-copy-sm:hover { background: var(--orange); transform: translateY(-2px); }
         .btn-copy-sm.copied { background: #1a1a2e; }
 
+        /* History */
+        .history-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 350px; overflow-y: auto; }
+        .history-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; transition: var(--transition); box-shadow: var(--shadow-sm); }
+        .history-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .history-icon { width: 36px; height: 36px; background: var(--bg-tertiary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--green); flex-shrink: 0; border: 1.5px solid var(--text-primary); }
+        .history-info { flex: 1; min-width: 0; }
+        .history-short { font-weight: 700; font-size: 0.8rem; color: var(--green); cursor: pointer; word-break: break-all; }
+        .history-short:hover { text-decoration: underline; }
+        .history-original { font-size: 0.62rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .history-time { font-size: 0.6rem; color: var(--text-muted); margin-top: 0.15rem; display: flex; align-items: center; gap: 0.5rem; }
+        .history-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
+        .btn-icon-xs { width: 30px; height: 30px; background: var(--bg-tertiary); border: 1.5px solid var(--text-primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; color: var(--text-primary); transition: var(--transition); }
+        .btn-icon-xs:hover { background: var(--green); color: #fff; border-color: var(--green); }
+        .btn-icon-xs.delete:hover { background: var(--red); border-color: var(--red); color: #fff; }
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); }
+        .empty-state i { font-size: 2.5rem; color: var(--border-light); margin-bottom: 0.5rem; }
+        .empty-state p { font-size: 0.78rem; }
+
         /* Stats */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
-        .stat-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.7rem; text-align: center; box-shadow: var(--shadow-sm); }
-        .stat-value { font-weight: 900; font-size: 1.3rem; color: var(--green); }
-        .stat-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+        .stat-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.8rem; text-align: center; box-shadow: var(--shadow-sm); }
+        .stat-value { font-weight: 900; font-size: 1.4rem; color: var(--green); line-height: 1.2; }
+        .stat-label { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.15rem; }
 
         /* Redirect Page */
-        .redirect-page { display: none; text-align: center; padding: 2.5rem 1.5rem; background: var(--bg-primary); border: var(--border); border-radius: 16px; box-shadow: var(--shadow-lg); }
+        .redirect-page { display: none; text-align: center; padding: 2.5rem 2rem; background: var(--bg-primary); border: var(--border); border-radius: 16px; box-shadow: var(--shadow-lg); }
         .redirect-page.show { display: block; }
-        .redirect-icon { font-size: 3.5rem; color: var(--green); animation: bounce 1s infinite; }
+        .redirect-icon { font-size: 4rem; color: var(--green); animation: bounce 1s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        .redirect-title { font-weight: 900; font-size: 1.2rem; margin: 0.8rem 0 0.4rem; color: var(--text-primary); }
-        .redirect-url { font-size: 0.8rem; color: var(--text-muted); word-break: break-all; margin-bottom: 0.8rem; }
-        .redirect-countdown { font-weight: 900; font-size: 1.8rem; color: var(--green); margin: 0.5rem 0; }
+        .redirect-title { font-weight: 900; font-size: 1.3rem; margin: 1rem 0 0.5rem; color: var(--text-primary); }
+        .redirect-url { font-size: 0.8rem; color: var(--text-muted); word-break: break-all; background: var(--bg-secondary); padding: 0.7rem 1rem; border-radius: 8px; margin: 0.8rem 0; border: var(--border-sm); }
+        .redirect-progress { width: 100%; height: 8px; background: var(--bg-tertiary); border-radius: 50px; overflow: hidden; margin: 1rem 0; border: var(--border-sm); }
+        .redirect-progress-fill { height: 100%; background: var(--green); border-radius: 50px; transition: width 1s linear; width: 100%; }
+        .redirect-countdown { font-weight: 900; font-size: 2rem; color: var(--green); margin: 0.3rem 0; }
+        .redirect-buttons { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.2rem; }
+
+        /* Info Box */
+        .info-box { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: flex-start; gap: 0.8rem; }
+        .info-box i { color: var(--green); font-size: 1.1rem; margin-top: 0.1rem; }
+        .info-box-content h4 { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.2rem; }
+        .info-box-content p { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.5; }
 
         /* Footer */
-        .footer { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 0.9rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease; }
-        .footer p { font-weight: 700; font-size: 0.75rem; color: var(--text-primary); }
-        .footer p:last-child { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem; }
+        .footer { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease; }
+        .footer p { font-weight: 700; font-size: 0.8rem; color: var(--text-primary); }
+        .footer p:last-child { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
 
         @media (max-width: 768px) {
-            body { padding: 1rem; }
-            .container { gap: 1rem; }
-            .hero-banner { padding: 1.3rem; }
-            .hero-banner h1 { font-size: 1.5rem; }
-            .stats-grid { grid-template-columns: repeat(3, 1fr); }
-            .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
+            body { padding: 1rem; } .container { gap: 1rem; } .hero-banner { padding: 1.5rem; } .hero-banner h1 { font-size: 1.7rem; }
+            .main-card { padding: 1.2rem; } .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
+            .history-item { flex-wrap: wrap; } .history-actions { width: 100%; justify-content: flex-end; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-
         <!-- HEADER -->
         <header class="header">
             <div class="brand">
@@ -215,384 +242,255 @@
             </div>
             <div class="header-actions">
                 <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
-                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
-                </button>
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()"><i class="fas fa-moon"></i><i class="fas fa-sun"></i></button>
             </div>
         </header>
 
         <!-- CONNECTION STATUS -->
         <div class="connection-status" id="connectionStatus">
             <span class="status-dot" id="statusDot"></span>
-            <span id="statusText">Menghubungkan...</span>
+            <span id="statusText">Menghubungkan ke Supabase...</span>
         </div>
 
         <!-- REDIRECT PAGE -->
         <div class="redirect-page" id="redirectPage">
             <div class="redirect-icon"><i class="fas fa-rocket"></i></div>
-            <div class="redirect-title">Mengalihkan...</div>
+            <div class="redirect-title">Mengalihkan ke tujuan...</div>
             <div class="redirect-url" id="redirectUrl">-</div>
-            <div class="redirect-countdown" id="countdown">3</div>
-            <p style="color:var(--text-muted);font-size:0.75rem;">detik lagi...</p>
-            <button class="btn-shorten" onclick="cancelRedirect()" style="margin-top:0.8rem;background:var(--orange);">
-                <i class="fas fa-times"></i> Batal
-            </button>
+            <div class="redirect-progress"><div class="redirect-progress-fill" id="redirectProgressFill"></div></div>
+            <div class="redirect-countdown" id="countdown">10</div>
+            <p style="color:var(--text-muted);font-size:0.78rem;">detik</p>
+            <div class="redirect-buttons">
+                <button class="fetch-btn" onclick="goNow()"><i class="fas fa-bolt"></i> Buka Sekarang</button>
+                <button class="fetch-btn" onclick="cancelRedirect()" style="background:var(--orange);"><i class="fas fa-times"></i> Batal</button>
+            </div>
         </div>
 
         <!-- MAIN FORM -->
         <div id="mainForm">
+            <!-- HERO -->
             <div class="hero-banner">
                 <div class="hero-icon"><i class="fas fa-link"></i></div>
                 <h1>Short URL</h1>
                 <p>Pendekin link panjang jadi simpel & mudah diingat</p>
+                <div class="hero-domain"><i class="fas fa-globe"></i> staaporto.my.id</div>
             </div>
+            </div>
+            <!-- TAB BAR -->
+            <div class="tab-bar">
+                <button class="tab active" data-tab="create"><i class="fas fa-plus-circle"></i> Buat Baru</button>
+            </div>
+            <!-- TAB CREATE -->
+            <div class="tab-content" id="createTab">
+                <div class="main-card" style="margin-top:1.5rem;">
+                    <div class="section-title"><i class="fas fa-magic"></i> Buat Short URL Baru</div>
+                    
+                    <div class="input-row">
+                        <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang di sini...">
+                        <button class="btn-icon-sm" onclick="pasteURL()" title="Paste"><i class="fas fa-paste"></i></button>
+                    </div>
 
-            <div class="main-card">
-                <div class="section-title"><i class="fas fa-magic"></i> Buat Short URL</div>
-                <div class="input-row">
-                    <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang...">
-                    <button class="btn-paste" onclick="pasteURL()" title="Paste"><i class="fas fa-paste"></i></button>
-                </div>
-                <div class="alias-row">
-                    <span class="alias-prefix" id="aliasPrefix">.../short.html?r=</span>
-                    <input type="text" class="alias-input" id="customAlias" placeholder="custom-alias (opsional)">
-                </div>
-                <button class="btn-shorten" id="shortenBtn" onclick="shortenURL()">
-                    <i class="fas fa-scissors"></i> Pendekin Sekarang
-                </button>
-                <div class="result-area" id="resultArea">
-                    <div class="result-card">
-                        <div class="result-icon"><i class="fas fa-check"></i></div>
-                        <div class="result-info">
-                            <div class="result-short" id="resultShort" onclick="copyShortURL()">-</div>
-                            <div class="result-original" id="resultOriginal">-</div>
-                        </div>
-                        <div class="result-actions">
-                            <button class="btn-copy-sm" onclick="copyShortURL()" title="Copy"><i class="fas fa-copy"></i></button>
-                            <button class="btn-copy-sm" onclick="openShortURL()" title="Buka" style="background:#0984e3;"><i class="fas fa-external-link-alt"></i></button>
+                    <div class="alias-row">
+                        <span class="alias-prefix">staaporto.my.id/</span>
+                        <input type="text" class="alias-input" id="customAlias" placeholder="custom-alias (opsional)">
+                    </div>
+
+                    <button class="fetch-btn" id="shortenBtn" onclick="shortenURL()">
+                        <i class="fas fa-scissors"></i> Pendekin Sekarang
+                    </button>
+
+                    <div class="loading-spinner" id="loadingSpinner">
+                        <div class="spinner"></div>
+                        <p class="loading-text">Menyimpan ke database...</p>
+                    </div>
+
+                    <div class="result-area" id="resultArea">
+                        <div class="result-card">
+                            <div class="result-icon"><i class="fas fa-check"></i></div>
+                            <div class="result-info">
+                                <div class="result-short" id="resultShort" onclick="copyShortURL()">-</div>
+                                <div class="result-original" id="resultOriginal">-</div>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-copy-sm" onclick="copyShortURL()" title="Copy"><i class="fas fa-copy"></i></button>
+                                <button class="btn-copy-sm" onclick="openShortURL()" title="Buka" style="background:#0984e3;"><i class="fas fa-external-link-alt"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="main-card">
-                <div class="section-title"><i class="fas fa-chart-bar"></i> Statistik</div>
-                <div class="stats-grid">
-                    <div class="stat-item"><div class="stat-value" id="totalLinks">0</div><div class="stat-label">Total Link</div></div>
-                    <div class="stat-item"><div class="stat-value" id="todayLinks">0</div><div class="stat-label">Hari Ini</div></div>
-                    <div class="stat-item"><div class="stat-value" id="totalClicks">0</div><div class="stat-label">Total Klik</div></div>
+            <!-- TAB HISTORY -->
+            <div class="tab-content" id="historyTab" style="display:none;">
+                <div class="main-card" style="margin-top:1.5rem;">
+                    <div class="section-title"><i class="fas fa-history"></i> Riwayat Short URL</div>
+                    <div class="stats-grid">
+                        <div class="stat-item"><div class="stat-value" id="totalLinks">0</div><div class="stat-label">Total Link</div></div>
+                        <div class="stat-item"><div class="stat-value" id="todayLinks">0</div><div class="stat-label">Hari Ini</div></div>
+                        <div class="stat-item"><div class="stat-value" id="totalClicks">0</div><div class="stat-label">Total Klik</div></div>
+                    </div>
+                    <div class="history-list" id="historyList">
+                        <div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada short URL yang dibuat</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INFO -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <div class="info-box-content">
+                    <h4>Short URL Siap Pakai!</h4>
+                    <p>Format: <strong>staaporto.my.id/kode</strong> • Database: <strong>Supabase</strong> • Redirect: <strong>10 detik</strong> • Klik link history untuk copy/buka.</p>
                 </div>
             </div>
         </div>
-
+</div>
+        </div>
+</div>
+        <!-- FOOTER -->
         <footer class="footer" id="mainFooter">
-            <p>© 2026 STAA.DEV</p>
-            <p>Database: <strong id="footerDb">Supabase</strong></p>
+            <p>© 2026 STAA.DEV — All rights reserved</p>
+            <p>Built with <i class="fas fa-heart"></i> and Neo Brutalism</p>
         </footer>
     </div>
 
     <!-- TOAST -->
     <div class="toast" id="toast">
         <div class="toast-icon success" id="toastIcon"><i class="fas fa-check"></i></div>
-        <div class="toast-content">
-            <div class="toast-title" id="toastTitle">Sukses!</div>
-            <div class="toast-desc" id="toastDesc">-</div>
-        </div>
+        <div class="toast-content"><div class="toast-title" id="toastTitle">Sukses!</div><div class="toast-desc" id="toastDesc">-</div></div>
         <span class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></span>
     </div>
 
     <script>
-        // ==================== KONFIGURASI SUPABASE ====================
-        const DB_PROVIDER = 'supabase'; // SUDAH DIGANTI KE SUPABASE
-        
+        const DB_PROVIDER = 'supabase';
         const SUPABASE_CONFIG = {
             url: 'https://yamopvhndbnmnnasffik.supabase.co',
             key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhbW9wdmhuZGJubW5uYXNmZmlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MjU3NjUsImV4cCI6MjEwMTMwMTc2NX0.8OHWzlfXK6Ng6eui23s9YZbHDu5jLRuPLDQSqHLpIJo',
             table: 'links'
         };
+        const CLEAN_DOMAIN = 'https://staaporto.my.id';
+        const SHORT_PAGE = CLEAN_DOMAIN + '/short.html?r=';
+        let currentShortURL = '', cleanShortURL = '', redirectTimer = null, targetUrl = '', linkDataCache = {};
 
-        const BASE_DOMAIN = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-        const SHORT_PAGE = BASE_DOMAIN + '/short.html?r=';
-        
-        document.getElementById('aliasPrefix').textContent = BASE_DOMAIN.replace('https://', '').replace('http://', '') + '/short.html?r=';
-
-        let currentShortURL = '';
-        let redirectTimer = null;
-        let linkDataCache = {};
-
-        // ==================== SUPABASE FUNCTIONS ====================
+        // ==================== SUPABASE ====================
         async function supabaseGetAll() {
-            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?select=*`, {
-                headers: {
-                    'apikey': SUPABASE_CONFIG.key,
-                    'Authorization': `Bearer ${SUPABASE_CONFIG.key}`
-                }
+            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?select=*&order=created_at.desc`, {
+                headers: { 'apikey': SUPABASE_CONFIG.key, 'Authorization': `Bearer ${SUPABASE_CONFIG.key}` }
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const rows = await res.json();
-            const record = {};
-            if (Array.isArray(rows)) {
-                rows.forEach(row => { 
-                    record[row.short_code] = { 
-                        url: row.url, 
-                        createdAt: row.created_at, 
-                        clicks: row.clicks || 0 
-                    }; 
-                });
-            }
+            const rows = await res.json(); const record = {};
+            if (Array.isArray(rows)) rows.forEach(row => { record[row.short_code] = { url: row.url, createdAt: row.created_at, clicks: row.clicks || 0 }; });
             return record;
         }
-
-        async function supabaseSave(shortCode, urlData) {
+        async function supabaseSave(sc, ud) {
             const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}`, {
-                method: 'POST',
-                headers: {
-                    'apikey': SUPABASE_CONFIG.key,
-                    'Authorization': `Bearer ${SUPABASE_CONFIG.key}`,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=minimal'
-                },
-                body: JSON.stringify({
-                    short_code: shortCode,
-                    url: urlData.url,
-                    created_at: urlData.createdAt || new Date().toISOString(),
-                    clicks: urlData.clicks || 0
-                })
+                method: 'POST', headers: { 'apikey': SUPABASE_CONFIG.key, 'Authorization': `Bearer ${SUPABASE_CONFIG.key}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                body: JSON.stringify({ short_code: sc, url: ud.url, created_at: ud.createdAt || new Date().toISOString(), clicks: ud.clicks || 0 })
             });
             return res.ok;
         }
-
-        async function supabaseUpdateClicks(shortCode, clicks) {
-            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?short_code=eq.${encodeURIComponent(shortCode)}`, {
-                method: 'PATCH',
-                headers: {
-                    'apikey': SUPABASE_CONFIG.key,
-                    'Authorization': `Bearer ${SUPABASE_CONFIG.key}`,
-                    'Content-Type': 'application/json'
-                },
+        async function supabaseUpdateClicks(sc, clicks) {
+            await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?short_code=eq.${encodeURIComponent(sc)}`, {
+                method: 'PATCH', headers: { 'apikey': SUPABASE_CONFIG.key, 'Authorization': `Bearer ${SUPABASE_CONFIG.key}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ clicks: clicks })
             });
-            return res.ok;
+        }
+        async function supabaseDelete(sc) {
+            await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?short_code=eq.${encodeURIComponent(sc)}`, {
+                method: 'DELETE', headers: { 'apikey': SUPABASE_CONFIG.key, 'Authorization': `Bearer ${SUPABASE_CONFIG.key}` }
+            });
         }
 
-        // ==================== UNIFIED DB ====================
-        async function dbGetAll() {
-            try {
-                if (DB_PROVIDER === 'supabase') return await supabaseGetAll();
-            } catch(e) { console.error('DB Get Error:', e); }
-            return JSON.parse(localStorage.getItem('staa_short_links') || '{}');
-        }
-
-        async function dbSave(shortCode, urlData) {
-            try {
-                if (DB_PROVIDER === 'supabase') {
-                    const ok = await supabaseSave(shortCode, urlData);
-                    if (ok) return true;
-                }
-            } catch(e) { console.error('DB Save Error:', e); }
-            // Fallback
-            const data = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
-            data[shortCode] = urlData;
-            localStorage.setItem('staa_short_links', JSON.stringify(data));
-            return true;
-        }
-
-        async function dbUpdateClicks(shortCode, clicks) {
-            try {
-                if (DB_PROVIDER === 'supabase') {
-                    await supabaseUpdateClicks(shortCode, clicks);
-                    return;
-                }
-            } catch(e) { console.error('DB Update Error:', e); }
-            const data = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
-            if (data[shortCode]) { data[shortCode].clicks = clicks; localStorage.setItem('staa_short_links', JSON.stringify(data)); }
-        }
+        async function dbGetAll() { try { return await supabaseGetAll(); } catch(e) { return JSON.parse(localStorage.getItem('staa_short_links') || '{}'); } }
+        async function dbSave(sc, ud) { try { if (await supabaseSave(sc, ud)) return true; } catch(e) {} const d = JSON.parse(localStorage.getItem('staa_short_links') || '{}'); d[sc] = ud; localStorage.setItem('staa_short_links', JSON.stringify(d)); return true; }
+        async function dbUpdateClicks(sc, cl) { try { await supabaseUpdateClicks(sc, cl); } catch(e) { const d = JSON.parse(localStorage.getItem('staa_short_links') || '{}'); if (d[sc]) { d[sc].clicks = cl; localStorage.setItem('staa_short_links', JSON.stringify(d)); } } }
+        async function dbDelete(sc) { try { await supabaseDelete(sc); } catch(e) {} const d = JSON.parse(localStorage.getItem('staa_short_links') || '{}'); delete d[sc]; localStorage.setItem('staa_short_links', JSON.stringify(d)); }
 
         // ==================== CHECK CONNECTION ====================
         async function checkConnection() {
-            try {
-                linkDataCache = await dbGetAll();
-                document.getElementById('statusDot').className = 'status-dot online';
-                document.getElementById('statusText').textContent = '✅ Supabase Terhubung';
-                document.getElementById('footerDb').textContent = 'Supabase';
-                updateStats();
-            } catch (e) {
-                console.error('Connection error:', e);
-                document.getElementById('statusDot').className = 'status-dot offline';
-                document.getElementById('statusText').textContent = '⚠️ Offline (LocalStorage)';
-                document.getElementById('footerDb').textContent = 'Local Storage';
-                linkDataCache = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
-                updateStats();
-            }
+            try { linkDataCache = await dbGetAll(); document.getElementById('statusDot').className = 'status-dot online'; document.getElementById('statusText').textContent = '✅ Supabase Terhubung'; updateStats(); renderHistory(); }
+            catch(e) { document.getElementById('statusDot').className = 'status-dot offline'; document.getElementById('statusText').textContent = '⚠️ Offline (LocalStorage)'; linkDataCache = JSON.parse(localStorage.getItem('staa_short_links') || '{}'); updateStats(); renderHistory(); }
         }
 
-        // ==================== TOAST ====================
         function showToast(title, desc, type) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastTitle').textContent = title;
-            document.getElementById('toastDesc').textContent = desc;
-            const icon = document.getElementById('toastIcon');
-            icon.className = 'toast-icon ' + type;
+            const t = document.getElementById('toast'); document.getElementById('toastTitle').textContent = title; document.getElementById('toastDesc').textContent = desc;
+            const icon = document.getElementById('toastIcon'); icon.className = 'toast-icon ' + type;
             icon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : type === 'error' ? '<i class="fas fa-times"></i>' : '<i class="fas fa-info"></i>';
-            toast.classList.add('show');
-            setTimeout(hideToast, 4000);
+            t.classList.add('show'); setTimeout(hideToast, 4000);
         }
         function hideToast() { document.getElementById('toast').classList.remove('show'); }
+        async function pasteURL() { try { document.getElementById('longUrl').value = await navigator.clipboard.readText(); showToast('📋 Link dipaste!', 'URL berhasil ditempel.', 'info'); } catch(e) { showToast('❌ Gagal', 'Gunakan Ctrl+V', 'error'); } }
+        function generateShortCode(l=5) { const c = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; let r = ''; for(let i=0;i<l;i++) r+=c.charAt(Math.floor(Math.random()*c.length)); return r; }
 
-        async function pasteURL() {
-            try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById('longUrl').value = text;
-                showToast('📋 Link dipaste!', 'URL berhasil ditempel.', 'info');
-            } catch (err) { showToast('❌ Gagal', 'Gunakan Ctrl+V', 'error'); }
-        }
-
-        function generateShortCode(length = 5) {
-            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-            return result;
-        }
-
-        // ==================== SHORTEN URL ====================
+        // ==================== SHORTEN ====================
         async function shortenURL() {
-            const longUrl = document.getElementById('longUrl').value.trim();
-            const customAlias = document.getElementById('customAlias').value.trim();
-            const btn = document.getElementById('shortenBtn');
-            const resultArea = document.getElementById('resultArea');
-
-            if (!longUrl) { showToast('❌ URL kosong!', 'Masukkan URL yang ingin dipendekkan.', 'error'); return; }
-            if (!longUrl.startsWith('http://') && !longUrl.startsWith('https://')) {
-                showToast('❌ URL tidak valid', 'Harus diawali http:// atau https://', 'error'); return;
-            }
-
-            btn.disabled = true;
-            btn.classList.add('loading');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-
-            try {
-                linkDataCache = await dbGetAll();
-                let shortCode;
-                
-                if (customAlias && customAlias.length >= 3) {
-                    if (!/^[a-zA-Z0-9\-_]+$/.test(customAlias)) {
-                        showToast('❌ Alias tidak valid', 'Hanya huruf, angka, dash (-) dan underscore (_)', 'error');
-                        btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-scissors"></i> Pendekin Sekarang';
-                        return;
-                    }
-                    if (linkDataCache[customAlias]) {
-                        showToast('⚠️ Alias sudah dipakai', 'Silakan gunakan alias lain.', 'error');
-                        btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-scissors"></i> Pendekin Sekarang';
-                        return;
-                    }
-                    shortCode = customAlias;
-                } else {
-                    do { shortCode = generateShortCode(); } while (linkDataCache[shortCode]);
-                }
-
-                const urlData = { url: longUrl, createdAt: new Date().toISOString(), clicks: 0 };
-                const saved = await dbSave(shortCode, urlData);
-
-                if (saved) {
-                    linkDataCache[shortCode] = urlData;
-                    currentShortURL = SHORT_PAGE + shortCode;
-                    document.getElementById('resultShort').textContent = currentShortURL;
-                    document.getElementById('resultOriginal').textContent = longUrl;
-                    resultArea.classList.add('show');
-                    resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    updateStats();
-                    showToast('✅ Berhasil!', currentShortURL, 'success');
-                    document.getElementById('customAlias').value = '';
-                } else {
-                    showToast('❌ Gagal menyimpan', 'Coba lagi nanti.', 'error');
-                }
-            } catch (e) {
-                console.error('Shorten error:', e);
-                showToast('❌ Error: ' + e.message, 'Cek console (F12)', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.classList.remove('loading');
-                btn.innerHTML = '<i class="fas fa-scissors"></i> Pendekin Sekarang';
-            }
+            const longUrl = document.getElementById('longUrl').value.trim(), customAlias = document.getElementById('customAlias').value.trim();
+            const btn = document.getElementById('shortenBtn'), loading = document.getElementById('loadingSpinner'), resultArea = document.getElementById('resultArea');
+            if(!longUrl){showToast('❌ URL kosong!','Masukkan URL.','error');return;}
+            if(!longUrl.startsWith('http://')&&!longUrl.startsWith('https://')){showToast('❌ Tidak valid','Harus http:// atau https://','error');return;}
+            btn.disabled=true;btn.classList.add('loading');btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Menyimpan...';loading.classList.add('show');resultArea.classList.remove('show');
+            try{
+                linkDataCache=await dbGetAll();let sc;
+                if(customAlias&&customAlias.length>=3){if(!/^[a-zA-Z0-9\-_]+$/.test(customAlias)){showToast('❌ Alias tidak valid','Hanya huruf, angka, dash (-) dan underscore (_)','error');btnReset();loading.classList.remove('show');return;}if(linkDataCache[customAlias]){showToast('⚠️ Sudah dipakai','Gunakan alias lain.','error');btnReset();loading.classList.remove('show');return;}sc=customAlias;}else{do{sc=generateShortCode();}while(linkDataCache[sc]);}
+                const ud={url:longUrl,createdAt:new Date().toISOString(),clicks:0};const saved=await dbSave(sc,ud);
+                if(saved){linkDataCache[sc]=ud;cleanShortURL=CLEAN_DOMAIN+'/'+sc;currentShortURL=SHORT_PAGE+sc;document.getElementById('resultShort').textContent=cleanShortURL;document.getElementById('resultOriginal').textContent=longUrl;resultArea.classList.add('show');resultArea.scrollIntoView({behavior:'smooth',block:'nearest'});updateStats();renderHistory();showToast('✅ Berhasil!',cleanShortURL,'success');document.getElementById('customAlias').value='';}
+                else{showToast('❌ Gagal','Coba lagi.','error');}
+            }catch(e){showToast('❌ Error: '+e.message,'Cek F12','error');}
+            finally{btnReset();loading.classList.remove('show');}
         }
+        function btnReset(){const btn=document.getElementById('shortenBtn');btn.disabled=false;btn.classList.remove('loading');btn.innerHTML='<i class="fas fa-scissors"></i> Pendekin Sekarang';}
 
-        // ==================== COPY ====================
-        function copyShortURL() {
-            if (!currentShortURL) return;
-            navigator.clipboard.writeText(currentShortURL).then(() => {
-                const btn = document.querySelector('.btn-copy-sm');
-                if (btn) { btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i>'; setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000); }
-                showToast('📋 Tersalin!', currentShortURL, 'success');
-            });
+        function copyShortURL(){const url=cleanShortURL||currentShortURL;if(!url)return;navigator.clipboard.writeText(url).then(()=>{const b=document.querySelector('.btn-copy-sm');if(b){b.classList.add('copied');b.innerHTML='<i class="fas fa-check"></i>';setTimeout(()=>{b.classList.remove('copied');b.innerHTML='<i class="fas fa-copy"></i>';},2000);}showToast('📋 Tersalin!',url,'success');});}
+        function openShortURL(){const url=cleanShortURL||currentShortURL;if(url)window.open(url,'_blank');}
+
+        // ==================== HISTORY ====================
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            const entries = Object.entries(linkDataCache).sort((a,b) => new Date(b[1].createdAt) - new Date(a[1].createdAt));
+            if(entries.length===0){list.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada short URL yang dibuat</p></div>';return;}
+            list.innerHTML = entries.map(([code, data]) => {
+                const d = new Date(data.createdAt), timeStr = d.toLocaleDateString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+                const shortURL = CLEAN_DOMAIN + '/' + code;
+                return `<div class="history-item">
+                    <div class="history-icon"><i class="fas fa-link"></i></div>
+                    <div class="history-info">
+                        <div class="history-short" onclick="copyHistoryURL('${shortURL.replace(/'/g,"\\'")}')">${shortURL}</div>
+                        <div class="history-original" title="${data.url}">${data.url}</div>
+                        <div class="history-time"><span>🕐 ${timeStr}</span><span>👁 ${data.clicks||0} klik</span></div>
+                    </div>
+                    <div class="history-actions">
+                        <button class="btn-icon-xs" onclick="copyHistoryURL('${shortURL.replace(/'/g,"\\'")}')" title="Copy"><i class="fas fa-copy"></i></button>
+                        <button class="btn-icon-xs" onclick="window.open('${shortURL}','_blank')" title="Buka"><i class="fas fa-external-link-alt"></i></button>
+                        <button class="btn-icon-xs delete" onclick="deleteHistory('${code}')" title="Hapus"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
         }
+        function copyHistoryURL(url){navigator.clipboard.writeText(url).then(()=>showToast('📋 Tersalin!',url,'success'));}
+        async function deleteHistory(code){await dbDelete(code);delete linkDataCache[code];updateStats();renderHistory();showToast('🗑️ Dihapus','Short URL dihapus.','info');}
 
-        function openShortURL() { if (currentShortURL) window.open(currentShortURL, '_blank'); }
+        function updateStats(){
+            const entries=Object.entries(linkDataCache);document.getElementById('totalLinks').textContent=entries.length;
+            const today=new Date().toDateString();document.getElementById('todayLinks').textContent=entries.filter(([_,d])=>new Date(d.createdAt).toDateString()===today).length;
+            document.getElementById('totalClicks').textContent=entries.reduce((s,[_,d])=>s+(d.clicks||0),0);
+        }
 
         // ==================== REDIRECT ====================
-        async function handleRedirect() {
-            const params = new URLSearchParams(window.location.search);
-            const shortCode = params.get('r');
-            if (!shortCode) return;
-            
-            try {
-                const record = await dbGetAll();
-                const urlData = record[shortCode];
-                
-                if (urlData) {
-                    urlData.clicks = (urlData.clicks || 0) + 1;
-                    await dbUpdateClicks(shortCode, urlData.clicks);
-                    
-                    document.getElementById('mainForm').style.display = 'none';
-                    document.getElementById('mainFooter').style.display = 'none';
-                    document.getElementById('connectionStatus').style.display = 'none';
-                    document.getElementById('redirectPage').classList.add('show');
-                    document.getElementById('redirectUrl').textContent = urlData.url;
-                    
-                    let count = 3;
-                    document.getElementById('countdown').textContent = count;
-                    redirectTimer = setInterval(() => {
-                        count--;
-                        document.getElementById('countdown').textContent = count;
-                        if (count <= 0) { clearInterval(redirectTimer); window.location.href = urlData.url; }
-                    }, 1000);
-                }
-            } catch(e) { console.error('Redirect error:', e); }
+        async function handleRedirect(){
+            const params=new URLSearchParams(window.location.search);const shortCode=params.get('r');if(!shortCode)return;
+            try{const record=await dbGetAll();const urlData=record[shortCode];if(urlData){targetUrl=urlData.url;urlData.clicks=(urlData.clicks||0)+1;await dbUpdateClicks(shortCode,urlData.clicks);document.getElementById('mainForm').style.display='none';document.getElementById('mainFooter').style.display='none';document.getElementById('connectionStatus').style.display='none';document.getElementById('redirectPage').classList.add('show');document.getElementById('redirectUrl').textContent=targetUrl;let count=10;document.getElementById('countdown').textContent=count;document.getElementById('redirectProgressFill').style.width='100%';redirectTimer=setInterval(()=>{count--;document.getElementById('countdown').textContent=count;document.getElementById('redirectProgressFill').style.width=(count*10)+'%';if(count<=0){clearInterval(redirectTimer);window.location.href=targetUrl;}},1000);}}catch(e){console.error(e);}
         }
+        function cancelRedirect(){if(redirectTimer)clearInterval(redirectTimer);document.getElementById('mainForm').style.display='';document.getElementById('mainFooter').style.display='';document.getElementById('connectionStatus').style.display='';document.getElementById('redirectPage').classList.remove('show');window.history.replaceState({},document.title,window.location.pathname);}
+        function goNow(){if(redirectTimer)clearInterval(redirectTimer);if(targetUrl)window.location.href=targetUrl;}
 
-        function cancelRedirect() {
-            if (redirectTimer) clearInterval(redirectTimer);
-            document.getElementById('mainForm').style.display = '';
-            document.getElementById('mainFooter').style.display = '';
-            document.getElementById('connectionStatus').style.display = '';
-            document.getElementById('redirectPage').classList.remove('show');
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
-        // ==================== STATS ====================
-        function updateStats() {
-            const entries = Object.entries(linkDataCache);
-            document.getElementById('totalLinks').textContent = entries.length;
-            const today = new Date().toDateString();
-            document.getElementById('todayLinks').textContent = entries.filter(([_, d]) => new Date(d.createdAt).toDateString() === today).length;
-            document.getElementById('totalClicks').textContent = entries.reduce((sum, [_, d]) => sum + (d.clicks || 0), 0);
-        }
+        // ==================== TAB SWITCHING ====================
+        document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); const tabName = tab.dataset.tab; document.getElementById('createTab').style.display = tabName === 'create' ? 'block' : 'none'; document.getElementById('historyTab').style.display = tabName === 'history' ? 'block' : 'none'; }); });
 
         // ==================== EVENTS ====================
-        document.getElementById('longUrl').addEventListener('keypress', function(e) { if (e.key === 'Enter') shortenURL(); });
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const isDark = html.getAttribute('data-theme') === 'dark';
-            if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
-            else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
-        }
-        (function() { if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); })();
-
-        // ==================== INIT ====================
-        (async function init() {
-            await checkConnection();
-            await handleRedirect();
-        })();
+        document.getElementById('longUrl').addEventListener('keypress',function(e){if(e.key==='Enter')shortenURL();});
+        function toggleTheme(){const h=document.documentElement;h.getAttribute('data-theme')==='dark'?(h.removeAttribute('data-theme'),localStorage.setItem('theme','light')):(h.setAttribute('data-theme','dark'),localStorage.setItem('theme','dark'));}
+        (function(){if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');})();
+        (async function init(){await checkConnection();await handleRedirect();})();
     </script>
 </body>
 </html>
