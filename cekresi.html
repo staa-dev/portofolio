@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAA.DEV | Cek Resi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --red: #DA1107;
+            --orange: #E37F06;
+            --green: #049C6E;
+            --blue: #0984e3;
+            --purple: #6c5ce7;
+            --red-light: #fde8e7;
+            --orange-light: #fef3e6;
+            --green-light: #e6f7f2;
+            --black: #1a1a2e;
+            --white: #ffffff;
+            --shadow-sm: 3px 3px 0 var(--black);
+            --shadow-md: 5px 5px 0 var(--black);
+            --shadow-lg: 7px 7px 0 var(--black);
+            --border: 3px solid var(--black);
+            --border-sm: 2px solid var(--black);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f0f0f0;
+            --text-primary: #1a1a2e;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --border-light: rgba(0,0,0,0.08);
+            --card-bg: #ffffff;
+            --body-bg: linear-gradient(135deg, #fde8e7 0%, #fef3e6 50%, #e6f7f2 100%);
+        }
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #252540;
+            --bg-tertiary: #2a2a45;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #888;
+            --border-light: rgba(255,255,255,0.1);
+            --card-bg: #252540;
+            --body-bg: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f1a15 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--body-bg); background-attachment: fixed;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary); line-height: 1.5; min-height: 100vh;
+            padding: 1.5rem; position: relative; overflow-x: hidden; transition: background 0.3s ease;
+        }
+        [data-theme="dark"] body { background: #111118; }
+        .container { width: 100%; max-width: 850px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .toast {
+            position: fixed; top: 1.5rem; right: 1.5rem; background: var(--bg-primary);
+            border: var(--border); border-radius: 12px; padding: 1rem 1.2rem; box-shadow: var(--shadow-lg);
+            z-index: 10000; display: flex; align-items: center; gap: 0.8rem; min-width: 280px;
+            max-width: 400px; transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; flex-shrink: 0; border: var(--border-sm); }
+        .toast-icon.success { background: var(--green); } .toast-icon.info { background: var(--blue); } .toast-icon.error { background: var(--red); }
+        .toast-content { flex: 1; min-width: 0; }
+        .toast-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); }
+        .toast-desc { font-size: 0.7rem; color: var(--text-secondary); word-break: break-word; }
+        .toast-close { cursor: pointer; color: var(--text-muted); font-size: 0.8rem; transition: var(--transition); flex-shrink: 0; }
+        .toast-close:hover { color: var(--red); }
+
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.5rem; background: var(--bg-primary); border: var(--border);
+            border-radius: 16px; box-shadow: var(--shadow-md); gap: 1rem; transition: background 0.3s ease;
+            flex-wrap: wrap;
+        }
+        .brand { display: flex; align-items: center; gap: 0.8rem; flex-shrink: 0; }
+        .brand-logo { width: 42px; height: 42px; background: var(--blue); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition); flex-shrink: 0; }
+        .brand-logo:hover { transform: rotate(-6deg) scale(1.08); box-shadow: var(--shadow-md); background: var(--purple); }
+        .brand-name { font-size: 1.4rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); white-space: nowrap; }
+        .brand-name span { color: var(--blue); }
+        .header-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+        .back-btn { background: var(--bg-secondary); border: var(--border-sm); padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary); font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; box-shadow: var(--shadow-sm); transition: var(--transition); white-space: nowrap; }
+        .back-btn:hover { background: var(--blue); color: #fff; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .theme-toggle-btn { width: 40px; height: 40px; background: var(--card-bg); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition); font-size: 1.1rem; color: var(--text-primary); flex-shrink: 0; }
+        .theme-toggle-btn:hover { transform: rotate(15deg) scale(1.08); box-shadow: var(--shadow-md); }
+        .theme-toggle-btn .fa-sun { display: none; } .theme-toggle-btn .fa-moon { display: inline-block; }
+        [data-theme="dark"] .theme-toggle-btn .fa-sun { display: inline-block; color: #fdcb6e; } [data-theme="dark"] .theme-toggle-btn .fa-moon { display: none; }
+
+        .hero-banner {
+            background: linear-gradient(135deg, var(--blue) 0%, #0652DD 50%, #1e3799 100%);
+            border: var(--border); border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-lg);
+            text-align: center; color: #fff; position: relative; overflow: hidden;
+        }
+        .hero-banner::before { content: ''; position: absolute; top: -30%; right: -10%; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+        .hero-banner .hero-icon { font-size: 2.8rem; margin-bottom: 0.4rem; position: relative; animation: float 3s ease-in-out infinite; display: block; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .hero-banner h1 { font-size: 2.2rem; font-weight: 900; margin-bottom: 0.3rem; position: relative; word-break: break-word; }
+        .hero-banner p { font-size: 0.9rem; opacity: 0.85; position: relative; word-break: break-word; }
+
+        .main-card { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; overflow: hidden; }
+        .section-title { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.4rem; }
+
+        .input-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; align-items: center; flex-wrap: wrap; }
+        .input-group { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+        .input-label { font-weight: 700; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 0.3rem; }
+        .resi-input { width: 100%; padding: 0.85rem 1rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.9rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; letter-spacing: 1px; min-width: 0; }
+        .resi-input:focus { box-shadow: var(--shadow-md); border-color: var(--blue); }
+        .resi-input::placeholder { color: var(--text-muted); font-size: 0.8rem; letter-spacing: 0; }
+
+        .courier-label { font-weight: 700; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.3rem; }
+        .courier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 0.4rem; margin-bottom: 1rem; max-height: 250px; overflow-y: auto; padding-right: 0.3rem; }
+        .courier-option { text-align: center; padding: 0.5rem 0.3rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); font-weight: 700; font-size: 0.65rem; color: var(--text-primary); display: flex; flex-direction: column; align-items: center; gap: 0.2rem; word-break: break-word; }
+        .courier-option i { font-size: 0.9rem; flex-shrink: 0; }
+        .courier-option:hover { background: var(--bg-tertiary); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+        .courier-option.active { background: var(--blue); color: #ffffff; box-shadow: 2px 2px 0 var(--black); border-color: var(--blue); }
+        .courier-option.active i { color: #fff; }
+
+        .fetch-btn { width: 100%; padding: 0.85rem; background: var(--blue); color: #fff; border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: inherit; }
+        .fetch-btn:hover { background: #0652DD; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .fetch-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        .fetch-btn.loading i { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .loading-spinner { display: none; text-align: center; padding: 1.5rem; }
+        .loading-spinner.show { display: block; }
+        .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 0.8rem; }
+        .loading-text { font-weight: 700; font-size: 0.82rem; color: var(--text-secondary); }
+
+        .result-area { display: none; margin-top: 1rem; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .result-area.show { display: block; }
+
+        .summary-card { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .summary-icon { width: 55px; height: 55px; background: var(--blue); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); }
+        .summary-info { flex: 1; min-width: 180px; overflow: hidden; }
+        .summary-courier { font-weight: 900; font-size: 0.85rem; color: var(--blue); text-transform: uppercase; word-break: break-word; }
+        .summary-resi { font-weight: 900; font-size: 1rem; color: var(--text-primary); letter-spacing: 1px; word-break: break-all; }
+        .summary-status { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; margin-top: 0.3rem; border: var(--border-sm); }
+        .summary-status.delivered { background: var(--green); color: #fff; }
+        .summary-status.in-transit { background: var(--orange); color: #fff; }
+        .summary-status.pending { background: #fdcb6e; color: #1a1a2e; }
+        .summary-service { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; word-break: break-word; }
+        .summary-date { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.1rem; word-break: break-word; }
+
+        .timeline-card { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1.2rem; box-shadow: var(--shadow-sm); overflow: hidden; }
+        .timeline-title { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; }
+        .timeline { position: relative; padding-left: 25px; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: var(--border-light); border-radius: 10px; }
+        .timeline-item { position: relative; padding-bottom: 1.2rem; word-break: break-word; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-dot { position: absolute; left: -17px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); border: 3px solid var(--bg-primary); z-index: 1; flex-shrink: 0; }
+        .timeline-item:first-child .timeline-dot { background: var(--green); width: 16px; height: 16px; left: -18px; top: 2px; }
+        .timeline-date { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; word-break: break-word; }
+        .timeline-desc { font-weight: 700; font-size: 0.8rem; color: var(--text-primary); word-break: break-word; }
+        .timeline-location { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.1rem; display: flex; align-items: center; gap: 0.3rem; word-break: break-word; }
+        .timeline-location i { flex-shrink: 0; }
+
+        .info-card { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); overflow: hidden; }
+        .info-title { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .info-item { font-size: 0.75rem; word-break: break-word; }
+        .info-item strong { color: var(--text-primary); }
+
+        .error-card { background: var(--red-light); border: var(--border-sm); border-radius: var(--radius); padding: 1.5rem; text-align: center; box-shadow: var(--shadow-sm); overflow: hidden; }
+        [data-theme="dark"] .error-card { background: rgba(218, 17, 7, 0.15); border-color: var(--red); }
+        .error-card i { font-size: 2.5rem; color: var(--red); margin-bottom: 0.5rem; display: block; }
+        .error-card p { font-weight: 700; color: var(--red); word-break: break-word; }
+        .error-card small { display: block; margin-top: 0.5rem; word-break: break-word; }
+
+        .info-box { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: flex-start; gap: 0.8rem; overflow: hidden; }
+        .info-box i { color: var(--blue); font-size: 1.1rem; margin-top: 0.1rem; flex-shrink: 0; }
+        .info-box-content h4 { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.2rem; word-break: break-word; }
+        .info-box-content p { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.5; word-break: break-word; }
+
+        .footer { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease; overflow: hidden; }
+        .footer p { font-weight: 700; font-size: 0.8rem; color: var(--text-primary); word-break: break-word; }
+        .footer p:last-child { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; word-break: break-word; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; } 
+            .container { gap: 1rem; } 
+            .hero-banner { padding: 1.5rem; } 
+            .hero-banner h1 { font-size: 1.7rem; }
+            .main-card { padding: 1.2rem; } 
+            .courier-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); }
+            .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
+            .summary-card { flex-direction: column; align-items: flex-start; }
+            .summary-icon { width: 45px; height: 45px; font-size: 1.2rem; }
+            .info-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: stretch; gap: 0.8rem; }
+            .brand { justify-content: center; }
+            .header-actions { justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .courier-grid { grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); }
+            .courier-option { font-size: 0.55rem; padding: 0.4rem 0.2rem; }
+            .courier-option i { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="brand">
+                <div class="brand-logo"><i class="fas fa-box"></i></div>
+                <span class="brand-name">STAA<span>.</span>RESI</span>
+            </div>
+            <div class="header-actions">
+                <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()"><i class="fas fa-moon"></i><i class="fas fa-sun"></i></button>
+            </div>
+        </header>
+
+        <div class="hero-banner">
+            <div class="hero-icon"><i class="fas fa-truck-fast"></i></div>
+            <h1>Cek Resi</h1>
+            <p><i class="fas fa-search"></i> Lacak paketmu dengan mudah & cepat • 25+ Jasa Pengiriman</p>
+        </div>
+
+        <div class="main-card">
+            <div class="section-title"><i class="fas fa-search-location"></i> Lacak Paket</div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label class="input-label"><i class="fas fa-hashtag"></i> Nomor Resi</label>
+                    <input type="text" class="resi-input" id="resiInput" placeholder="Masukkan nomor resi...">
+                </div>
+            </div>
+
+            <div class="courier-label"><i class="fas fa-shipping-fast"></i> Pilih Jasa Pengiriman</div>
+            <div class="courier-grid" id="courierGrid">
+                <div class="courier-option active" data-courier="jne"><i class="fas fa-box"></i> JNE</div>
+                <div class="courier-option" data-courier="jnt"><i class="fas fa-boxes"></i> J&T</div>
+                <div class="courier-option" data-courier="sicepat"><i class="fas fa-rocket"></i> SiCepat</div>
+                <div class="courier-option" data-courier="anteraja"><i class="fas fa-truck"></i> AnterAja</div>
+                <div class="courier-option" data-courier="pos"><i class="fas fa-mail-bulk"></i> POS</div>
+                <div class="courier-option" data-courier="tiki"><i class="fas fa-dolly"></i> TIKI</div>
+                <div class="courier-option" data-courier="wahana"><i class="fas fa-plane"></i> Wahana</div>
+                <div class="courier-option" data-courier="ninja"><i class="fas fa-ninja"></i> Ninja</div>
+                <div class="courier-option" data-courier="lion"><i class="fas fa-paw"></i> Lion</div>
+                <div class="courier-option" data-courier="pcp"><i class="fas fa-car"></i> PCP</div>
+                <div class="courier-option" data-courier="rex"><i class="fas fa-crown"></i> REX</div>
+                <div class="courier-option" data-courier="first"><i class="fas fa-medal"></i> First</div>
+                <div class="courier-option" data-courier="idexpress"><i class="fas fa-globe-asia"></i> ID Express</div>
+                <div class="courier-option" data-courier="spx"><i class="fas fa-shopping-bag"></i> Shopee</div>
+                <div class="courier-option" data-courier="kgx"><i class="fas fa-box-open"></i> KGX</div>
+                <div class="courier-option" data-courier="sap"><i class="fas fa-leaf"></i> SAP</div>
+                <div class="courier-option" data-courier="jntcargo"><i class="fas fa-warehouse"></i> J&T Cargo</div>
+                <div class="courier-option" data-courier="lex"><i class="fas fa-store"></i> LEX</div>
+                <div class="courier-option" data-courier="indah"><i class="fas fa-gem"></i> Indah</div>
+                <div class="courier-option" data-courier="dakota"><i class="fas fa-feather"></i> Dakota</div>
+                <div class="courier-option" data-courier="antcargo"><i class="fas fa-robot"></i> AntCargo</div>
+                <div class="courier-option" data-courier="next"><i class="fas fa-forward"></i> Next</div>
+                <div class="courier-option" data-courier="gtl"><i class="fas fa-shield-alt"></i> GTL</div>
+                <div class="courier-option" data-courier="tokopedia"><i class="fas fa-shopping-cart"></i> Tokopedia</div>
+            </div>
+
+            <button class="fetch-btn" id="cekBtn" onclick="cekResi()">
+                <i class="fas fa-search"></i> Cek Resi Sekarang
+            </button>
+
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Mengecek resi...</p>
+            </div>
+
+            <div class="result-area" id="resultArea"></div>
+        </div>
+
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <div class="info-box-content">
+                <h4><i class="fas fa-check-circle"></i> 24 Jasa Pengiriman Aktif</h4>
+                <p>Semua kurir di atas status <strong>Online</strong>. Data real-time dari Binderbyte API. Jika terjadi error, coba cek kembali nomor resi atau pilih kurir lain.</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p><i class="far fa-copyright"></i> 2026 STAA.DEV — All rights reserved</p>
+            <p><i class="fas fa-bolt"></i> Powered by <strong>Binderbyte API</strong></p>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <div class="toast-icon success" id="toastIcon"><i class="fas fa-check"></i></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Sukses!</div>
+            <div class="toast-desc" id="toastDesc">-</div>
+        </div>
+        <span class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></span>
+    </div>
+
+    <script>
+        const BINDERBYTE_API_KEY = 'sk_xqqa7xoalxmzgge3pedqcafgtlnige88pawbkhtwdlxpl69yfdegolywjgrmu76m';
+        let selectedCourier = 'spx';
+
+        document.querySelectorAll('#courierGrid .courier-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('#courierGrid .courier-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                selectedCourier = this.dataset.courier;
+            });
+        });
+
+        function showToast(title, desc, type) {
+            const t = document.getElementById('toast'); 
+            document.getElementById('toastTitle').textContent = title; 
+            document.getElementById('toastDesc').textContent = desc;
+            const icon = document.getElementById('toastIcon'); 
+            icon.className = 'toast-icon ' + type;
+            icon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : 
+                            type === 'error' ? '<i class="fas fa-times"></i>' : '<i class="fas fa-info"></i>';
+            t.classList.add('show'); 
+            setTimeout(hideToast, 4000);
+        }
+        function hideToast() { document.getElementById('toast').classList.remove('show'); }
+
+        async function cekResi() {
+            const resi = document.getElementById('resiInput').value.trim();
+            const btn = document.getElementById('cekBtn');
+            const loading = document.getElementById('loadingSpinner');
+            const result = document.getElementById('resultArea');
+            
+            if (!resi) { 
+                showToast('❌ Resi kosong!', 'Masukkan nomor resi.', 'error'); 
+                return; 
+            }
+            
+            btn.disabled = true; 
+            btn.classList.add('loading'); 
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
+            loading.classList.add('show'); 
+            result.classList.remove('show'); 
+            result.innerHTML = '';
+
+            try {
+                const apiUrl = `https://api.binderbyte.com/v1/track?api_key=${BINDERBYTE_API_KEY}&courier=${selectedCourier}&awb=${encodeURIComponent(resi)}`;
+                
+                const proxies = [
+                    `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`,
+                    `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`,
+                    `https://cors-anywhere.herokuapp.com/${apiUrl}`
+                ];
+                
+                let data = null;
+                let lastError = null;
+                
+                for (const proxyUrl of proxies) {
+                    try {
+                        const res = await fetch(proxyUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (res.ok) {
+                            data = await res.json();
+                            break;
+                        }
+                    } catch (e) {
+                        lastError = e;
+                    }
+                }
+                
+                if (!data) {
+                    throw lastError || new Error('Gagal mengambil data');
+                }
+                
+                if (data.status === 200 && data.data) {
+                    const d = data.data;
+                    const summary = d.summary || {};
+                    const history = d.history || [];
+                    const detail = d.detail || {};
+                    
+                    let statusClass = 'pending';
+                    let statusText = '⏳ Menunggu';
+                    
+                    const statusRaw = (summary.status || '').toUpperCase();
+                    if (statusRaw.includes('DELIVERED') || statusRaw.includes('TERKIRIM') || statusRaw.includes('SELESAI')) {
+                        statusClass = 'delivered';
+                        statusText = 'Terkirim';
+                    } else if (statusRaw.includes('TRANSIT') || statusRaw.includes('PROCESS') || 
+                               statusRaw.includes('DIKIRIM') || statusRaw.includes('DALAM PERJALANAN') ||
+                               statusRaw.includes('ON PROCESS')) {
+                        statusClass = 'in-transit';
+                        statusText = '🚚 Dalam Perjalanan';
+                    } else {
+                        statusText = `⏳ ${statusRaw || 'Menunggu'}`;
+                    }
+                    
+                    let html = `
+                        <div class="summary-card">
+                            <div class="summary-icon"><i class="fas fa-box-open"></i></div>
+                            <div class="summary-info">
+                                <div class="summary-courier"><i class="fas fa-truck"></i> ${summary.courier || selectedCourier.toUpperCase()}</div>
+                                <div class="summary-resi"><i class="fas fa-hashtag"></i> ${summary.awb || resi}</div>
+                                <span class="summary-status ${statusClass}">${statusText}</span>
+                                ${summary.service ? `<div class="summary-service"><i class="fas fa-tag"></i> ${summary.service}</div>` : ''}
+                                ${summary.date ? `<div class="summary-date"><i class="far fa-clock"></i> ${summary.date}</div>` : ''}
+                            </div>
+                        </div>`;
+                    
+                    if (detail.shipper || detail.receiver || detail.origin || detail.destination) {
+                        html += `<div class="info-card">
+                            <div class="info-title"><i class="fas fa-user"></i> Informasi Pengiriman</div>
+                            <div class="info-grid">
+                                ${detail.origin ? `<div class="info-item"><strong><i class="fas fa-map-pin"></i> Asal:</strong> ${detail.origin}</div>` : ''}
+                                ${detail.destination ? `<div class="info-item"><strong><i class="fas fa-map-marker-alt"></i> Tujuan:</strong> ${detail.destination}</div>` : ''}
+                                ${detail.shipper ? `<div class="info-item"><strong><i class="fas fa-user-tie"></i> Pengirim:</strong> ${detail.shipper}</div>` : ''}
+                                ${detail.receiver ? `<div class="info-item"><strong><i class="fas fa-user"></i> Penerima:</strong> ${detail.receiver}</div>` : ''}
+                            </div>
+                        </div>`;
+                    }
+                    
+                    if (history.length > 0) {
+                        html += `<div class="timeline-card">
+                            <div class="timeline-title"><i class="fas fa-history"></i> Riwayat Perjalanan (${history.length})</div>
+                            <div class="timeline">`;
+                        
+                        history.forEach((item) => {
+                            const date = item.date || '-';
+                            const desc = item.desc || item.status || '-';
+                            const location = item.location || '';
+                            
+                            html += `
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-date"><i class="far fa-calendar-alt"></i> ${date}</div>
+                                    <div class="timeline-desc">${desc}</div>
+                                    ${location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${location}</div>` : ''}
+                                </div>`;
+                        });
+                        
+                        html += `</div></div>`;
+                    } else {
+                        html += `<div class="timeline-card">
+                            <div class="timeline-title"><i class="fas fa-info-circle"></i> Belum ada riwayat perjalanan</div>
+                        </div>`;
+                    }
+                    
+                    result.innerHTML = html;
+                    result.classList.add('show');
+                    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    showToast('Resi ditemukan!', `${history.length} riwayat perjalanan.`, 'success');
+                    
+                } else {
+                    const errorMsg = data.message || data.msg || 'Resi tidak ditemukan.';
+                    result.innerHTML = `
+                        <div class="error-card">
+                            <i class="fas fa-times-circle"></i>
+                            <p>${errorMsg}</p>
+                            <small><i class="fas fa-lightbulb"></i> Pastikan nomor resi dan kurir sesuai</small>
+                            ${data.status ? `<small><i class="fas fa-code"></i> Status: ${data.status}</small>` : ''}
+                        </div>`;
+                    result.classList.add('show');
+                    showToast('❌ Gagal', errorMsg, 'error');
+                }
+            } catch (e) {
+                console.error('❌ Error:', e);
+                result.innerHTML = `
+                    <div class="error-card">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Gagal menghubungi server.</p>
+                        <small><i class="fas fa-wifi"></i> ${e.message || 'Cek koneksi internet'}</small>
+                        <small><i class="fas fa-lightbulb"></i> Coba gunakan VPN atau koneksi lain</small>
+                        <small><i class="fas fa-sync"></i> Refresh halaman dan coba lagi</small>
+                    </div>`;
+                result.classList.add('show');
+                showToast('❌ Error', 'Gagal koneksi ke API', 'error');
+            } finally {
+                btn.disabled = false; 
+                btn.classList.remove('loading'); 
+                btn.innerHTML = '<i class="fas fa-search"></i> Cek Resi Sekarang';
+                loading.classList.remove('show');
+            }
+        }
+
+        document.getElementById('resiInput').addEventListener('keypress', function(e) { 
+            if (e.key === 'Enter') cekResi(); 
+        });
+
+        function toggleTheme() { 
+            const h = document.documentElement; 
+            h.getAttribute('data-theme') === 'dark' ? 
+                (h.removeAttribute('data-theme'), localStorage.setItem('theme', 'light')) : 
+                (h.setAttribute('data-theme', 'dark'), localStorage.setItem('theme', 'dark')); 
+        }
+        (function() { 
+            if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); 
+        })();
+        
+        document.getElementById('resiInput').value = '';
+    </script>
+</body>
+</html>
