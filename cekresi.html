@@ -7,43 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --red: #DA1107;
-            --orange: #E37F06;
-            --green: #049C6E;
-            --blue: #0984e3;
-            --purple: #6c5ce7;
-            --red-light: #fde8e7;
-            --orange-light: #fef3e6;
-            --green-light: #e6f7f2;
-            --black: #1a1a2e;
-            --white: #ffffff;
-            --shadow-sm: 3px 3px 0 var(--black);
-            --shadow-md: 5px 5px 0 var(--black);
-            --shadow-lg: 7px 7px 0 var(--black);
-            --border: 3px solid var(--black);
-            --border-sm: 2px solid var(--black);
-            --radius: 12px;
-            --radius-sm: 8px;
-            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --bg-primary: #ffffff;
-            --bg-secondary: #fafafa;
-            --bg-tertiary: #f0f0f0;
-            --text-primary: #1a1a2e;
-            --text-secondary: #666;
-            --text-muted: #999;
-            --border-light: rgba(0,0,0,0.08);
-            --card-bg: #ffffff;
+            --red: #DA1107; --orange: #E37F06; --green: #049C6E; --blue: #0984e3; --purple: #6c5ce7;
+            --red-light: #fde8e7; --orange-light: #fef3e6; --green-light: #e6f7f2;
+            --black: #1a1a2e; --white: #ffffff;
+            --shadow-sm: 3px 3px 0 var(--black); --shadow-md: 5px 5px 0 var(--black); --shadow-lg: 7px 7px 0 var(--black);
+            --border: 3px solid var(--black); --border-sm: 2px solid var(--black);
+            --radius: 12px; --radius-sm: 8px; --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-primary: #ffffff; --bg-secondary: #fafafa; --bg-tertiary: #f0f0f0;
+            --text-primary: #1a1a2e; --text-secondary: #666; --text-muted: #999;
+            --border-light: rgba(0,0,0,0.08); --card-bg: #ffffff;
             --body-bg: linear-gradient(135deg, #fde8e7 0%, #fef3e6 50%, #e6f7f2 100%);
         }
         [data-theme="dark"] {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #252540;
-            --bg-tertiary: #2a2a45;
-            --text-primary: #f0f0f0;
-            --text-secondary: #b0b0b0;
-            --text-muted: #888;
-            --border-light: rgba(255,255,255,0.1);
-            --card-bg: #252540;
+            --bg-primary: #1a1a2e; --bg-secondary: #252540; --bg-tertiary: #2a2a45;
+            --text-primary: #f0f0f0; --text-secondary: #b0b0b0; --text-muted: #888;
+            --border-light: rgba(255,255,255,0.1); --card-bg: #252540;
             --body-bg: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f1a15 100%);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -129,6 +107,7 @@
         .loading-spinner.show { display: block; }
         .spinner { width: 40px; height: 40px; border: 4px solid var(--border-light); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 0.8rem; }
         .loading-text { font-weight: 700; font-size: 0.82rem; color: var(--text-secondary); }
+        .loading-detail { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
 
         .result-area { display: none; margin-top: 1rem; animation: fadeInUp 0.4s ease; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -157,7 +136,6 @@
         .timeline-date { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; word-break: break-word; }
         .timeline-desc { font-weight: 700; font-size: 0.8rem; color: var(--text-primary); word-break: break-word; }
         .timeline-location { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.1rem; display: flex; align-items: center; gap: 0.3rem; word-break: break-word; }
-        .timeline-location i { flex-shrink: 0; }
 
         .info-card { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); overflow: hidden; }
         .info-title { font-weight: 900; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; }
@@ -169,7 +147,6 @@
         [data-theme="dark"] .error-card { background: rgba(218, 17, 7, 0.15); border-color: var(--red); }
         .error-card i { font-size: 2.5rem; color: var(--red); margin-bottom: 0.5rem; display: block; }
         .error-card p { font-weight: 700; color: var(--red); word-break: break-word; }
-        .error-card small { display: block; margin-top: 0.5rem; word-break: break-word; }
 
         .info-box { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: flex-start; gap: 0.8rem; overflow: hidden; }
         .info-box i { color: var(--blue); font-size: 1.1rem; margin-top: 0.1rem; flex-shrink: 0; }
@@ -181,24 +158,9 @@
         .footer p:last-child { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; word-break: break-word; }
 
         @media (max-width: 768px) {
-            body { padding: 1rem; } 
-            .container { gap: 1rem; } 
-            .hero-banner { padding: 1.5rem; } 
-            .hero-banner h1 { font-size: 1.7rem; }
-            .main-card { padding: 1.2rem; } 
-            .courier-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); }
+            body { padding: 1rem; } .container { gap: 1rem; } .hero-banner { padding: 1.5rem; } .hero-banner h1 { font-size: 1.7rem; }
+            .main-card { padding: 1.2rem; } .courier-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); }
             .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
-            .summary-card { flex-direction: column; align-items: flex-start; }
-            .summary-icon { width: 45px; height: 45px; font-size: 1.2rem; }
-            .info-grid { grid-template-columns: 1fr; }
-            .header { flex-direction: column; align-items: stretch; gap: 0.8rem; }
-            .brand { justify-content: center; }
-            .header-actions { justify-content: center; }
-        }
-        @media (max-width: 480px) {
-            .courier-grid { grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); }
-            .courier-option { font-size: 0.55rem; padding: 0.4rem 0.2rem; }
-            .courier-option i { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -218,7 +180,7 @@
         <div class="hero-banner">
             <div class="hero-icon"><i class="fas fa-truck-fast"></i></div>
             <h1>Cek Resi</h1>
-            <p><i class="fas fa-search"></i> Lacak paketmu dengan mudah & cepat • 25+ Jasa Pengiriman</p>
+            <p>Lacak paketmu dengan mudah & cepat • 25+ Jasa Pengiriman</p>
         </div>
 
         <div class="main-card">
@@ -264,7 +226,8 @@
 
             <div class="loading-spinner" id="loadingSpinner">
                 <div class="spinner"></div>
-                <p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Mengecek resi...</p>
+                <p class="loading-text">Mengecek resi...</p>
+                <p class="loading-detail" id="loadingDetail"></p>
             </div>
 
             <div class="result-area" id="resultArea"></div>
@@ -273,29 +236,26 @@
         <div class="info-box">
             <i class="fas fa-info-circle"></i>
             <div class="info-box-content">
-                <h4><i class="fas fa-check-circle"></i> 24 Jasa Pengiriman Aktif</h4>
-                <p>Semua kurir di atas status <strong>Online</strong>. Data real-time dari Binderbyte API. Jika terjadi error, coba cek kembali nomor resi atau pilih kurir lain.</p>
+                <h4>24 Jasa Pengiriman Aktif</h4>
+                <p>Data real-time dari Binderbyte API. Jika error, coba refresh atau gunakan mode Private Window.</p>
             </div>
         </div>
 
         <footer class="footer">
-            <p><i class="far fa-copyright"></i> 2026 STAA.DEV — All rights reserved</p>
-            <p><i class="fas fa-bolt"></i> Powered by <strong>Binderbyte API</strong></p>
+            <p>© 2026 STAA.DEV — All rights reserved</p>
+            <p>Powered by <strong>Binderbyte API</strong></p>
         </footer>
     </div>
 
     <div class="toast" id="toast">
         <div class="toast-icon success" id="toastIcon"><i class="fas fa-check"></i></div>
-        <div class="toast-content">
-            <div class="toast-title" id="toastTitle">Sukses!</div>
-            <div class="toast-desc" id="toastDesc">-</div>
-        </div>
+        <div class="toast-content"><div class="toast-title" id="toastTitle">Sukses!</div><div class="toast-desc" id="toastDesc">-</div></div>
         <span class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></span>
     </div>
 
     <script>
         const BINDERBYTE_API_KEY = 'sk_xqqa7xoalxmzgge3pedqcafgtlnige88pawbkhtwdlxpl69yfdegolywjgrmu76m';
-        let selectedCourier = 'spx';
+        let selectedCourier = 'jne';
 
         document.querySelectorAll('#courierGrid .courier-option').forEach(opt => {
             opt.addEventListener('click', function() {
@@ -311,65 +271,76 @@
             document.getElementById('toastDesc').textContent = desc;
             const icon = document.getElementById('toastIcon'); 
             icon.className = 'toast-icon ' + type;
-            icon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : 
-                            type === 'error' ? '<i class="fas fa-times"></i>' : '<i class="fas fa-info"></i>';
-            t.classList.add('show'); 
-            setTimeout(hideToast, 4000);
+            icon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : type === 'error' ? '<i class="fas fa-times"></i>' : '<i class="fas fa-info"></i>';
+            t.classList.add('show'); setTimeout(hideToast, 5000);
         }
         function hideToast() { document.getElementById('toast').classList.remove('show'); }
+
+        // ==================== FETCH DENGAN MULTI PROXY ====================
+        async function fetchWithProxy(url, proxyIndex = 0) {
+            const proxies = [
+                // CORS Proxy yang masih aktif 2024
+                { url: 'https://corsproxy.io/?', prefix: true },
+                { url: 'https://api.allorigins.win/raw?url=', prefix: true },
+                { url: 'https://cors-anywhere.herokuapp.com/', prefix: true },
+                // Cloudflare Worker Proxy (paling stabil)
+                { url: 'https://cors.yussxy.workers.dev/?', prefix: true },
+                { url: 'https://cors-proxy.htmldriven.com/?url=', prefix: true },
+                // Backup - coba langsung
+                { url: '', prefix: false }
+            ];
+
+            if (proxyIndex >= proxies.length) return null;
+
+            const proxy = proxies[proxyIndex];
+            const fetchUrl = proxy.prefix ? proxy.url + encodeURIComponent(url) : url;
+            
+            const loadingDetail = document.getElementById('loadingDetail');
+            if (loadingDetail) loadingDetail.textContent = `Mencoba proxy ${proxyIndex + 1}/${proxies.length}...`;
+
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 15000);
+                
+                const res = await fetch(fetchUrl, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeout);
+
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+            } catch (e) {
+                console.log(`Proxy ${proxyIndex + 1} gagal:`, e.message);
+            }
+
+            // Coba proxy berikutnya
+            return await fetchWithProxy(url, proxyIndex + 1);
+        }
 
         async function cekResi() {
             const resi = document.getElementById('resiInput').value.trim();
             const btn = document.getElementById('cekBtn');
             const loading = document.getElementById('loadingSpinner');
             const result = document.getElementById('resultArea');
+            const loadingDetail = document.getElementById('loadingDetail');
             
-            if (!resi) { 
-                showToast('❌ Resi kosong!', 'Masukkan nomor resi.', 'error'); 
-                return; 
-            }
+            if (!resi) { showToast('❌ Resi kosong!', 'Masukkan nomor resi.', 'error'); return; }
             
-            btn.disabled = true; 
-            btn.classList.add('loading'); 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
-            loading.classList.add('show'); 
-            result.classList.remove('show'); 
-            result.innerHTML = '';
+            btn.disabled = true; btn.classList.add('loading'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek...';
+            loading.classList.add('show'); result.classList.remove('show'); result.innerHTML = '';
+            if (loadingDetail) loadingDetail.textContent = 'Menghubungi server...';
 
             try {
                 const apiUrl = `https://api.binderbyte.com/v1/track?api_key=${BINDERBYTE_API_KEY}&courier=${selectedCourier}&awb=${encodeURIComponent(resi)}`;
                 
-                const proxies = [
-                    `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`,
-                    `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`,
-                    `https://cors-anywhere.herokuapp.com/${apiUrl}`
-                ];
+                const data = await fetchWithProxy(apiUrl);
                 
-                let data = null;
-                let lastError = null;
-                
-                for (const proxyUrl of proxies) {
-                    try {
-                        const res = await fetch(proxyUrl, {
-                            method: 'GET',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                        
-                        if (res.ok) {
-                            data = await res.json();
-                            break;
-                        }
-                    } catch (e) {
-                        lastError = e;
-                    }
-                }
-                
-                if (!data) {
-                    throw lastError || new Error('Gagal mengambil data');
-                }
+                if (!data) throw new Error('Semua proxy gagal');
                 
                 if (data.status === 200 && data.data) {
                     const d = data.data;
@@ -377,124 +348,58 @@
                     const history = d.history || [];
                     const detail = d.detail || {};
                     
-                    let statusClass = 'pending';
-                    let statusText = '⏳ Menunggu';
-                    
+                    let statusClass = 'pending', statusText = '⏳ Menunggu';
                     const statusRaw = (summary.status || '').toUpperCase();
-                    if (statusRaw.includes('DELIVERED') || statusRaw.includes('TERKIRIM') || statusRaw.includes('SELESAI')) {
-                        statusClass = 'delivered';
-                        statusText = 'Terkirim';
-                    } else if (statusRaw.includes('TRANSIT') || statusRaw.includes('PROCESS') || 
-                               statusRaw.includes('DIKIRIM') || statusRaw.includes('DALAM PERJALANAN') ||
-                               statusRaw.includes('ON PROCESS')) {
-                        statusClass = 'in-transit';
-                        statusText = '🚚 Dalam Perjalanan';
-                    } else {
-                        statusText = `⏳ ${statusRaw || 'Menunggu'}`;
-                    }
+                    if (statusRaw.includes('DELIVERED') || statusRaw.includes('TERKIRIM')) { statusClass = 'delivered'; statusText = '✅ Terkirim'; }
+                    else if (statusRaw.includes('TRANSIT') || statusRaw.includes('PROCESS') || statusRaw.includes('DIKIRIM')) { statusClass = 'in-transit'; statusText = '🚚 Dalam Perjalanan'; }
                     
                     let html = `
                         <div class="summary-card">
                             <div class="summary-icon"><i class="fas fa-box-open"></i></div>
                             <div class="summary-info">
-                                <div class="summary-courier"><i class="fas fa-truck"></i> ${summary.courier || selectedCourier.toUpperCase()}</div>
-                                <div class="summary-resi"><i class="fas fa-hashtag"></i> ${summary.awb || resi}</div>
+                                <div class="summary-courier">${selectedCourier.toUpperCase()}</div>
+                                <div class="summary-resi">${resi}</div>
                                 <span class="summary-status ${statusClass}">${statusText}</span>
-                                ${summary.service ? `<div class="summary-service"><i class="fas fa-tag"></i> ${summary.service}</div>` : ''}
-                                ${summary.date ? `<div class="summary-date"><i class="far fa-clock"></i> ${summary.date}</div>` : ''}
                             </div>
                         </div>`;
-                    
-                    if (detail.shipper || detail.receiver || detail.origin || detail.destination) {
-                        html += `<div class="info-card">
-                            <div class="info-title"><i class="fas fa-user"></i> Informasi Pengiriman</div>
-                            <div class="info-grid">
-                                ${detail.origin ? `<div class="info-item"><strong><i class="fas fa-map-pin"></i> Asal:</strong> ${detail.origin}</div>` : ''}
-                                ${detail.destination ? `<div class="info-item"><strong><i class="fas fa-map-marker-alt"></i> Tujuan:</strong> ${detail.destination}</div>` : ''}
-                                ${detail.shipper ? `<div class="info-item"><strong><i class="fas fa-user-tie"></i> Pengirim:</strong> ${detail.shipper}</div>` : ''}
-                                ${detail.receiver ? `<div class="info-item"><strong><i class="fas fa-user"></i> Penerima:</strong> ${detail.receiver}</div>` : ''}
-                            </div>
-                        </div>`;
-                    }
                     
                     if (history.length > 0) {
                         html += `<div class="timeline-card">
-                            <div class="timeline-title"><i class="fas fa-history"></i> Riwayat Perjalanan (${history.length})</div>
+                            <div class="timeline-title"><i class="fas fa-history"></i> Riwayat (${history.length})</div>
                             <div class="timeline">`;
-                        
-                        history.forEach((item) => {
-                            const date = item.date || '-';
-                            const desc = item.desc || item.status || '-';
-                            const location = item.location || '';
-                            
-                            html += `
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-date"><i class="far fa-calendar-alt"></i> ${date}</div>
-                                    <div class="timeline-desc">${desc}</div>
-                                    ${location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${location}</div>` : ''}
-                                </div>`;
+                        history.forEach(item => {
+                            html += `<div class="timeline-item"><div class="timeline-dot"></div>
+                                <div class="timeline-date">${item.date || '-'}</div>
+                                <div class="timeline-desc">${item.desc || '-'}</div>
+                                ${item.location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${item.location}</div>` : ''}
+                            </div>`;
                         });
-                        
                         html += `</div></div>`;
-                    } else {
-                        html += `<div class="timeline-card">
-                            <div class="timeline-title"><i class="fas fa-info-circle"></i> Belum ada riwayat perjalanan</div>
-                        </div>`;
                     }
                     
                     result.innerHTML = html;
                     result.classList.add('show');
                     result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    showToast('Resi ditemukan!', `${history.length} riwayat perjalanan.`, 'success');
-                    
+                    showToast('✅ Resi ditemukan!', `${history.length} riwayat.`, 'success');
                 } else {
-                    const errorMsg = data.message || data.msg || 'Resi tidak ditemukan.';
-                    result.innerHTML = `
-                        <div class="error-card">
-                            <i class="fas fa-times-circle"></i>
-                            <p>${errorMsg}</p>
-                            <small><i class="fas fa-lightbulb"></i> Pastikan nomor resi dan kurir sesuai</small>
-                            ${data.status ? `<small><i class="fas fa-code"></i> Status: ${data.status}</small>` : ''}
-                        </div>`;
+                    result.innerHTML = `<div class="error-card"><i class="fas fa-times-circle"></i><p>${data.message || 'Resi tidak ditemukan'}</p></div>`;
                     result.classList.add('show');
-                    showToast('❌ Gagal', errorMsg, 'error');
+                    showToast('❌ Gagal', data.message || 'Cek nomor resi', 'error');
                 }
             } catch (e) {
-                console.error('❌ Error:', e);
-                result.innerHTML = `
-                    <div class="error-card">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Gagal menghubungi server.</p>
-                        <small><i class="fas fa-wifi"></i> ${e.message || 'Cek koneksi internet'}</small>
-                        <small><i class="fas fa-lightbulb"></i> Coba gunakan VPN atau koneksi lain</small>
-                        <small><i class="fas fa-sync"></i> Refresh halaman dan coba lagi</small>
-                    </div>`;
+                result.innerHTML = `<div class="error-card"><i class="fas fa-exclamation-triangle"></i><p>Gagal menghubungi server</p></div>`;
                 result.classList.add('show');
-                showToast('❌ Error', 'Gagal koneksi ke API', 'error');
+                showToast('❌ Error', 'Coba lagi nanti atau ganti koneksi', 'error');
             } finally {
-                btn.disabled = false; 
-                btn.classList.remove('loading'); 
-                btn.innerHTML = '<i class="fas fa-search"></i> Cek Resi Sekarang';
+                btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-search"></i> Cek Resi Sekarang';
                 loading.classList.remove('show');
             }
         }
 
-        document.getElementById('resiInput').addEventListener('keypress', function(e) { 
-            if (e.key === 'Enter') cekResi(); 
-        });
+        document.getElementById('resiInput').addEventListener('keypress', function(e) { if (e.key === 'Enter') cekResi(); });
 
-        function toggleTheme() { 
-            const h = document.documentElement; 
-            h.getAttribute('data-theme') === 'dark' ? 
-                (h.removeAttribute('data-theme'), localStorage.setItem('theme', 'light')) : 
-                (h.setAttribute('data-theme', 'dark'), localStorage.setItem('theme', 'dark')); 
-        }
-        (function() { 
-            if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); 
-        })();
-        
-        document.getElementById('resiInput').value = '';
+        function toggleTheme() { const h = document.documentElement; h.getAttribute('data-theme') === 'dark' ? (h.removeAttribute('data-theme'), localStorage.setItem('theme', 'light')) : (h.setAttribute('data-theme', 'dark'), localStorage.setItem('theme', 'dark')); }
+        (function() { if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); })();
     </script>
 </body>
 </html>
