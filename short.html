@@ -117,6 +117,17 @@
         .hero-banner p { font-size: 0.9rem; opacity: 0.85; position: relative; }
         .hero-domain { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-top: 0.5rem; border: 1px solid rgba(255,255,255,0.3); position: relative; }
 
+        /* Connection Status */
+        .connection-status {
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem;
+            background: var(--bg-primary); border: var(--border-sm); border-radius: 50px;
+            font-size: 0.75rem; font-weight: 700; box-shadow: var(--shadow-sm); margin-bottom: -0.5rem;
+        }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-dot.online { background: var(--green); animation: pulse 2s infinite; }
+        .status-dot.offline { background: var(--red); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
         /* Main Card */
         .main-card { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; }
         .section-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; }
@@ -131,7 +142,7 @@
 
         /* Alias */
         .alias-row { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 1rem; }
-        .alias-prefix { font-weight: 700; font-size: 0.75rem; color: var(--text-muted); background: var(--bg-secondary); padding: 0.6rem 0.8rem; border-radius: 50px; border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm); }
+        .alias-prefix { font-weight: 700; font-size: 0.7rem; color: var(--text-muted); background: var(--bg-secondary); padding: 0.6rem 0.8rem; border-radius: 50px; border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm); }
         .alias-input { flex: 1; padding: 0.6rem 0.8rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.8rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; }
         .alias-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
         .alias-input::placeholder { color: var(--text-muted); font-size: 0.7rem; }
@@ -151,7 +162,8 @@
         [data-theme="dark"] .result-card { background: rgba(4, 156, 110, 0.15); border-color: var(--green); }
         .result-icon { width: 40px; height: 40px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); }
         .result-info { flex: 1; min-width: 0; }
-        .result-short { font-weight: 900; font-size: 0.9rem; color: var(--green); word-break: break-all; }
+        .result-short { font-weight: 900; font-size: 0.9rem; color: var(--green); word-break: break-all; cursor: pointer; }
+        .result-short:hover { text-decoration: underline; }
         .result-original { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .result-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
         .btn-copy-sm { width: 36px; height: 36px; background: var(--green); border: var(--border-sm); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 0.85rem; transition: var(--transition); box-shadow: 2px 2px 0 var(--black); }
@@ -164,35 +176,8 @@
         .stat-value { font-weight: 900; font-size: 1.5rem; color: var(--green); }
         .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* History */
-        .history-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 400px; overflow-y: auto; }
-        .history-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; transition: var(--transition); box-shadow: var(--shadow-sm); }
-        .history-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .history-icon { width: 36px; height: 36px; background: var(--bg-tertiary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--green); flex-shrink: 0; border: 1.5px solid var(--text-primary); }
-        .history-info { flex: 1; min-width: 0; }
-        .history-short { font-weight: 700; font-size: 0.8rem; color: var(--green); cursor: pointer; word-break: break-all; }
-        .history-short:hover { text-decoration: underline; }
-        .history-original { font-size: 0.65rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .history-time { font-size: 0.6rem; color: var(--text-muted); }
-        .history-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
-        .btn-icon-xs { width: 30px; height: 30px; background: var(--bg-tertiary); border: 1.5px solid var(--text-primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; color: var(--text-primary); transition: var(--transition); }
-        .btn-icon-xs:hover { background: var(--green); color: #fff; border-color: var(--green); }
-        .btn-icon-xs.delete:hover { background: var(--red); border-color: var(--red); color: #fff; }
-
-        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); }
-        .empty-state i { font-size: 3rem; color: var(--border-light); margin-bottom: 0.5rem; }
-        .empty-state p { font-size: 0.8rem; }
-
         /* Redirect Page */
-        .redirect-page {
-            display: none;
-            text-align: center;
-            padding: 3rem 1.5rem;
-            background: var(--bg-primary);
-            border: var(--border);
-            border-radius: 16px;
-            box-shadow: var(--shadow-lg);
-        }
+        .redirect-page { display: none; text-align: center; padding: 3rem 1.5rem; background: var(--bg-primary); border: var(--border); border-radius: 16px; box-shadow: var(--shadow-lg); }
         .redirect-page.show { display: block; }
         .redirect-icon { font-size: 4rem; color: var(--green); animation: bounce 1s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
@@ -232,7 +217,13 @@
             </div>
         </header>
 
-        <!-- REDIRECT PAGE (Muncul saat ada short code di URL) -->
+        <!-- CONNECTION STATUS -->
+        <div class="connection-status" id="connectionStatus">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Menghubungkan ke database...</span>
+        </div>
+
+        <!-- REDIRECT PAGE -->
         <div class="redirect-page" id="redirectPage">
             <div class="redirect-icon"><i class="fas fa-rocket"></i></div>
             <div class="redirect-title">Mengalihkan...</div>
@@ -244,9 +235,8 @@
             </button>
         </div>
 
-        <!-- MAIN FORM (Disembunyikan saat redirect) -->
+        <!-- MAIN FORM -->
         <div id="mainForm">
-            <!-- HERO -->
             <div class="hero-banner">
                 <div class="hero-icon"><i class="fas fa-link"></i></div>
                 <h1>Short URL</h1>
@@ -254,29 +244,24 @@
                 <div class="hero-domain"><i class="fas fa-globe"></i> <span id="domainDisplay">-</span></div>
             </div>
 
-            <!-- MAIN CARD -->
             <div class="main-card">
                 <div class="section-title"><i class="fas fa-magic"></i> Buat Short URL</div>
-
                 <div class="input-row">
                     <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang di sini...">
                     <button class="btn-paste" onclick="pasteURL()" title="Paste"><i class="fas fa-paste"></i></button>
                 </div>
-
                 <div class="alias-row">
                     <span class="alias-prefix" id="aliasPrefix">-/</span>
                     <input type="text" class="alias-input" id="customAlias" placeholder="custom-alias (opsional)">
                 </div>
-
                 <button class="btn-shorten" id="shortenBtn" onclick="shortenURL()">
                     <i class="fas fa-scissors"></i> Pendekin Sekarang
                 </button>
-
                 <div class="result-area" id="resultArea">
                     <div class="result-card">
                         <div class="result-icon"><i class="fas fa-check"></i></div>
                         <div class="result-info">
-                            <div class="result-short" id="resultShort">-</div>
+                            <div class="result-short" id="resultShort" onclick="copyShortURL()" title="Klik untuk copy">-</div>
                             <div class="result-original" id="resultOriginal">-</div>
                         </div>
                         <div class="result-actions">
@@ -287,38 +272,28 @@
                 </div>
             </div>
 
-            <!-- STATS -->
             <div class="main-card">
                 <div class="section-title"><i class="fas fa-chart-bar"></i> Statistik</div>
                 <div class="stats-grid">
                     <div class="stat-item">
-                        <div class="stat-value" id="totalLinks">0</div>
+                        <div class="stat-value" id="totalLinks">-</div>
                         <div class="stat-label">Total Link</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value" id="todayLinks">0</div>
+                        <div class="stat-value" id="todayLinks">-</div>
                         <div class="stat-label">Hari Ini</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value" id="totalClicks">0</div>
+                        <div class="stat-value" id="totalClicks">-</div>
                         <div class="stat-label">Total Klik</div>
                     </div>
                 </div>
             </div>
-
-            <!-- HISTORY -->
-            <div class="main-card">
-                <div class="section-title"><i class="fas fa-history"></i> Riwayat Short URL</div>
-                <div class="history-list" id="historyList">
-                    <div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada short URL yang dibuat</p></div>
-                </div>
-            </div>
         </div>
 
-        <!-- FOOTER -->
         <footer class="footer" id="mainFooter">
             <p>© 2026 STAA.DEV — All rights reserved</p>
-            <p>Domain: <strong id="footerDomain">-</strong></p>
+            <p>Database: <strong id="footerDb">JSONBin.io</strong></p>
         </footer>
     </div>
 
@@ -333,21 +308,194 @@
     </div>
 
     <script>
-        // ==================== KONFIGURASI ====================
+        // ==================== ⚡ KONFIGURASI DATABASE ONLINE ⚡ ====================
+        // 
+        // 🔥 PILIHAN DATABASE GRATIS:
+        //
+        // 1. JSONBin.io (GUNAKAN INI - PALING SIMPEL)
+        //    - Daftar di https://jsonbin.io
+        //    - Buat bin baru, copy BIN ID & API Key
+        //    - Ganti BIN_ID & API_KEY di bawah
+        //
+        // 2. Supabase (LEBIH POWERFUL)
+        //    - Daftar di https://supabase.com
+        //    - Buat project, table "links", copy URL & API Key
+        //
+        // 3. Firebase Firestore
+        //    - Daftar di https://firebase.google.com
+        //    - Buat project, copy config
+
+        // ==================== ⚡ KONFIGURASI - GANTI DI SINI ⚡ ====================
+        const DB_PROVIDER = 'jsonbin'; // 'jsonbin' atau 'supabase' atau 'firebase'
+        
+        // JSONBin.io Config (GRATIS - tinggal daftar)
+        const JSONBIN_CONFIG = {
+            binId: 'YOUR_BIN_ID',        // GANTI: Bin ID dari jsonbin.io
+            apiKey: 'YOUR_API_KEY',      // GANTI: API Key dari jsonbin.io
+            baseUrl: 'https://api.jsonbin.io/v3/b'
+        };
+
+        // Supabase Config (GRATIS - tinggal daftar)
+        const SUPABASE_CONFIG = {
+            url: 'https://yamopvhndbnmnnasffik.supabase.co',  // GANTI: Supabase URL
+            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhbW9wdmhuZGJubW5uYXNmZmlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MjU3NjUsImV4cCI6MjEwMTMwMTc2NX0.8OHWzlfXK6Ng6eui23s9YZbHDu5jLRuPLDQSqHLpIJo',                      // GANTI: Supabase Anon Key
+            table: 'links'
+        };
+
+        // Firebase Config (GRATIS - tinggal daftar)
+        const FIREBASE_CONFIG = {
+            apiKey: 'YOUR_API_KEY',
+            projectId: 'YOUR_PROJECT_ID',
+            collection: 'links'
+        };
+
+        // ==================== DOMAIN ====================
         const BASE_DOMAIN = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
         const SHORT_PAGE = BASE_DOMAIN + '/short.html?r=';
         
         document.getElementById('domainDisplay').textContent = BASE_DOMAIN.replace('https://', '') + '/short.html?r=';
         document.getElementById('aliasPrefix').textContent = BASE_DOMAIN.replace('https://', '') + '/short.html?r=';
-        document.getElementById('footerDomain').textContent = BASE_DOMAIN.replace('https://', '');
 
-        const STORAGE_KEY = 'staa_short_links';
-        const CLICKS_KEY = 'staa_short_clicks';
-        
-        let linkData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-        let clickCounts = JSON.parse(localStorage.getItem(CLICKS_KEY) || '{}');
         let currentShortURL = '';
         let redirectTimer = null;
+        let isDbConnected = false;
+        let linkDataCache = {};
+
+        // ==================== DATABASE FUNCTIONS ====================
+        
+        // 🔥 JSONBin.io Implementation
+        async function jsonbinGetAll() {
+            const res = await fetch(`${JSONBIN_CONFIG.baseUrl}/${JSONBIN_CONFIG.binId}/latest`, {
+                headers: { 'X-Master-Key': JSONBIN_CONFIG.apiKey }
+            });
+            const data = await res.json();
+            return data.record || {};
+        }
+
+        async function jsonbinSave(record) {
+            const res = await fetch(`${JSONBIN_CONFIG.baseUrl}/${JSONBIN_CONFIG.binId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_CONFIG.apiKey
+                },
+                body: JSON.stringify(record)
+            });
+            return res.ok;
+        }
+
+        // 🔥 Supabase Implementation
+        async function supabaseGetAll() {
+            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?select=*`, {
+                headers: {
+                    'apikey': SUPABASE_CONFIG.key,
+                    'Authorization': `Bearer ${SUPABASE_CONFIG.key}`
+                }
+            });
+            const rows = await res.json();
+            const record = {};
+            rows.forEach(row => { record[row.short_code] = { url: row.url, createdAt: row.created_at, clicks: row.clicks || 0 }; });
+            return record;
+        }
+
+        async function supabaseSave(shortCode, urlData) {
+            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}`, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_CONFIG.key,
+                    'Authorization': `Bearer ${SUPABASE_CONFIG.key}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({
+                    short_code: shortCode,
+                    url: urlData.url,
+                    created_at: urlData.createdAt,
+                    clicks: urlData.clicks || 0
+                })
+            });
+            return res.ok;
+        }
+
+        async function supabaseUpdateClicks(shortCode, clicks) {
+            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?short_code=eq.${shortCode}`, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': SUPABASE_CONFIG.key,
+                    'Authorization': `Bearer ${SUPABASE_CONFIG.key}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ clicks: clicks })
+            });
+            return res.ok;
+        }
+
+        // 🔥 Firebase Implementation (butuh Firebase SDK)
+        // Nah ini butuh script tambahan, tapi bisa pake REST API juga
+
+        // ==================== UNIFIED DB FUNCTIONS ====================
+        async function dbGetAll() {
+            if (DB_PROVIDER === 'jsonbin') return await jsonbinGetAll();
+            if (DB_PROVIDER === 'supabase') return await supabaseGetAll();
+            // Fallback ke localStorage
+            return JSON.parse(localStorage.getItem('staa_short_links') || '{}');
+        }
+
+        async function dbSave(shortCode, urlData) {
+            if (DB_PROVIDER === 'jsonbin') {
+                const record = await jsonbinGetAll();
+                record[shortCode] = urlData;
+                return await jsonbinSave(record);
+            }
+            if (DB_PROVIDER === 'supabase') {
+                return await supabaseSave(shortCode, urlData);
+            }
+            // Fallback localStorage
+            const data = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
+            data[shortCode] = urlData;
+            localStorage.setItem('staa_short_links', JSON.stringify(data));
+            return true;
+        }
+
+        async function dbUpdateClicks(shortCode, clicks) {
+            if (DB_PROVIDER === 'jsonbin') {
+                const record = await jsonbinGetAll();
+                if (record[shortCode]) {
+                    record[shortCode].clicks = clicks;
+                    await jsonbinSave(record);
+                }
+                return;
+            }
+            if (DB_PROVIDER === 'supabase') {
+                await supabaseUpdateClicks(shortCode, clicks);
+                return;
+            }
+            // Fallback localStorage
+            const data = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
+            if (data[shortCode]) {
+                data[shortCode].clicks = clicks;
+                localStorage.setItem('staa_short_links', JSON.stringify(data));
+            }
+        }
+
+        // ==================== CHECK CONNECTION ====================
+        async function checkConnection() {
+            try {
+                linkDataCache = await dbGetAll();
+                isDbConnected = true;
+                document.getElementById('statusDot').className = 'status-dot online';
+                document.getElementById('statusText').textContent = 'Database terhubung ✅';
+                document.getElementById('footerDb').textContent = DB_PROVIDER === 'jsonbin' ? 'JSONBin.io' : DB_PROVIDER === 'supabase' ? 'Supabase' : 'Local Storage';
+                updateStats();
+            } catch (e) {
+                isDbConnected = false;
+                document.getElementById('statusDot').className = 'status-dot offline';
+                document.getElementById('statusText').textContent = '⚠️ Fallback ke LocalStorage';
+                document.getElementById('footerDb').textContent = 'Local Storage (Offline)';
+                linkDataCache = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
+                updateStats();
+            }
+        }
 
         // ==================== TOAST ====================
         function showToast(title, desc, type) {
@@ -362,7 +510,6 @@
         }
         function hideToast() { document.getElementById('toast').classList.remove('show'); }
 
-        // ==================== PASTE ====================
         async function pasteURL() {
             try {
                 const text = await navigator.clipboard.readText();
@@ -373,7 +520,6 @@
             }
         }
 
-        // ==================== GENERATE SHORT CODE ====================
         function generateShortCode(length = 5) {
             const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let result = '';
@@ -382,9 +528,10 @@
         }
 
         // ==================== SHORTEN URL ====================
-        function shortenURL() {
+        async function shortenURL() {
             const longUrl = document.getElementById('longUrl').value.trim();
             const customAlias = document.getElementById('customAlias').value.trim();
+            const btn = document.getElementById('shortenBtn');
             const resultArea = document.getElementById('resultArea');
 
             if (!longUrl) { showToast('❌ URL kosong!', 'Masukkan URL yang ingin dipendekkan.', 'error'); return; }
@@ -393,34 +540,54 @@
                 return;
             }
 
-            let shortCode;
-            if (customAlias && customAlias.length >= 3) {
-                if (!/^[a-zA-Z0-9\-_]+$/.test(customAlias)) {
-                    showToast('❌ Alias tidak valid', 'Hanya huruf, angka, dash (-) dan underscore (_)', 'error');
-                    return;
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan ke database...';
+
+            try {
+                // Refresh cache
+                linkDataCache = await dbGetAll();
+
+                let shortCode;
+                if (customAlias && customAlias.length >= 3) {
+                    if (!/^[a-zA-Z0-9\-_]+$/.test(customAlias)) {
+                        showToast('❌ Alias tidak valid', 'Hanya huruf, angka, dash (-) dan underscore (_)', 'error');
+                        btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-scissors"></i> Pendekin Sekarang';
+                        return;
+                    }
+                    if (linkDataCache[customAlias]) {
+                        showToast('⚠️ Alias sudah dipakai', 'Silakan gunakan alias lain.', 'error');
+                        btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = '<i class="fas fa-scissors"></i> Pendekin Sekarang';
+                        return;
+                    }
+                    shortCode = customAlias;
+                } else {
+                    do { shortCode = generateShortCode(); } while (linkDataCache[shortCode]);
                 }
-                if (linkData[customAlias]) {
-                    showToast('⚠️ Alias sudah dipakai', 'Silakan gunakan alias lain.', 'error');
-                    return;
+
+                const urlData = { url: longUrl, createdAt: new Date().toISOString(), clicks: 0 };
+                const saved = await dbSave(shortCode, urlData);
+
+                if (saved) {
+                    linkDataCache[shortCode] = urlData;
+                    currentShortURL = SHORT_PAGE + shortCode;
+                    document.getElementById('resultShort').textContent = currentShortURL;
+                    document.getElementById('resultOriginal').textContent = longUrl;
+                    resultArea.classList.add('show');
+                    resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    updateStats();
+                    showToast('✅ Short URL berhasil!', currentShortURL + ' • Tersimpan di cloud ☁️', 'success');
+                    document.getElementById('customAlias').value = '';
+                } else {
+                    showToast('❌ Gagal menyimpan', 'Coba lagi nanti.', 'error');
                 }
-                shortCode = customAlias;
-            } else {
-                do { shortCode = generateShortCode(); } while (linkData[shortCode]);
+            } catch (e) {
+                showToast('❌ Error', e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btn.innerHTML = '<i class="fas fa-scissors"></i> Pendekin Sekarang';
             }
-
-            linkData[shortCode] = { url: longUrl, createdAt: new Date().toISOString(), clicks: 0 };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
-
-            currentShortURL = SHORT_PAGE + shortCode;
-            document.getElementById('resultShort').textContent = currentShortURL;
-            document.getElementById('resultOriginal').textContent = longUrl;
-            resultArea.classList.add('show');
-            resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-            updateStats();
-            renderHistory();
-            showToast('✅ Short URL berhasil!', currentShortURL, 'success');
-            document.getElementById('customAlias').value = '';
         }
 
         // ==================== COPY ====================
@@ -428,47 +595,42 @@
             if (!currentShortURL) return;
             navigator.clipboard.writeText(currentShortURL).then(() => {
                 const btn = document.querySelector('.btn-copy-sm');
-                btn.classList.add('copied');
-                btn.innerHTML = '<i class="fas fa-check"></i>';
+                if (btn) {
+                    btn.classList.add('copied');
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000);
+                }
                 showToast('📋 Tersalin!', currentShortURL, 'success');
-                setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000);
             });
         }
 
-        // ==================== OPEN ====================
         function openShortURL() {
             if (!currentShortURL) return;
-            const shortCode = currentShortURL.split('?r=')[1];
-            if (linkData[shortCode]) {
-                linkData[shortCode].clicks = (linkData[shortCode].clicks || 0) + 1;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
-            }
-            clickCounts.total = (clickCounts.total || 0) + 1;
-            localStorage.setItem(CLICKS_KEY, JSON.stringify(clickCounts));
             window.open(currentShortURL, '_blank');
-            updateStats();
-            renderHistory();
         }
 
-        // ==================== HANDLE REDIRECT ====================
-        function handleRedirect() {
+        // ==================== REDIRECT ====================
+        async function handleRedirect() {
             const params = new URLSearchParams(window.location.search);
             const shortCode = params.get('r');
             
-            if (shortCode && linkData[shortCode]) {
+            if (!shortCode) return;
+            
+            // Ambil data dari database
+            const record = await dbGetAll();
+            const urlData = record[shortCode];
+            
+            if (urlData) {
                 // Track click
-                linkData[shortCode].clicks = (linkData[shortCode].clicks || 0) + 1;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
-                clickCounts.total = (clickCounts.total || 0) + 1;
-                localStorage.setItem(CLICKS_KEY, JSON.stringify(clickCounts));
+                urlData.clicks = (urlData.clicks || 0) + 1;
+                await dbUpdateClicks(shortCode, urlData.clicks);
                 
                 // Show redirect page
                 document.getElementById('mainForm').style.display = 'none';
                 document.getElementById('mainFooter').style.display = 'none';
                 document.getElementById('redirectPage').classList.add('show');
-                document.getElementById('redirectUrl').textContent = linkData[shortCode].url;
+                document.getElementById('redirectUrl').textContent = urlData.url;
                 
-                // Countdown
                 let count = 3;
                 document.getElementById('countdown').textContent = count;
                 redirectTimer = setInterval(() => {
@@ -476,7 +638,7 @@
                     document.getElementById('countdown').textContent = count;
                     if (count <= 0) {
                         clearInterval(redirectTimer);
-                        window.location.href = linkData[shortCode].url;
+                        window.location.href = urlData.url;
                     }
                 }, 1000);
             }
@@ -487,60 +649,17 @@
             document.getElementById('mainForm').style.display = '';
             document.getElementById('mainFooter').style.display = '';
             document.getElementById('redirectPage').classList.remove('show');
-            // Clear URL params
             window.history.replaceState({}, document.title, window.location.pathname);
         }
 
-        // ==================== HISTORY ====================
-        function copyHistoryURL(code) {
-            const url = SHORT_PAGE + code;
-            navigator.clipboard.writeText(url).then(() => showToast('📋 Tersalin!', url, 'success'));
-        }
-
-        function deleteHistory(code) {
-            delete linkData[code];
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(linkData));
-            renderHistory();
-            updateStats();
-            showToast('🗑️ Dihapus', 'Short URL dihapus dari riwayat.', 'info');
-        }
-
-        function renderHistory() {
-            const historyList = document.getElementById('historyList');
-            const entries = Object.entries(linkData).sort((a, b) => new Date(b[1].createdAt) - new Date(a[1].createdAt));
-            
-            if (entries.length === 0) {
-                historyList.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada short URL yang dibuat</p></div>';
-                return;
-            }
-
-            historyList.innerHTML = entries.map(([code, data]) => {
-                const date = new Date(data.createdAt);
-                const timeStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-                const shortURL = SHORT_PAGE + code;
-                return `
-                    <div class="history-item">
-                        <div class="history-icon"><i class="fas fa-link"></i></div>
-                        <div class="history-info">
-                            <div class="history-short" onclick="window.open('${shortURL}', '_blank')">${shortURL}</div>
-                            <div class="history-original" title="${data.url}">${data.url}</div>
-                            <div class="history-time">🕐 ${timeStr} • 👁 ${data.clicks || 0} klik</div>
-                        </div>
-                        <div class="history-actions">
-                            <button class="btn-icon-xs" onclick="copyHistoryURL('${code}')"><i class="fas fa-copy"></i></button>
-                            <button class="btn-icon-xs delete" onclick="deleteHistory('${code}')"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
+        // ==================== STATS ====================
         function updateStats() {
-            const entries = Object.entries(linkData);
+            const entries = Object.entries(linkDataCache);
             document.getElementById('totalLinks').textContent = entries.length;
             const today = new Date().toDateString();
             document.getElementById('todayLinks').textContent = entries.filter(([_, d]) => new Date(d.createdAt).toDateString() === today).length;
-            document.getElementById('totalClicks').textContent = clickCounts.total || 0;
+            const totalClicks = entries.reduce((sum, [_, d]) => sum + (d.clicks || 0), 0);
+            document.getElementById('totalClicks').textContent = totalClicks;
         }
 
         // ==================== ENTER KEY ====================
@@ -556,9 +675,10 @@
         (function() { if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); })();
 
         // ==================== INIT ====================
-        updateStats();
-        renderHistory();
-        handleRedirect();
+        (async function init() {
+            await checkConnection();
+            await handleRedirect();
+        })();
     </script>
 </body>
 </html>
