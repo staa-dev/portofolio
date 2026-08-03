@@ -10,8 +10,13 @@
             --red: #DA1107;
             --orange: #E37F06;
             --green: #049C6E;
+            --red-light: #fde8e7;
+            --orange-light: #fef3e6;
+            --green-light: #e6f7f2;
             --black: #1a1a2e;
             --white: #ffffff;
+            --gray-light: #fafafa;
+            --gray: #f0f0f0;
             --shadow-sm: 3px 3px 0 var(--black);
             --shadow-md: 5px 5px 0 var(--black);
             --shadow-lg: 7px 7px 0 var(--black);
@@ -61,7 +66,7 @@
 
         [data-theme="dark"] body { background: #111118; }
 
-        .container { width: 100%; max-width: 750px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.5rem; }
+        .container { width: 100%; max-width: 720px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.2rem; }
 
         /* Toast */
         .toast {
@@ -85,18 +90,18 @@
         /* Header */
         .header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 1rem 1.5rem; background: var(--bg-primary); border: var(--border);
+            padding: 0.9rem 1.2rem; background: var(--bg-primary); border: var(--border);
             border-radius: 16px; box-shadow: var(--shadow-md); gap: 1rem; transition: background 0.3s ease;
         }
-        .brand { display: flex; align-items: center; gap: 0.8rem; }
-        .brand-logo { width: 42px; height: 42px; background: var(--green); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.2rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .brand { display: flex; align-items: center; gap: 0.7rem; }
+        .brand-logo { width: 40px; height: 40px; background: var(--green); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.1rem; font-weight: 900; box-shadow: var(--shadow-sm); transition: var(--transition); }
         .brand-logo:hover { transform: rotate(-6deg) scale(1.08); box-shadow: var(--shadow-md); background: var(--orange); }
-        .brand-name { font-size: 1.4rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); }
+        .brand-name { font-size: 1.3rem; font-weight: 900; letter-spacing: -1px; color: var(--text-primary); }
         .brand-name span { color: var(--green); }
-        .header-actions { display: flex; align-items: center; gap: 0.5rem; }
-        .back-btn { background: var(--bg-secondary); border: var(--border-sm); padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary); font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .header-actions { display: flex; align-items: center; gap: 0.4rem; }
+        .back-btn { background: var(--bg-secondary); border: var(--border-sm); padding: 0.45rem 0.9rem; border-radius: 50px; font-weight: 700; text-decoration: none; color: var(--text-primary); font-size: 0.78rem; display: flex; align-items: center; gap: 0.3rem; box-shadow: var(--shadow-sm); transition: var(--transition); }
         .back-btn:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .theme-toggle-btn { width: 40px; height: 40px; background: var(--card-bg); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition); font-size: 1.1rem; color: var(--text-primary); }
+        .theme-toggle-btn { width: 38px; height: 38px; background: var(--card-bg); border: var(--border-sm); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition); font-size: 1rem; color: var(--text-primary); }
         .theme-toggle-btn:hover { transform: rotate(15deg) scale(1.08); box-shadow: var(--shadow-md); }
         .theme-toggle-btn .fa-sun { display: none; }
         .theme-toggle-btn .fa-moon { display: inline-block; }
@@ -106,95 +111,95 @@
         /* Hero */
         .hero-banner {
             background: linear-gradient(135deg, var(--green) 0%, #037a56 50%, #025a40 100%);
-            border: var(--border); border-radius: 16px; padding: 2rem;
+            border: var(--border); border-radius: 16px; padding: 1.8rem;
             box-shadow: var(--shadow-lg); text-align: center; color: #ffffff;
             position: relative; overflow: hidden;
         }
-        .hero-banner::before { content: ''; position: absolute; top: -30%; right: -10%; width: 180px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 50%; }
-        .hero-banner .hero-icon { font-size: 2.5rem; margin-bottom: 0.3rem; position: relative; animation: float 3s ease-in-out infinite; }
+        .hero-banner::before { content: ''; position: absolute; top: -30%; right: -10%; width: 160px; height: 160px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .hero-banner .hero-icon { font-size: 2.2rem; margin-bottom: 0.3rem; position: relative; animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        .hero-banner h1 { font-size: 2rem; font-weight: 900; margin-bottom: 0.3rem; position: relative; }
-        .hero-banner p { font-size: 0.9rem; opacity: 0.85; position: relative; }
-        .hero-domain { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-top: 0.5rem; border: 1px solid rgba(255,255,255,0.3); position: relative; }
+        .hero-banner h1 { font-size: 1.8rem; font-weight: 900; margin-bottom: 0.2rem; position: relative; }
+        .hero-banner p { font-size: 0.85rem; opacity: 0.85; position: relative; }
 
         /* Connection Status */
         .connection-status {
-            display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem;
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;
             background: var(--bg-primary); border: var(--border-sm); border-radius: 50px;
-            font-size: 0.75rem; font-weight: 700; box-shadow: var(--shadow-sm); margin-bottom: -0.5rem;
+            font-size: 0.7rem; font-weight: 700; box-shadow: var(--shadow-sm);
         }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
         .status-dot.online { background: var(--green); animation: pulse 2s infinite; }
         .status-dot.offline { background: var(--red); }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         /* Main Card */
-        .main-card { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; }
-        .section-title { font-weight: 900; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; }
+        .main-card { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1.3rem; box-shadow: var(--shadow-md); transition: background 0.3s ease; }
+        .section-title { font-weight: 900; font-size: 0.8rem; color: var(--text-primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.35rem; }
 
         /* Input */
-        .input-row { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
-        .url-input { flex: 1; padding: 0.8rem 1rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.85rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; min-width: 0; }
+        .input-row { display: flex; gap: 0.4rem; margin-bottom: 0.7rem; }
+        .url-input { flex: 1; padding: 0.7rem 0.9rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.82rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; min-width: 0; }
         .url-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
-        .url-input::placeholder { color: var(--text-muted); font-size: 0.78rem; }
-        .btn-paste { width: 42px; height: 42px; flex-shrink: 0; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .url-input::placeholder { color: var(--text-muted); font-size: 0.75rem; }
+        .btn-paste { width: 40px; height: 40px; flex-shrink: 0; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; color: var(--text-primary); box-shadow: var(--shadow-sm); transition: var(--transition); }
         .btn-paste:hover { background: var(--green); color: #fff; box-shadow: var(--shadow-md); }
 
         /* Alias */
-        .alias-row { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 1rem; }
-        .alias-prefix { font-weight: 700; font-size: 0.7rem; color: var(--text-muted); background: var(--bg-secondary); padding: 0.6rem 0.8rem; border-radius: 50px; border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm); }
-        .alias-input { flex: 1; padding: 0.6rem 0.8rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.8rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; }
+        .alias-row { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.8rem; }
+        .alias-prefix { font-weight: 700; font-size: 0.65rem; color: var(--text-muted); background: var(--bg-secondary); padding: 0.55rem 0.7rem; border-radius: 50px; border: var(--border-sm); white-space: nowrap; box-shadow: var(--shadow-sm); }
+        .alias-input { flex: 1; padding: 0.55rem 0.7rem; background: var(--bg-secondary); border: var(--border-sm); border-radius: 50px; font-weight: 600; font-size: 0.78rem; color: var(--text-primary); outline: none; box-shadow: var(--shadow-sm); transition: var(--transition); font-family: inherit; }
         .alias-input:focus { box-shadow: var(--shadow-md); border-color: var(--green); }
-        .alias-input::placeholder { color: var(--text-muted); font-size: 0.7rem; }
+        .alias-input::placeholder { color: var(--text-muted); font-size: 0.68rem; }
 
         /* Buttons */
-        .btn-shorten { width: 100%; padding: 0.8rem; background: var(--green); color: #ffffff; border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: inherit; }
+        .btn-shorten { width: 100%; padding: 0.75rem; background: var(--green); color: #ffffff; border: var(--border); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.85rem; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.35rem; font-family: inherit; }
         .btn-shorten:hover { background: var(--orange); box-shadow: var(--shadow-md); transform: translateY(-2px); }
         .btn-shorten:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
         .btn-shorten.loading i { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* Result */
-        .result-area { display: none; margin-top: 1rem; animation: fadeInUp 0.3s ease; }
+        .result-area { display: none; margin-top: 0.8rem; animation: fadeInUp 0.3s ease; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .result-area.show { display: block; }
-        .result-card { background: var(--green-light); border: var(--border-sm); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; box-shadow: var(--shadow-sm); }
+        .result-card { background: var(--green-light); border: var(--border-sm); border-radius: var(--radius); padding: 0.9rem 1rem; display: flex; align-items: center; gap: 0.7rem; box-shadow: var(--shadow-sm); }
         [data-theme="dark"] .result-card { background: rgba(4, 156, 110, 0.15); border-color: var(--green); }
-        .result-icon { width: 40px; height: 40px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); }
+        .result-icon { width: 36px; height: 36px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.9rem; flex-shrink: 0; border: var(--border-sm); box-shadow: 2px 2px 0 var(--black); }
         .result-info { flex: 1; min-width: 0; }
-        .result-short { font-weight: 900; font-size: 0.9rem; color: var(--green); word-break: break-all; cursor: pointer; }
+        .result-short { font-weight: 900; font-size: 0.85rem; color: var(--green); word-break: break-all; cursor: pointer; }
         .result-short:hover { text-decoration: underline; }
-        .result-original { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .result-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
-        .btn-copy-sm { width: 36px; height: 36px; background: var(--green); border: var(--border-sm); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 0.85rem; transition: var(--transition); box-shadow: 2px 2px 0 var(--black); }
+        .result-original { font-size: 0.62rem; color: var(--text-muted); margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .result-actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
+        .btn-copy-sm { width: 34px; height: 34px; background: var(--green); border: var(--border-sm); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 0.8rem; transition: var(--transition); box-shadow: 2px 2px 0 var(--black); }
         .btn-copy-sm:hover { background: var(--orange); transform: translateY(-2px); }
         .btn-copy-sm.copied { background: #1a1a2e; }
 
         /* Stats */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
-        .stat-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.8rem; text-align: center; box-shadow: var(--shadow-sm); }
-        .stat-value { font-weight: 900; font-size: 1.5rem; color: var(--green); }
-        .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+        .stat-item { background: var(--bg-secondary); border: var(--border-sm); border-radius: var(--radius-sm); padding: 0.7rem; text-align: center; box-shadow: var(--shadow-sm); }
+        .stat-value { font-weight: 900; font-size: 1.3rem; color: var(--green); }
+        .stat-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Redirect Page */
-        .redirect-page { display: none; text-align: center; padding: 3rem 1.5rem; background: var(--bg-primary); border: var(--border); border-radius: 16px; box-shadow: var(--shadow-lg); }
+        .redirect-page { display: none; text-align: center; padding: 2.5rem 1.5rem; background: var(--bg-primary); border: var(--border); border-radius: 16px; box-shadow: var(--shadow-lg); }
         .redirect-page.show { display: block; }
-        .redirect-icon { font-size: 4rem; color: var(--green); animation: bounce 1s infinite; }
+        .redirect-icon { font-size: 3.5rem; color: var(--green); animation: bounce 1s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        .redirect-title { font-weight: 900; font-size: 1.3rem; margin: 1rem 0 0.5rem; color: var(--text-primary); }
-        .redirect-url { font-size: 0.85rem; color: var(--text-muted); word-break: break-all; }
-        .redirect-countdown { font-weight: 900; font-size: 2rem; color: var(--green); margin: 1rem 0; }
+        .redirect-title { font-weight: 900; font-size: 1.2rem; margin: 0.8rem 0 0.4rem; color: var(--text-primary); }
+        .redirect-url { font-size: 0.8rem; color: var(--text-muted); word-break: break-all; margin-bottom: 0.8rem; }
+        .redirect-countdown { font-weight: 900; font-size: 1.8rem; color: var(--green); margin: 0.5rem 0; }
 
         /* Footer */
-        .footer { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease; }
-        .footer p { font-weight: 700; font-size: 0.8rem; color: var(--text-primary); }
-        .footer p:last-child { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
+        .footer { background: var(--bg-primary); border: var(--border); border-radius: 16px; padding: 0.9rem; box-shadow: var(--shadow-md); text-align: center; transition: background 0.3s ease; }
+        .footer p { font-weight: 700; font-size: 0.75rem; color: var(--text-primary); }
+        .footer p:last-child { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem; }
 
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .container { gap: 1rem; }
-            .hero-banner { padding: 1.5rem; }
-            .hero-banner h1 { font-size: 1.6rem; }
+            .hero-banner { padding: 1.3rem; }
+            .hero-banner h1 { font-size: 1.5rem; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .toast { left: 1rem; right: 1rem; min-width: auto; max-width: none; }
         }
     </style>
@@ -210,9 +215,8 @@
             </div>
             <div class="header-actions">
                 <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
-                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
-                    <i class="fas fa-moon"></i>
-                    <i class="fas fa-sun"></i>
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
                 </button>
             </div>
         </header>
@@ -220,7 +224,7 @@
         <!-- CONNECTION STATUS -->
         <div class="connection-status" id="connectionStatus">
             <span class="status-dot" id="statusDot"></span>
-            <span id="statusText">Menghubungkan ke database...</span>
+            <span id="statusText">Menghubungkan...</span>
         </div>
 
         <!-- REDIRECT PAGE -->
@@ -229,9 +233,9 @@
             <div class="redirect-title">Mengalihkan...</div>
             <div class="redirect-url" id="redirectUrl">-</div>
             <div class="redirect-countdown" id="countdown">3</div>
-            <p style="color:var(--text-muted);font-size:0.8rem;">detik lagi...</p>
-            <button class="btn-shorten" onclick="cancelRedirect()" style="margin-top:1rem;background:var(--orange);">
-                <i class="fas fa-times"></i> Batal & Buat Short URL
+            <p style="color:var(--text-muted);font-size:0.75rem;">detik lagi...</p>
+            <button class="btn-shorten" onclick="cancelRedirect()" style="margin-top:0.8rem;background:var(--orange);">
+                <i class="fas fa-times"></i> Batal
             </button>
         </div>
 
@@ -240,18 +244,17 @@
             <div class="hero-banner">
                 <div class="hero-icon"><i class="fas fa-link"></i></div>
                 <h1>Short URL</h1>
-                <p>Pendekin link panjang jadi lebih simpel & mudah diingat</p>
-                <div class="hero-domain"><i class="fas fa-globe"></i> <span id="domainDisplay">-</span></div>
+                <p>Pendekin link panjang jadi simpel & mudah diingat</p>
             </div>
 
             <div class="main-card">
                 <div class="section-title"><i class="fas fa-magic"></i> Buat Short URL</div>
                 <div class="input-row">
-                    <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang di sini...">
+                    <input type="text" class="url-input" id="longUrl" placeholder="Masukkan URL panjang...">
                     <button class="btn-paste" onclick="pasteURL()" title="Paste"><i class="fas fa-paste"></i></button>
                 </div>
                 <div class="alias-row">
-                    <span class="alias-prefix" id="aliasPrefix">-/</span>
+                    <span class="alias-prefix" id="aliasPrefix">.../short.html?r=</span>
                     <input type="text" class="alias-input" id="customAlias" placeholder="custom-alias (opsional)">
                 </div>
                 <button class="btn-shorten" id="shortenBtn" onclick="shortenURL()">
@@ -261,7 +264,7 @@
                     <div class="result-card">
                         <div class="result-icon"><i class="fas fa-check"></i></div>
                         <div class="result-info">
-                            <div class="result-short" id="resultShort" onclick="copyShortURL()" title="Klik untuk copy">-</div>
+                            <div class="result-short" id="resultShort" onclick="copyShortURL()">-</div>
                             <div class="result-original" id="resultOriginal">-</div>
                         </div>
                         <div class="result-actions">
@@ -275,25 +278,16 @@
             <div class="main-card">
                 <div class="section-title"><i class="fas fa-chart-bar"></i> Statistik</div>
                 <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value" id="totalLinks">-</div>
-                        <div class="stat-label">Total Link</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="todayLinks">-</div>
-                        <div class="stat-label">Hari Ini</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="totalClicks">-</div>
-                        <div class="stat-label">Total Klik</div>
-                    </div>
+                    <div class="stat-item"><div class="stat-value" id="totalLinks">0</div><div class="stat-label">Total Link</div></div>
+                    <div class="stat-item"><div class="stat-value" id="todayLinks">0</div><div class="stat-label">Hari Ini</div></div>
+                    <div class="stat-item"><div class="stat-value" id="totalClicks">0</div><div class="stat-label">Total Klik</div></div>
                 </div>
             </div>
         </div>
 
         <footer class="footer" id="mainFooter">
-            <p>© 2026 STAA.DEV — All rights reserved</p>
-            <p>Database: <strong id="footerDb">JSONBin.io</strong></p>
+            <p>© 2026 STAA.DEV</p>
+            <p>Database: <strong id="footerDb">Supabase</strong></p>
         </footer>
     </div>
 
@@ -302,89 +296,31 @@
         <div class="toast-icon success" id="toastIcon"><i class="fas fa-check"></i></div>
         <div class="toast-content">
             <div class="toast-title" id="toastTitle">Sukses!</div>
-            <div class="toast-desc" id="toastDesc">Short URL berhasil dibuat.</div>
+            <div class="toast-desc" id="toastDesc">-</div>
         </div>
         <span class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></span>
     </div>
 
     <script>
-        // ==================== ⚡ KONFIGURASI DATABASE ONLINE ⚡ ====================
-        // 
-        // 🔥 PILIHAN DATABASE GRATIS:
-        //
-        // 1. JSONBin.io (GUNAKAN INI - PALING SIMPEL)
-        //    - Daftar di https://jsonbin.io
-        //    - Buat bin baru, copy BIN ID & API Key
-        //    - Ganti BIN_ID & API_KEY di bawah
-        //
-        // 2. Supabase (LEBIH POWERFUL)
-        //    - Daftar di https://supabase.com
-        //    - Buat project, table "links", copy URL & API Key
-        //
-        // 3. Firebase Firestore
-        //    - Daftar di https://firebase.google.com
-        //    - Buat project, copy config
-
-        // ==================== ⚡ KONFIGURASI - GANTI DI SINI ⚡ ====================
-        const DB_PROVIDER = 'jsonbin'; // 'jsonbin' atau 'supabase' atau 'firebase'
+        // ==================== KONFIGURASI SUPABASE ====================
+        const DB_PROVIDER = 'supabase'; // SUDAH DIGANTI KE SUPABASE
         
-        // JSONBin.io Config (GRATIS - tinggal daftar)
-        const JSONBIN_CONFIG = {
-            binId: 'YOUR_BIN_ID',        // GANTI: Bin ID dari jsonbin.io
-            apiKey: 'YOUR_API_KEY',      // GANTI: API Key dari jsonbin.io
-            baseUrl: 'https://api.jsonbin.io/v3/b'
-        };
-
-        // Supabase Config (GRATIS - tinggal daftar)
         const SUPABASE_CONFIG = {
-            url: 'https://yamopvhndbnmnnasffik.supabase.co',  // GANTI: Supabase URL
-            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhbW9wdmhuZGJubW5uYXNmZmlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MjU3NjUsImV4cCI6MjEwMTMwMTc2NX0.8OHWzlfXK6Ng6eui23s9YZbHDu5jLRuPLDQSqHLpIJo',                      // GANTI: Supabase Anon Key
+            url: 'https://yamopvhndbnmnnasffik.supabase.co',
+            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhbW9wdmhuZGJubW5uYXNmZmlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MjU3NjUsImV4cCI6MjEwMTMwMTc2NX0.8OHWzlfXK6Ng6eui23s9YZbHDu5jLRuPLDQSqHLpIJo',
             table: 'links'
         };
 
-        // Firebase Config (GRATIS - tinggal daftar)
-        const FIREBASE_CONFIG = {
-            apiKey: 'YOUR_API_KEY',
-            projectId: 'YOUR_PROJECT_ID',
-            collection: 'links'
-        };
-
-        // ==================== DOMAIN ====================
         const BASE_DOMAIN = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
         const SHORT_PAGE = BASE_DOMAIN + '/short.html?r=';
         
-        document.getElementById('domainDisplay').textContent = BASE_DOMAIN.replace('https://', '') + '/short.html?r=';
-        document.getElementById('aliasPrefix').textContent = BASE_DOMAIN.replace('https://', '') + '/short.html?r=';
+        document.getElementById('aliasPrefix').textContent = BASE_DOMAIN.replace('https://', '').replace('http://', '') + '/short.html?r=';
 
         let currentShortURL = '';
         let redirectTimer = null;
-        let isDbConnected = false;
         let linkDataCache = {};
 
-        // ==================== DATABASE FUNCTIONS ====================
-        
-        // 🔥 JSONBin.io Implementation
-        async function jsonbinGetAll() {
-            const res = await fetch(`${JSONBIN_CONFIG.baseUrl}/${JSONBIN_CONFIG.binId}/latest`, {
-                headers: { 'X-Master-Key': JSONBIN_CONFIG.apiKey }
-            });
-            const data = await res.json();
-            return data.record || {};
-        }
-
-        async function jsonbinSave(record) {
-            const res = await fetch(`${JSONBIN_CONFIG.baseUrl}/${JSONBIN_CONFIG.binId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': JSONBIN_CONFIG.apiKey
-                },
-                body: JSON.stringify(record)
-            });
-            return res.ok;
-        }
-
-        // 🔥 Supabase Implementation
+        // ==================== SUPABASE FUNCTIONS ====================
         async function supabaseGetAll() {
             const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?select=*`, {
                 headers: {
@@ -392,9 +328,18 @@
                     'Authorization': `Bearer ${SUPABASE_CONFIG.key}`
                 }
             });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const rows = await res.json();
             const record = {};
-            rows.forEach(row => { record[row.short_code] = { url: row.url, createdAt: row.created_at, clicks: row.clicks || 0 }; });
+            if (Array.isArray(rows)) {
+                rows.forEach(row => { 
+                    record[row.short_code] = { 
+                        url: row.url, 
+                        createdAt: row.created_at, 
+                        clicks: row.clicks || 0 
+                    }; 
+                });
+            }
             return record;
         }
 
@@ -410,7 +355,7 @@
                 body: JSON.stringify({
                     short_code: shortCode,
                     url: urlData.url,
-                    created_at: urlData.createdAt,
+                    created_at: urlData.createdAt || new Date().toISOString(),
                     clicks: urlData.clicks || 0
                 })
             });
@@ -418,7 +363,7 @@
         }
 
         async function supabaseUpdateClicks(shortCode, clicks) {
-            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?short_code=eq.${shortCode}`, {
+            const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.table}?short_code=eq.${encodeURIComponent(shortCode)}`, {
                 method: 'PATCH',
                 headers: {
                     'apikey': SUPABASE_CONFIG.key,
@@ -430,27 +375,22 @@
             return res.ok;
         }
 
-        // 🔥 Firebase Implementation (butuh Firebase SDK)
-        // Nah ini butuh script tambahan, tapi bisa pake REST API juga
-
-        // ==================== UNIFIED DB FUNCTIONS ====================
+        // ==================== UNIFIED DB ====================
         async function dbGetAll() {
-            if (DB_PROVIDER === 'jsonbin') return await jsonbinGetAll();
-            if (DB_PROVIDER === 'supabase') return await supabaseGetAll();
-            // Fallback ke localStorage
+            try {
+                if (DB_PROVIDER === 'supabase') return await supabaseGetAll();
+            } catch(e) { console.error('DB Get Error:', e); }
             return JSON.parse(localStorage.getItem('staa_short_links') || '{}');
         }
 
         async function dbSave(shortCode, urlData) {
-            if (DB_PROVIDER === 'jsonbin') {
-                const record = await jsonbinGetAll();
-                record[shortCode] = urlData;
-                return await jsonbinSave(record);
-            }
-            if (DB_PROVIDER === 'supabase') {
-                return await supabaseSave(shortCode, urlData);
-            }
-            // Fallback localStorage
+            try {
+                if (DB_PROVIDER === 'supabase') {
+                    const ok = await supabaseSave(shortCode, urlData);
+                    if (ok) return true;
+                }
+            } catch(e) { console.error('DB Save Error:', e); }
+            // Fallback
             const data = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
             data[shortCode] = urlData;
             localStorage.setItem('staa_short_links', JSON.stringify(data));
@@ -458,40 +398,29 @@
         }
 
         async function dbUpdateClicks(shortCode, clicks) {
-            if (DB_PROVIDER === 'jsonbin') {
-                const record = await jsonbinGetAll();
-                if (record[shortCode]) {
-                    record[shortCode].clicks = clicks;
-                    await jsonbinSave(record);
+            try {
+                if (DB_PROVIDER === 'supabase') {
+                    await supabaseUpdateClicks(shortCode, clicks);
+                    return;
                 }
-                return;
-            }
-            if (DB_PROVIDER === 'supabase') {
-                await supabaseUpdateClicks(shortCode, clicks);
-                return;
-            }
-            // Fallback localStorage
+            } catch(e) { console.error('DB Update Error:', e); }
             const data = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
-            if (data[shortCode]) {
-                data[shortCode].clicks = clicks;
-                localStorage.setItem('staa_short_links', JSON.stringify(data));
-            }
+            if (data[shortCode]) { data[shortCode].clicks = clicks; localStorage.setItem('staa_short_links', JSON.stringify(data)); }
         }
 
         // ==================== CHECK CONNECTION ====================
         async function checkConnection() {
             try {
                 linkDataCache = await dbGetAll();
-                isDbConnected = true;
                 document.getElementById('statusDot').className = 'status-dot online';
-                document.getElementById('statusText').textContent = 'Database terhubung ✅';
-                document.getElementById('footerDb').textContent = DB_PROVIDER === 'jsonbin' ? 'JSONBin.io' : DB_PROVIDER === 'supabase' ? 'Supabase' : 'Local Storage';
+                document.getElementById('statusText').textContent = '✅ Supabase Terhubung';
+                document.getElementById('footerDb').textContent = 'Supabase';
                 updateStats();
             } catch (e) {
-                isDbConnected = false;
+                console.error('Connection error:', e);
                 document.getElementById('statusDot').className = 'status-dot offline';
-                document.getElementById('statusText').textContent = '⚠️ Fallback ke LocalStorage';
-                document.getElementById('footerDb').textContent = 'Local Storage (Offline)';
+                document.getElementById('statusText').textContent = '⚠️ Offline (LocalStorage)';
+                document.getElementById('footerDb').textContent = 'Local Storage';
                 linkDataCache = JSON.parse(localStorage.getItem('staa_short_links') || '{}');
                 updateStats();
             }
@@ -515,9 +444,7 @@
                 const text = await navigator.clipboard.readText();
                 document.getElementById('longUrl').value = text;
                 showToast('📋 Link dipaste!', 'URL berhasil ditempel.', 'info');
-            } catch (err) {
-                showToast('❌ Gagal paste', 'Silakan paste manual dengan Ctrl+V', 'error');
-            }
+            } catch (err) { showToast('❌ Gagal', 'Gunakan Ctrl+V', 'error'); }
         }
 
         function generateShortCode(length = 5) {
@@ -536,19 +463,17 @@
 
             if (!longUrl) { showToast('❌ URL kosong!', 'Masukkan URL yang ingin dipendekkan.', 'error'); return; }
             if (!longUrl.startsWith('http://') && !longUrl.startsWith('https://')) {
-                showToast('❌ URL tidak valid', 'URL harus diawali http:// atau https://', 'error');
-                return;
+                showToast('❌ URL tidak valid', 'Harus diawali http:// atau https://', 'error'); return;
             }
 
             btn.disabled = true;
             btn.classList.add('loading');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan ke database...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
 
             try {
-                // Refresh cache
                 linkDataCache = await dbGetAll();
-
                 let shortCode;
+                
                 if (customAlias && customAlias.length >= 3) {
                     if (!/^[a-zA-Z0-9\-_]+$/.test(customAlias)) {
                         showToast('❌ Alias tidak valid', 'Hanya huruf, angka, dash (-) dan underscore (_)', 'error');
@@ -576,13 +501,14 @@
                     resultArea.classList.add('show');
                     resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     updateStats();
-                    showToast('✅ Short URL berhasil!', currentShortURL + ' • Tersimpan di cloud ☁️', 'success');
+                    showToast('✅ Berhasil!', currentShortURL, 'success');
                     document.getElementById('customAlias').value = '';
                 } else {
                     showToast('❌ Gagal menyimpan', 'Coba lagi nanti.', 'error');
                 }
             } catch (e) {
-                showToast('❌ Error', e.message, 'error');
+                console.error('Shorten error:', e);
+                showToast('❌ Error: ' + e.message, 'Cek console (F12)', 'error');
             } finally {
                 btn.disabled = false;
                 btn.classList.remove('loading');
@@ -595,59 +521,49 @@
             if (!currentShortURL) return;
             navigator.clipboard.writeText(currentShortURL).then(() => {
                 const btn = document.querySelector('.btn-copy-sm');
-                if (btn) {
-                    btn.classList.add('copied');
-                    btn.innerHTML = '<i class="fas fa-check"></i>';
-                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000);
-                }
+                if (btn) { btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i>'; setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-copy"></i>'; }, 2000); }
                 showToast('📋 Tersalin!', currentShortURL, 'success');
             });
         }
 
-        function openShortURL() {
-            if (!currentShortURL) return;
-            window.open(currentShortURL, '_blank');
-        }
+        function openShortURL() { if (currentShortURL) window.open(currentShortURL, '_blank'); }
 
         // ==================== REDIRECT ====================
         async function handleRedirect() {
             const params = new URLSearchParams(window.location.search);
             const shortCode = params.get('r');
-            
             if (!shortCode) return;
             
-            // Ambil data dari database
-            const record = await dbGetAll();
-            const urlData = record[shortCode];
-            
-            if (urlData) {
-                // Track click
-                urlData.clicks = (urlData.clicks || 0) + 1;
-                await dbUpdateClicks(shortCode, urlData.clicks);
+            try {
+                const record = await dbGetAll();
+                const urlData = record[shortCode];
                 
-                // Show redirect page
-                document.getElementById('mainForm').style.display = 'none';
-                document.getElementById('mainFooter').style.display = 'none';
-                document.getElementById('redirectPage').classList.add('show');
-                document.getElementById('redirectUrl').textContent = urlData.url;
-                
-                let count = 3;
-                document.getElementById('countdown').textContent = count;
-                redirectTimer = setInterval(() => {
-                    count--;
+                if (urlData) {
+                    urlData.clicks = (urlData.clicks || 0) + 1;
+                    await dbUpdateClicks(shortCode, urlData.clicks);
+                    
+                    document.getElementById('mainForm').style.display = 'none';
+                    document.getElementById('mainFooter').style.display = 'none';
+                    document.getElementById('connectionStatus').style.display = 'none';
+                    document.getElementById('redirectPage').classList.add('show');
+                    document.getElementById('redirectUrl').textContent = urlData.url;
+                    
+                    let count = 3;
                     document.getElementById('countdown').textContent = count;
-                    if (count <= 0) {
-                        clearInterval(redirectTimer);
-                        window.location.href = urlData.url;
-                    }
-                }, 1000);
-            }
+                    redirectTimer = setInterval(() => {
+                        count--;
+                        document.getElementById('countdown').textContent = count;
+                        if (count <= 0) { clearInterval(redirectTimer); window.location.href = urlData.url; }
+                    }, 1000);
+                }
+            } catch(e) { console.error('Redirect error:', e); }
         }
 
         function cancelRedirect() {
             if (redirectTimer) clearInterval(redirectTimer);
             document.getElementById('mainForm').style.display = '';
             document.getElementById('mainFooter').style.display = '';
+            document.getElementById('connectionStatus').style.display = '';
             document.getElementById('redirectPage').classList.remove('show');
             window.history.replaceState({}, document.title, window.location.pathname);
         }
@@ -658,14 +574,12 @@
             document.getElementById('totalLinks').textContent = entries.length;
             const today = new Date().toDateString();
             document.getElementById('todayLinks').textContent = entries.filter(([_, d]) => new Date(d.createdAt).toDateString() === today).length;
-            const totalClicks = entries.reduce((sum, [_, d]) => sum + (d.clicks || 0), 0);
-            document.getElementById('totalClicks').textContent = totalClicks;
+            document.getElementById('totalClicks').textContent = entries.reduce((sum, [_, d]) => sum + (d.clicks || 0), 0);
         }
 
-        // ==================== ENTER KEY ====================
+        // ==================== EVENTS ====================
         document.getElementById('longUrl').addEventListener('keypress', function(e) { if (e.key === 'Enter') shortenURL(); });
 
-        // ==================== THEME ====================
         function toggleTheme() {
             const html = document.documentElement;
             const isDark = html.getAttribute('data-theme') === 'dark';
